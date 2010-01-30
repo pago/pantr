@@ -11,6 +11,10 @@ class Task {
 		$this->desc = $desc;
 	}
 	
+	public function getName() {
+		return $this->name;
+	}
+	
 	public function dependsOn() {
 		$this->dependsOn = array_merge($this->dependsOn, func_get_args());
 		return $this;
@@ -21,9 +25,9 @@ class Task {
 		return $this;
 	}
 	
-	public function __invoke() {
+	public function __invoke(Executor $ex) {
 		foreach($this->dependsOn as $taskName) {
-			Pake::run($taskName);
+			$ex($taskName);
 		}
 		$fn = $this->run;
 		$fn();

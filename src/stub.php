@@ -14,19 +14,16 @@ if(!class_exists('com\pagosoft\pake\Pake')) {
 	exit("pake has not been installed properly!\n");
 }
 
-use com\pagosoft\pake\Pake;
+require __DIR__ . '/com/pagosoft/pake/pake_functions.php';
+
+use com\pagosoft\pake\Executor,
+	com\pagosoft\pake\Pake,
+	com\pagosoft\pake\CyclicResolutionPakefileFactory;
 
 $args = $_SERVER['argv'];
 array_shift($args);
 
-$phakefile = getcwd() . DIRECTORY_SEPARATOR . 'pakefile.php';
-if(file_exists($phakefile)) {
-	require_once $phakefile;
-	if(count($args) > 0) {
-		Pake::run($args[0]);
-	} else {
-		Pake::runDefault();
-	}
-} else {
-	exit('Could not find pakefile at ' . $phakefile . "\n");
-}
+$ex = new Executor($args, new CyclicResolutionPakefileFactory());
+Pake::setExecutor($ex);
+$ex->loadPakefile();
+$ex();
