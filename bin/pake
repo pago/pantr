@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ -z "$PAKE_HOME" ] ; then
+	PAKE_HOME="@PEAR-DIR@"
+fi
+ 
+if (test -z "$PHP_COMMAND") ; then
+  # echo "WARNING: PHP_COMMAND environment not set. (Assuming php on PATH)"
+  export PHP_COMMAND=php
+fi
+
+$PHP_COMMAND -d html_errors=off -qC $PAKE_HOME/pake.phar "$@"
