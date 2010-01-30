@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Pake</name>
+ <channel>pear.pagosoft.com</channel>
+ <summary>Pake is a simple php build tool.</summary>
+ <description>
+   Pake is a simple php build tool.
+ </description>
+ <lead>
+  <name>Patrick Gotthardt</name>
+  <user>pago</user>
+  <email>patrick@pagosoft.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-01-30</date>
+ <version>
+  <release>0.1</release>
+  <api>0.1</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <notes>-</notes>
+ <contents>
+   <dir name="/">
+    <file baseinstalldir="/" name="pake" role="script" />
+	<file role="script" baseinstalldir="/" name="pake">
+	    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
+	    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
+	    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
+   </file>
+   <file role="script" baseinstalldir="/" name="pake.bat">
+	    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
+	    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
+	    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
+   </file>
+   <file role="php" baseinstalldir="/" name="pake.phar"/>
+   </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>
