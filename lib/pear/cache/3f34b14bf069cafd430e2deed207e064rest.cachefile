@@ -1,0 +1,1 @@
+s:278:"a:1:{s:8:"required";a:3:{s:3:"php";a:1:{s:3:"min";s:5:"5.3.0";}s:13:"pearinstaller";a:1:{s:3:"min";s:5:"1.4.0";}s:7:"package";a:2:{i:0;a:2:{s:4:"name";s:4:"util";s:7:"channel";s:17:"pear.pagosoft.com";}i:1;a:2:{s:4:"name";s:6:"parser";s:7:"channel";s:17:"pear.pagosoft.com";}}}}";

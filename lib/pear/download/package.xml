@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>cli</name>
+ <channel>pear.pagosoft.com</channel>
+ <summary>CLI is a framework for the creation of command line tools.</summary>
+ <description>CLI is a framework for the creation of command line tools.</description>
+ <lead>
+  <name>Patrick Gotthardt</name>
+  <user>pago</user>
+  <email>patrick@pagosoft.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-01-31</date>
+ <time>22:00:52</time>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <notes>
+-
+ </notes>
+ <contents>
+  <dir name="/">
+   <file baseinstalldir="pgs/cli" install-as="Controller.php" md5sum="6e41c62e5dd94f0527f741f3a195af87" name="pgscli/pgs/cli/Controller.php" role="php" />
+   <file baseinstalldir="pgs/cli" install-as="FrontController.php" md5sum="579a7f4856a429e715fff43acc573005" name="pgscli/pgs/cli/FrontController.php" role="php" />
+   <file baseinstalldir="pgs/cli" install-as="Generator.php" md5sum="06d89807a586dd610c77645afe43c715" name="pgscli/pgs/cli/Generator.php" role="php" />
+   <file baseinstalldir="pgs/cli" install-as="Output.php" md5sum="07617bb89c4c3cad17b37e090957056a" name="pgscli/pgs/cli/Output.php" role="php" />
+   <file baseinstalldir="pgs/cli" install-as="Request.php" md5sum="afeafaec6fd84d93838955653052f79b" name="pgscli/pgs/cli/Request.php" role="php" />
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.3.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+   <package>
+    <name>util</name>
+    <channel>pear.pagosoft.com</channel>
+   </package>
+   <package>
+    <name>parser</name>
+    <channel>pear.pagosoft.com</channel>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>
