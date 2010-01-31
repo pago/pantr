@@ -15,6 +15,10 @@ class Task {
 		return $this->name;
 	}
 	
+	public function getDescription() {
+		return $this->desc;
+	}
+	
 	public function dependsOn() {
 		$this->dependsOn = array_merge($this->dependsOn, func_get_args());
 		return $this;

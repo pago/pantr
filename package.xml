@@ -3,7 +3,7 @@
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
- <name>Pake</name>
+ <name>pake</name>
  <channel>pear.pagosoft.com</channel>
  <summary>Pake is a simple php build tool.</summary>
  <description>
@@ -17,8 +17,8 @@
  </lead>
  <date>##CURRENT_DATE##</date>
  <version>
-  <release>##PAKE_VERSION##</release>
-  <api>##PAKE_VERSION##</api>
+  <release>##VERSION##</release>
+  <api>##VERSION##</api>
  </version>
  <stability>
   <release>beta</release>

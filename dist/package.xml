@@ -3,7 +3,7 @@
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
- <name>Pake</name>
+ <name>pake</name>
  <channel>pear.pagosoft.com</channel>
  <summary>Pake is a simple php build tool.</summary>
  <description>
@@ -15,10 +15,10 @@
   <email>patrick@pagosoft.com</email>
   <active>yes</active>
  </lead>
- <date>2010-01-30</date>
+ <date>2010-01-31</date>
  <version>
-  <release>0.1</release>
-  <api>0.1</api>
+  <release>0.2</release>
+  <api>0.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -27,20 +27,20 @@
  <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
  <notes>-</notes>
  <contents>
-   <dir name="/">
-    <file baseinstalldir="/" name="pake" role="script" />
-	<file role="script" baseinstalldir="/" name="pake">
-	    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
-	    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
-	    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
+  <dir name="/">
+   <file baseinstalldir="/" name="pake" role="script" />
+   <file role="script" baseinstalldir="/" name="pake">
+    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
+    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
+    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
    </file>
    <file role="script" baseinstalldir="/" name="pake.bat">
-	    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
-	    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
-	    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
+    <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
+    <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
+    <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
    </file>
    <file role="php" baseinstalldir="/" name="pake.phar"/>
-   </dir>
+  </dir>
  </contents>
  <dependencies>
   <required>

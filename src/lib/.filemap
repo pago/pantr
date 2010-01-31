@@ -1,0 +1,1 @@
+a:1:{s:3:"php";a:3:{s:17:"pagosoft_cli.phar";a:2:{i:0;s:17:"pear.pagosoft.com";i:1;s:3:"cli";}s:20:"pagosoft_parser.phar";a:2:{i:0;s:17:"pear.pagosoft.com";i:1;s:6:"parser";}s:18:"pagosoft_util.phar";a:2:{i:0;s:17:"pear.pagosoft.com";i:1;s:4:"util";}}}
