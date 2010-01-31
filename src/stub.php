@@ -10,17 +10,13 @@ spl_autoload_register(function($classname) {
 	return false;
 });
 
-if(!class_exists('com\pagosoft\pake\Pake')) {
+if(!class_exists('pake\Pake')) {
 	exit("pake has not been installed properly!\n");
 }
 
-require __DIR__ . '/lib/pagosoft_parser.phar';
-require __DIR__ . '/lib/pagosoft_util.phar';
-require __DIR__ . '/lib/pagosoft_cli.phar';
-
-use com\pagosoft\pake\Executor,
-	com\pagosoft\pake\Pake,
-	com\pagosoft\pake\CyclicResolutionPakefileFactory;
+use pake\Executor,
+	pake\Pake,
+	pake\CyclicResolutionPakefileFactory;
 
 // drop script name from args
 $args = $_SERVER['argv'];

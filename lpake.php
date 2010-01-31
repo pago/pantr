@@ -21,11 +21,13 @@
  * THE SOFTWARE.
  */
 spl_autoload_register(function($classname) {
-	$file = __DIR__ . '/src/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
-	
-	if(file_exists($file)) {
-		require_once $file;
-		return true;
+	foreach(array('src', 'lib') as $dir) {
+		$file = __DIR__ . '/'.$dir.'/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
+		
+		if(file_exists($file)) {
+			require_once $file;
+			return true;
+		}
 	}
 	return false;
 });

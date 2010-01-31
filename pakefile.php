@@ -1,6 +1,6 @@
 <?php
-use com\pagosoft\pake\Pake;
-use com\pagosoft\pake\Phar;
+use pake\Pake;
+use pake\Phar;
 
 Pake::task('test', 'A simple test task')->
 run(function() {
@@ -11,6 +11,14 @@ run(function() {
 		Pake::writeAction('task', 'Hello World!');
 	}
 });
+
+Pake::task('pear:install', 'Install pear package')
+	->run(function() {
+		$req = Pake::getArgs();
+		chdir('lib');
+		Pake::sh('my_pearanha install '.$req[1]);
+		chdir('..');
+	});
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
@@ -23,7 +31,7 @@ Pake::task('init', 'Create dist environment')
 	});
 	
 Pake::task('phar', 'Create a phar archive')->
-run(Pake::phar('pake.phar'));
+run(Pake::phar('pake.phar', array('src', 'lib')));
 	
 Pake::task('dist', 'Create distribution package')
 	->dependsOn('clean', 'init', 'phar')
