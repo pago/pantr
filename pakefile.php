@@ -13,14 +13,6 @@ run(function() {
 	}
 });
 
-Pake::task('pear:install', 'Install pear package')
-	->run(function() {
-		$req = Pake::getArgs();
-		chdir('lib');
-		Pake::sh('my_pearanha install '.$req[1]);
-		chdir('..');
-	});
-
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
 		Pake::rm('dist/pake.phar');

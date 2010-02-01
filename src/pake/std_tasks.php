@@ -52,7 +52,7 @@ Pake::task('help', 'Display this help message')
 	});
 
 Pake::task('pake:new-project', 'Creates a new project')
-	->usage('pake:new-project <name>')
+	->usage('pake:new-project [args] <name>')
 	->desc('Creates a new project directory called [<name>|PARAMETER] and initializes a pakefile '
 		. 'for pear-packaging and phar distribution.')
 	->expectNumArgs(1)

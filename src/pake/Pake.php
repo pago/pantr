@@ -5,7 +5,7 @@ use pgs\cli\Output;
 use pgs\util\Finder;
 
 class Pake {
-	const VERSION='0.4.0';
+	const VERSION='0.5.0';
 	
 	private static $executor;
 	private static $out;
