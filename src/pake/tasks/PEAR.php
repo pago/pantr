@@ -28,16 +28,20 @@ class PEAR {
 	}
 	
 	public static function init($dir='lib') {
+		Pake::mkdirs($dir);
+		Pake::writeAction('pear:init', $dir);
 		$argv = array('', 'generate-project', $dir);
 		$runner = new \Pearanha_Runner_ProjectRunner();
 		$runner->run($argv);
-		Pake::writeAction('pear:init', $dir);
 	}
 	
 	public static function registerTasks($pearrc='lib/.pearrc') {
 		Pake::task('pear', 'Execute a local PEAR command')
-			->usage("pear <command> [args]\npake pear:<command> [args]")
-			->run(function() use ($pearrc) {
+			->usage("pear [--pearrc] <command> [args]\n"
+				. 'pake pear:<command> [args]')
+			->option('pearrc')
+				->desc('Define the .pearrc file to use. Defaults to lib/.pearrc and .pearrc')
+			->run(function($req) use ($pearrc) {
 				$isTaskName = function($taskName) {
 					if(strpos($taskName, 'pear:') === 0) {
 						$taskName = substr($taskName, 5);
@@ -66,18 +70,35 @@ class PEAR {
 						$taskName = array_shift($args);
 					}
 				}
+				// drop pearrc option
+				if(isset($req['pearrc'])) {
+					$pearrc = $req['pearrc'];
+					array_shift($args);
+				}
 				
+				// try to find a .pearrc in current directory
+				// this is typical if there is no pakefile
+				if(!isset($req['pearrc']) && !file_exists($pearrc) && file_exists('.pearrc')) {
+					$pearrc = '.pearrc';
+				}
+				if(!file_exists($pearrc)) {
+					throw new \Exception('Could not find .pearrc');
+				}
 				$pear = new PEAR($pearrc);
-				$pear($args);
+				try {
+					$pear($args);
+				} catch(\Exception $e) {
+					Pake::writeln($e->getMessage(), Pake::WARNING);
+				}
 			});
 		
 		Pake::task('pear:init', 'Creates a local pear repository')
-			->usage('pear:init [--dir=lib]')
+			->usage('pear:init [directory]')
+			->desc('Creates a local pear repository in [directory|PARAMETER]'
+				. ' or [lib|PARAMETER] if no directory was specified.')
 			->needsRequest()
-			->option('dir')
-				->desc('specifies the directory for the pear repository')
 			->run(function($req) {
-				$dir = isset($req['dir']) ? $req['dir'] : 'lib';
+				$dir = isset($req[0]) ? $req[0] : 'lib';
 				PEAR::init($dir);
 			});
 	}

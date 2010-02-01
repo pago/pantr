@@ -60,7 +60,7 @@ class Pearanha_Runner_PearRunner
  
     public function run($argv)
     {
-        $old = error_reporting(0);
+//        $old = error_reporting(0);
  
         if (!defined('PEAR_RUNTYPE')) {
             define('PEAR_RUNTYPE', 'pear');
@@ -94,7 +94,8 @@ class Pearanha_Runner_PearRunner
         $verbose = 1;
  
         $config = PEAR_Config::singleton($this->_pearConfigFile, "#no#system#config#");
-        $config->set('verbose', -1); // supress all kind of annoying stuff.
+		$config->set('verbose', 1);
+//        $config->set('verbose', -1); // supress all kind of annoying stuff.
  
         $ui = PEAR_Command::getFrontendObject();
         $ui->setConfig($config);
@@ -219,7 +220,7 @@ class Pearanha_Runner_PearRunner
             PEAR::raiseError("unknown command `$command'");
         }
  
-        error_reporting($old);
+//        error_reporting($old);
     }
  
     private function usage($error = null, $helpsubject = null)
@@ -243,10 +244,10 @@ class Pearanha_Runner_PearRunner
                 $put .= sprintf($formatstr, $cmd, PEAR_Command::getDescription($cmd));
             }
             $put .=
-                    "Usage: my_pearanha [options] command [command-options] <parameters>\n".
-                    "Type \"my_pearanha help options\" to list all options.\n".
-                    "Type \"my_pearanha help shortcuts\" to list all command shortcuts.\n".
-                    "Type \"my_pearanha help <command>\" to get the help for the specified command.";
+                    "Usage: pake pear [options] command [command-options] <parameters>\n".
+                    "Type \"pake pear:help options\" to list all options.\n".
+                    "Type \"pake pear:help shortcuts\" to list all command shortcuts.\n".
+                    "Type \"pake pear:help <command>\" to get the help for the specified command.";
         }
         fputs($stderr, "$put\n");
         fclose($stderr);
@@ -286,7 +287,7 @@ class Pearanha_Runner_PearRunner
  
         } elseif ($help = PEAR_Command::getHelp($command)) {
             if (is_string($help)) {
-                return "my_pearanha $command [options] $help\n";
+                return "pake pear:$command [options] $help\n";
             }
  
             if ($help[1] === null) {

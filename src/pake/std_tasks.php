@@ -4,6 +4,8 @@ use pake\Phar;
 use pake\tasks;
 use pgs\util\Finder;
 
+tasks\PEAR::registerTasks();
+
 Pake::task('help', 'Display this help message')
 	->usage('help <task>')
 	->option('global-tasks')

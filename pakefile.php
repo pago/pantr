@@ -3,9 +3,6 @@ use pake\Pake;
 use pake\Phar;
 use pake\tasks;
 
-//$pear = new tasks\PEAR();
-tasks\PEAR::registerTasks();
-
 Pake::task('test', 'A simple test task')->
 run(function() {
 	$args = Pake::getArgs();
