@@ -67,7 +67,16 @@ class Executor implements \ArrayAccess {
 			$taskName = $this[0];
 			// check out real task name (in case $taskName is an alias)
 			if(!isset($this->tasks[$taskName])) {
-				$taskName = 'help';	
+				if(strpos(':', $taskName) !== 0) {
+					list($category, $taskName) = explode(':', $taskName);
+					if(isset($this->tasks[$category])) {
+						$taskName = $category;
+					} else {
+						$taskName = 'help';
+					}
+				} else {
+					$taskName = 'help';
+				}
 			}
 			// check for alias
 			$task = $this->tasks[$taskName];
