@@ -15,7 +15,7 @@ class Executor implements \ArrayAccess {
 		$this->factory = $factory;
 		
 		$this->registerParameter('file', 'The name of the pakefile', 'f');
-		$this->registerParameter('global-tasks', 'Show global pake tasks only', 'g');
+		//$this->registerParameter('global-tasks', 'Show global pake tasks only', 'g');
 	}
 	
 	public function printPakeInfo() {
@@ -64,7 +64,18 @@ class Executor implements \ArrayAccess {
 	
 	private function getTaskName() {
 		if(isset($this[0])) {
-			return $this[0];
+			$taskName = $this[0];
+			// check out real task name (in case $taskName is an alias)
+			if(!isset($this->tasks[$taskName])) {
+				$taskName = 'help';	
+			}
+			// check for alias
+			$task = $this->tasks[$taskName];
+			if($taskName != $task->getName()) {
+				$taskName = $task->getName();
+			}
+			// return
+			return $taskName;
 		}
 		return $this->defaultTask;
 	}
@@ -75,15 +86,7 @@ class Executor implements \ArrayAccess {
 
 	public function __invoke($taskName=null) {
 		$taskName = $taskName ?: $this->getTaskName();
-		// check out real task name (in case $taskName is an alias)
-		if(!isset($this->tasks[$taskName])) {
-			$taskName = 'pake:help';	
-		}
-		
 		$task = $this->tasks[$taskName];
-		if($taskName != $task->getName()) {
-			$taskName = $task->getName();
-		}
 		
 		// only run tasks that have not been executed before
 		if(!$this->hasBeenExecuted($taskName)) {	
@@ -94,6 +97,18 @@ class Executor implements \ArrayAccess {
 
 	private function hasBeenExecuted($taskName) {
 		return isset($this->executedTasks[$taskName]);
+	}
+	
+	public function getTaskArgs() {
+		$args = $_SERVER['argv'];
+		$taskName = $this->getTaskName();
+		// drop everything before task name
+		while(count($args) > 0 && $taskName != $args[0]) {
+			array_shift($args);
+		}
+		// drop the task name itself
+		array_shift($args);
+		return new RequestContainer(new Request($args));
 	}
 	
 	private $requestAliasTable = array();
