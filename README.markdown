@@ -65,8 +65,8 @@ To improve the previous example:
 
 Invoke it:
 
-		$ pake greet Patrick
-		Hello Patrick
+	$ pake greet Patrick
+	Hello Patrick
 
 If your terminal supports it, "Patrick" will be displayed using a different color.
 pake also includes a help system, invoked through the
