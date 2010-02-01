@@ -12,12 +12,12 @@ Installing pake
 
 pake is distributed using PEAR. Use the following commands to install it:
 
-$ pear channel-discover pear.pagosoft.com
-$ pear install pgs/pake-beta
+	$ pear channel-discover pear.pagosoft.com
+	$ pear install pgs/pake-beta
 
 After you've done this, check if pake was installed correctly:
 
-$ pake help -g
+	$ pake help -g
 
 You should see a copyright notice as well as at least one available task.
 
@@ -62,6 +62,8 @@ To improve the previous example:
 				Pake::writeln($req[0], Pake::COMMENT);
 			}
 		});
+
+Invoke it:
 
 		$ pake greet Patrick
 		Hello Patrick
