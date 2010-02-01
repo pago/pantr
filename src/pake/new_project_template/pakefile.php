@@ -1,11 +1,14 @@
 <?php
 use pake\Pake;
 use pake\Phar;
+use pake\tasks;
 
 define('PROJECT_NAME', '##PROJECT_NAME##');
 define('PHAR_NAME', '##PROJECT_NAME##.phar');
 define('VERSION', '1.0.0');
 define('STABILITY', 'alpha');
+
+tasks\PEAR::registerTasks();
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {

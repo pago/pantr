@@ -1,6 +1,7 @@
 <?php
 use pake\Pake;
 use pake\Phar;
+use pake\tasks;
 use pgs\util\Finder;
 
 Pake::task('help', 'Display this help message')
@@ -53,16 +54,30 @@ Pake::task('pake:new-project', 'Creates a new project')
 	->desc('Creates a new project directory called [<name>|PARAMETER] and initializes a pakefile '
 		. 'for pear-packaging and phar distribution.')
 	->expectNumArgs(1)
+	->option('with-local-pear')
+		->shorthand('p')
+		->desc('creates a local pear repository within lib-directory')
+	->option('with-phar')
+		->desc('create a phar task')
+	->option('with-pear-package')
+		->desc('create a pear:package task')
+	->option('type')
+		->desc('select project type: lib|app')
 	->run(function($req) {
-		$req = Pake::getArgs();
-		$projectName = $req[1];
+		$projectName = $req[0];
 		Pake::mkdirs($projectName);
+		$basedir = getcwd() . DIRECTORY_SEPARATOR . $projectName . DIRECTORY_SEPARATOR;
 		foreach(array('src', 'lib', 'test') as $dir) {
-			Pake::mkdirs(getcwd() . DIRECTORY_SEPARATOR . $projectName . DIRECTORY_SEPARATOR . $dir);
+			Pake::mkdirs($basedir . $dir);
 		}
 		Pake::copy(__DIR__.'/new_project_template/pakefile.php',
-			getcwd() . DIRECTORY_SEPARATOR . $projectName . DIRECTORY_SEPARATOR . 'pakefile.php',
+			$basedir . 'pakefile.php',
 			array('PROJECT_NAME' => $projectName));
-		Pake::copy(__DIR__.'/new_project_template/package.xml',
-			getcwd() . DIRECTORY_SEPARATOR . $projectName . DIRECTORY_SEPARATOR . 'package.xml');
-		});
+		if(isset($req['with-pear-package'])) {
+			Pake::copy(__DIR__.'/new_project_template/package.xml',
+				$basedir . 'package.xml');
+		}
+		if(isset($req['with-local-pear'])) {
+			tasks\PEAR::init($basedir . 'lib');
+		}
+	});

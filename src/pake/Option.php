@@ -38,6 +38,7 @@ class Option {
 	}
 	
 	public function option($long) {
+		$this->task->registerOption($this);
 		return $this->task->option($long);
 	}
 	

@@ -10,11 +10,11 @@
   <email>patrick@pagosoft.com</email>
   <active>yes</active>
  </lead>
- <date>2010-01-31</date>
- <time>22:00:52</time>
+ <date>2010-02-01</date>
+ <time>12:32:09</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>1.0.1</release>
+  <api>1.0.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -29,7 +29,7 @@
    <file baseinstalldir="pgs/cli" install-as="Controller.php" md5sum="6e41c62e5dd94f0527f741f3a195af87" name="pgscli/pgs/cli/Controller.php" role="php" />
    <file baseinstalldir="pgs/cli" install-as="FrontController.php" md5sum="579a7f4856a429e715fff43acc573005" name="pgscli/pgs/cli/FrontController.php" role="php" />
    <file baseinstalldir="pgs/cli" install-as="Generator.php" md5sum="06d89807a586dd610c77645afe43c715" name="pgscli/pgs/cli/Generator.php" role="php" />
-   <file baseinstalldir="pgs/cli" install-as="Output.php" md5sum="07617bb89c4c3cad17b37e090957056a" name="pgscli/pgs/cli/Output.php" role="php" />
+   <file baseinstalldir="pgs/cli" install-as="Output.php" md5sum="8b6ae6b8d4f8e865ff31cf96f2b5f413" name="pgscli/pgs/cli/Output.php" role="php" />
    <file baseinstalldir="pgs/cli" install-as="Request.php" md5sum="afeafaec6fd84d93838955653052f79b" name="pgscli/pgs/cli/Request.php" role="php" />
   </dir>
  </contents>

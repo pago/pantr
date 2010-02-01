@@ -52,8 +52,12 @@ class Executor implements \ArrayAccess {
 		}
 		// do not load pakefile if a pake-command is executed
 		if(0 !== strpos($this[0], 'pake:')) {
-			$pakefile = $this->factory->getPakefile($name);
-			$pakefile->load();
+			try {
+				$pakefile = $this->factory->getPakefile($name);
+				$pakefile->load();
+			} catch(\Exception $ex) {
+				Pake::writeln($ex->getMessage(), Pake::WARNING)->nl();
+			}
 		}
 	}
 	
@@ -67,7 +71,7 @@ class Executor implements \ArrayAccess {
 			$taskName = $this[0];
 			// check out real task name (in case $taskName is an alias)
 			if(!isset($this->tasks[$taskName])) {
-				if(strpos(':', $taskName) !== 0) {
+				if(strpos($taskName, ':') !== 0) {
 					list($category, $taskName) = explode(':', $taskName);
 					if(isset($this->tasks[$category])) {
 						$taskName = $category;
@@ -78,6 +82,7 @@ class Executor implements \ArrayAccess {
 					$taskName = 'help';
 				}
 			}
+			
 			// check for alias
 			$task = $this->tasks[$taskName];
 			if($taskName != $task->getName()) {
@@ -86,7 +91,7 @@ class Executor implements \ArrayAccess {
 			// return
 			return $taskName;
 		}
-		return $this->defaultTask;
+		return $this->defaultTask ?: 'help';
 	}
 	
 	public function getTasks() {

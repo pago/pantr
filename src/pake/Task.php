@@ -6,6 +6,7 @@ class Task {
 	private $dependsOn = array();
 	private $options = array();
 	private $expectNumArgs = 0;
+	private $needsRequest = false;
 	private $run;
 	
 	public function __construct($name, $desc='') {
@@ -63,16 +64,22 @@ class Task {
 		return $this;
 	}
 	
+	public function needsRequest() {
+		$this->needsRequest = true;
+		return $this;
+	}
+	
 	public function dependsOn() {
 		$this->dependsOn = array_merge($this->dependsOn, func_get_args());
 		return $this;
 	}
 	
 	public function option($long) {
-		return new Option($this, $long);
+		$opt = new Option($this, $long);
+		return $opt;
 	}
 	
-	public function registerOption(Option $opt) {
+	public function registerOption($opt) {
 		$this->options[] = $opt;
 	}
 	
@@ -91,7 +98,7 @@ class Task {
 			$ex($taskName);
 		}
 		$fn = $this->run;
-		if(count($this->options) > 0 || $this->expectNumArgs > 0) {
+		if(count($this->options) > 0 || $this->expectNumArgs > 0 || $this->needsRequest) {
 			$args = $ex->getTaskArgs();
 			foreach($this->options as $opt) {
 				$opt->registerOn($args);

@@ -1,7 +1,9 @@
 <?php
 // pake class loader
 spl_autoload_register(function($classname) {
-	$file = str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
+	$file = str_replace(
+		array('\\', '_'),
+		array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR), $classname) . '.php';
 	
 	if(file_exists($file)) {
 		require_once $file;

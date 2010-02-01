@@ -21,8 +21,11 @@
  * THE SOFTWARE.
  */
 spl_autoload_register(function($classname) {
+	$classname = str_replace(
+		array('\\', '_'),
+		array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR), $classname);
 	foreach(array('src', 'lib') as $dir) {
-		$file = __DIR__ . '/'.$dir.'/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
+		$file = __DIR__ . '/'.$dir.'/' . $classname . '.php';
 		
 		if(file_exists($file)) {
 			require_once $file;
