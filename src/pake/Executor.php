@@ -3,6 +3,11 @@ namespace pake;
 
 use pgs\cli\Request;
 
+/**
+ * The Executor is responsible for invoking tasks. It makes sure that a task
+ * is executed exactly once and that all of its dependencies are invoked before
+ * the task itself is run.
+ */
 class Executor implements \ArrayAccess {
 	private $request;
 	private $tasks = array();
@@ -18,6 +23,9 @@ class Executor implements \ArrayAccess {
 		//$this->registerParameter('global-tasks', 'Show global pake tasks only', 'g');
 	}
 	
+	/**
+	 * Prints the version number for pake.
+	 */
 	public function printPakeInfo() {
 		// display pake info
 		$copySpan = '2010';
@@ -30,15 +38,27 @@ class Executor implements \ArrayAccess {
 			Pake::INFO)->nl();
 	}
 	
+	/**
+	 * Register a task for this executor.
+	 */
 	public function registerTask(Task $task) {
 		$this->tasks[$task->getName()] = $task;
 	}
 	
+	/**
+	 * Registers a task under a different name.
+	 * An aliased task can be used as a dependency and it can
+	 * be invoked using the alias.
+	 */
 	public function alias($taskName, $alias) {
 		$task = $this->tasks[$taskName];
 		$this->tasks[$alias] = $task;
 	}
 	
+	/**
+	 * Specifies the task that should be run if the user has not selected
+	 * a task.
+	 */
 	public function setDefault($task) {
 		$this->defaultTask = $task;
 	}

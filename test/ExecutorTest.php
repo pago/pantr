@@ -1,8 +1,8 @@
 <?php
 require_once 'bootstrap.php';
 
-use com\pagosoft\pake\Executor,
-	com\pagosoft\pake\Task;
+use pake\Executor,
+	pake\Task;
 
 class ExecutorTest extends PHPUnit_Framework_TestCase {
 	public function testInvoke() {

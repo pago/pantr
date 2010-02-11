@@ -1,6 +1,10 @@
 <?php
 namespace pake;
 
+/*
+ * Locates a pakefile by looking at the current working directory and all of its
+ * parent directories.
+ */
 class CyclicResolutionPakefileFactory implements PakefileFactory {
 	public function getPakefile($name) {
 		$start = $here = getcwd();

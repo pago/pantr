@@ -4,41 +4,91 @@ namespace pake;
 use pgs\cli\Output;
 use pgs\util\Finder;
 
+/**
+ * The Pake class is the public API that pakefiles should use to create tasks,
+ * execute certain standard actions (move a file, delete some file, etc.).
+ *
+ * It also provides a way to register a task, set the default task and
+ * register an alias for a task.
+ *
+ * Any unknown static method call that the pgs\cli\Output class would know how to handle
+ * will be delegated towards it. Thus you will also use the Pake class to
+ * format your output.
+ *
+ * There should not be an instance of the Pake class, since all of its methods are static.
+ */
 class Pake {
-	const VERSION='0.5.0';
+	const VERSION='0.5.1';
 	
 	private static $executor;
 	private static $out;
+	private static $homePathProvider;
+	/**
+	 * Specify the executor that should be used to invoke and
+	 * and register tasks.
+	 */
 	public static function setExecutor(Executor $ex) {
 		self::$executor = $ex;
 	}
 	
+	/**
+	 * Specify the HomePathProvider that provides the path to the global
+	 * pake directory.
+	 */
+	public static function setHomePathProvider(HomePathProvider $p) {
+		$this->homePathProvider = $p;
+	}
+	
+	/**
+	 * Returns all registered tasks.
+	 * @see pake\Executor#getTasks()
+	 */
 	public static function getDefinedTasks() {
 		return self::$executor->getTasks();
 	}
 	
+	/**
+	 * Register a new task and return it for further specification.
+	 *
+	 * This is the main entrance point for pakefiles.
+	 * <code>Pake::task('foo', 'some description')
+	 * ->run(function() { Pake::writeln('Hello World!'); });
+	 */
 	public static function task($name, $desc) {
 		$task = new Task($name, $desc);
 		self::$executor->registerTask($task);
 		return $task;
 	}
 	
+	/**
+	 * Register an alias for a specific task.
+	 * <code>Pake::alias('generate-pear-server-info', 'gpsi');</code>
+	 */
 	public static function alias($taskName, $alias) {
 		self::$executor->alias($taskName, $alias);
 	}
 	
+	/**
+	 * Specify the default task that should be executed if no
+	 * task was provided by the user.
+	 */
 	public static function setDefault($taskName) {
 		self::$executor->setDefault($taskName);
 	}
 
+	/**
+	 * Executes the specified task and all of its dependencies.
+	 */
 	public static function run($taskName) {
 		self::$executor->run($taskName);
 	}
 	
 	public static function getArgs() {
+		// TODO: the executor should use a RequestContainer
 		return self::$executor;
 	}
-		
+	
+	// output design
 	const PARAMETER='PARAMETER';
 	const COMMENT='COMMENT';
 	const INFO='INFO';
@@ -46,7 +96,7 @@ class Pake {
 	const ERROR='ERROR';
 	const SECTION='SECTION';
 	
-	public static function getOut() {
+	private static function getOut() {
 		if(self::$out == null) {
 			self::$out = new Output();
 			self::$out->registerStyle('INFO', array('fg' => 'yellow'))
@@ -58,6 +108,11 @@ class Pake {
 	}
 	
 	private static $enhancements = array();
+	/**
+	 * Adds a new method to the Pake class. For example:
+	 * <code>Pake::enhance('hello', function($who) { Pake::writeln('Hello '.$who); });
+	 * Pake::hello('Patrick');</code>
+	 */
 	public static function enhance($name, $fn) {
 		self::$enhancements[$name] = $fn;
 	}
@@ -77,6 +132,21 @@ class Pake {
 	// Utility-methods
 	public static function finder($type='any') {
 		return Finder::type($type);
+	}
+	
+	public static function getHomePath() {
+		return $this->homePathProvider->get();
+	}
+	
+	private static $globalConfig;
+	public static function getGlobalConfig($file='pake.yaml') {
+		$home = self::getHomePath();
+		$file = $home . DIRECTORY_SEPARATOR . $file;
+		if(file_exists($file)) {
+			return sfYaml::load($file);
+		}
+		// this behaviour might change!
+		return array();
 	}
 	
 	public static function _getFinderFromArg($arg, $target_dir = '', $relative = false) {

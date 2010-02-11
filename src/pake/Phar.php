@@ -6,8 +6,8 @@ class Phar extends \Phar {
 		$mf = <<<'EOF'
 <?php
 spl_autoload_register(function($classname) {
-	$pearStyle = str_replace('_', DIRECTORY_SEPARATOR, $classname) . '.php';
-	$nsStyle = str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
+	$pearStyle = str_replace('_', '/', $classname) . '.php';
+	$nsStyle = str_replace('\\', '/', $classname) . '.php';
 	$files = array($nsStyle, $pearStyle);
 
 	foreach($files as $file) {

@@ -1,55 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
- <name>cli</name>
- <channel>pear.pagosoft.com</channel>
- <summary>CLI is a framework for the creation of command line tools.</summary>
- <description>CLI is a framework for the creation of command line tools.</description>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>YAML</name>
+ <channel>pear.symfony-project.com</channel>
+ <summary>The Symfony YAML Component.</summary>
+ <description>The Symfony YAML Component.</description>
  <lead>
-  <name>Patrick Gotthardt</name>
-  <user>pago</user>
-  <email>patrick@pagosoft.com</email>
+  <name>Fabien Potencier</name>
+  <user>fabpot</user>
+  <email>fabien.potencier@symfony-project.org</email>
   <active>yes</active>
  </lead>
- <date>2010-02-01</date>
- <time>12:32:09</time>
+ <date>2009-12-01</date>
+ <time>11:18:50</time>
  <version>
-  <release>1.0.1</release>
-  <api>1.0.1</api>
+  <release>1.0.2</release>
+  <api>1.0.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
- <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
+ <license uri="http://www.symfony-project.com/license">MIT license</license>
  <notes>
 -
  </notes>
  <contents>
   <dir name="/">
-   <file baseinstalldir="pgs/cli" install-as="Controller.php" md5sum="6e41c62e5dd94f0527f741f3a195af87" name="pgscli/pgs/cli/Controller.php" role="php" />
-   <file baseinstalldir="pgs/cli" install-as="FrontController.php" md5sum="579a7f4856a429e715fff43acc573005" name="pgscli/pgs/cli/FrontController.php" role="php" />
-   <file baseinstalldir="pgs/cli" install-as="Generator.php" md5sum="06d89807a586dd610c77645afe43c715" name="pgscli/pgs/cli/Generator.php" role="php" />
-   <file baseinstalldir="pgs/cli" install-as="Output.php" md5sum="8b6ae6b8d4f8e865ff31cf96f2b5f413" name="pgscli/pgs/cli/Output.php" role="php" />
-   <file baseinstalldir="pgs/cli" install-as="Request.php" md5sum="afeafaec6fd84d93838955653052f79b" name="pgscli/pgs/cli/Request.php" role="php" />
+   <file install-as="SymfonyComponents/YAML/sfYaml.php" md5sum="2b7116a9f3bf6f9e8cd914c81bf79830" name="lib/sfYaml.php" role="php" />
+   <file install-as="SymfonyComponents/YAML/sfYamlDumper.php" md5sum="28196a0efdcea67d72e1eaf71e936958" name="lib/sfYamlDumper.php" role="php" />
+   <file install-as="SymfonyComponents/YAML/sfYamlInline.php" md5sum="ac91d93377098b90a642fa689b0218cf" name="lib/sfYamlInline.php" role="php" />
+   <file install-as="SymfonyComponents/YAML/sfYamlParser.php" md5sum="748a3ddcbfd12225292424bc233abccb" name="lib/sfYamlParser.php" role="php" />
+   <file md5sum="872df9017f6485111a36d2ce9c1e8bdc" name="README.markdown" role="doc" />
+   <file md5sum="4828aab1cb984d8a5d29e1c0df3cdcbd" name="LICENSE" role="doc" />
   </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.3.0</min>
+    <min>5.2.4</min>
    </php>
    <pearinstaller>
-    <min>1.4.0</min>
+    <min>1.4.1</min>
    </pearinstaller>
-   <package>
-    <name>util</name>
-    <channel>pear.pagosoft.com</channel>
-   </package>
-   <package>
-    <name>parser</name>
-    <channel>pear.pagosoft.com</channel>
-   </package>
   </required>
  </dependencies>
  <phprelease />
+ <changelog>
+  <release>
+   <version>
+    <release>1.0.2</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <license>MIT</license>
+   <date>2009-12-01</date>
+   <notes>
+* fabien: fixed \ usage in quoted string
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.1</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <license>MIT</license>
+   <date>2009-12-01</date>
+   <notes>
+* fabien: fixed a possible loop in parsing a non-valid quoted string
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>1.0.0</release>
+    <api>1.0.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.symfony-project.com/license">MIT license</license>
+   <license>MIT</license>
+   <date>2009-11-30</date>
+   <notes>
+* fabien: first stable release as a Symfony Component
+   </notes>
+  </release>
+ </changelog>
 </package>
