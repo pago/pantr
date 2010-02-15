@@ -1,5 +1,5 @@
 <?php
-namespace pake\tasks;
+namespace pake\ext;
 
 use pake\Pake;
 

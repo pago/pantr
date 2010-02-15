@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\ext;
 
 class LFTP {
 	private $source, $ftppath = '', $user, $pass, $ftpurl, $exclude;

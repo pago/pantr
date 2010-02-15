@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\ext;
 
 class Phar extends \Phar {
 	public function getAutoloadManifest() {
