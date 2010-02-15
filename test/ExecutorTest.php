@@ -2,7 +2,8 @@
 require_once 'bootstrap.php';
 
 use pake\Executor,
-	pake\Task;
+	pake\Task,
+	pake\CyclicResolutionPakefileFactory;
 
 class ExecutorTest extends PHPUnit_Framework_TestCase {
 	public function testInvoke() {

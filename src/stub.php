@@ -20,7 +20,8 @@ if(!class_exists('pake\Pake')) {
 
 use pake\Executor,
 	pake\Pake,
-	pake\CyclicResolutionPakefileFactory;
+	pake\CyclicResolutionPakefileFactory,
+	pake\ServerHomePathProvider;
 
 require_once 'SymfonyComponents/YAML/sfYaml.php';
 

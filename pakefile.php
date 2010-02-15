@@ -1,21 +1,17 @@
 <?php
 use pake\Pake;
 use pake\Phar;
-use pake\tasks;
+use pake\ext\PHPUnit;
 
-Pake::task('test', 'A simple test task')->
-run(function() {
-	$args = Pake::getArgs();
-	if(isset($args[1])) {
-		Pake::writeAction('task', 'Hello ['.$args[1].'|COMMENT]');
-	} else {
-		Pake::writeAction('task', 'Hello World!');
-	}
-});
+PHPUnit::task('unit-test', 'Run all tests',
+	Pake::fileset()
+		->name('*Test.php')
+		->in('test'));
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
 		Pake::rm('dist/pake.phar');
+		Pake::rm(Pake::fileset()->name('.DS_STORE'));
 	});
 
 Pake::task('init', 'Create dist environment')

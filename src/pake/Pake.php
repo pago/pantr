@@ -37,7 +37,7 @@ class Pake {
 	 * pake directory.
 	 */
 	public static function setHomePathProvider(HomePathProvider $p) {
-		$this->homePathProvider = $p;
+		self::$homePathProvider = $p;
 	}
 	
 	/**

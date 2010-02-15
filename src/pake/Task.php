@@ -2,6 +2,10 @@
 namespace pake;
 
 class Task {
+	// constants to signify the result of an executed task
+	const SUCCESS = 0;
+	const FAILED = 1;
+	
 	private $name, $desc, $usage, $detail;
 	private $dependsOn = array();
 	private $options = array();
@@ -95,9 +99,13 @@ class Task {
 	
 	public function __invoke(Executor $ex) {
 		foreach($this->dependsOn as $taskName) {
-			$ex($taskName);
+			$result = $ex($taskName);
+			if($result == Task::FAILED) {
+				return Task::FAILED;
+			}
 		}
 		$fn = $this->run;
+		$result = Task::SUCCESS;
 		if(count($this->options) > 0 || $this->expectNumArgs > 0 || $this->needsRequest) {
 			$args = $ex->getTaskArgs();
 			foreach($this->options as $opt) {
@@ -105,12 +113,13 @@ class Task {
 			}
 			$args->expectNumArgs($this->expectNumArgs);
 			if($args->isValid()) {
-				$fn($args);
+				$result = $fn($args);
 			} else {
 				$this->printHelp();
 			}
 		} else {
-			$fn();
+			$result = $fn();
 		}
+		return $result ?: Task::SUCCESS;
 	}
 }

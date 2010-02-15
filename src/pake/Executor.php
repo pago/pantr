@@ -122,16 +122,21 @@ class Executor implements \ArrayAccess {
 		$taskName = $taskName ?: $this->getTaskName();
 		$task = $this->tasks[$taskName];
 		
+		$result = Task::SUCCESS;
 		// only run tasks that have not been executed before
 		if(!$this->hasBeenExecuted($taskName)) {
 			try {
-				$task($this);
+				$result = $task($this);
 			} catch(\Exception $e) {
 				Pake::writeln($e->getMessage(), Pake::ERROR);
 				exit(1);
 			}
 			$this->executedTasks[$taskName] = true;
 		}
+		if($result == Task::FAILED) {
+			Pake::writeln('Task '.$taskName.' failed, aborting.', Pake::ERROR);
+		}
+		return $result;
 	}
 
 	private function hasBeenExecuted($taskName) {
