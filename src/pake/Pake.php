@@ -3,6 +3,7 @@ namespace pake;
 
 use pgs\cli\Output;
 use pgs\util\Finder;
+use pake\ext\Phar;
 
 /**
  * The Pake class is the public API that pakefiles should use to create tasks,
@@ -130,6 +131,10 @@ class Pake {
 	}
 	
 	// Utility-methods
+	public static function fileset() {
+		return Finder::type(Finder::TYPE_FILES);
+	}
+	
 	public static function finder($type='any') {
 		return Finder::type($type);
 	}
@@ -234,7 +239,7 @@ class Pake {
 				Pake::copy($origin_dir.DIRECTORY_SEPARATOR.$file,
 					$target_dir.DIRECTORY_SEPARATOR.$file, $options);
 			} else if(is_link($origin_dir.DIRECTORY_SEPARATOR.$file)) {
-				pake_symlink($origin_dir.DIRECTORY_SEPARATOR.$file, $target_dir.DIRECTORY_SEPARATOR.$file);
+				Pake::symlink($origin_dir.DIRECTORY_SEPARATOR.$file, $target_dir.DIRECTORY_SEPARATOR.$file);
 			} else {
 				throw new \Exception(sprintf('Unable to determine "%s" type', $file));
 			}

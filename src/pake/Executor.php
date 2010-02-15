@@ -207,10 +207,10 @@ class Executor implements \ArrayAccess {
 	}
 
 	public function offsetSet($offset, $value) {
-		throw new Exception('Controller is not to be written to');
+		throw new \Exception('Controller is not to be written to');
 	}
 
 	public function offsetUnset($offset) {
-		throw new Exception('Controller is not to be written to');
+		throw new \Exception('Controller is not to be written to');
 	}
 }

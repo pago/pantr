@@ -1,10 +1,9 @@
 <?php
 use pake\Pake;
-use pake\Phar;
-use pake\tasks;
-use pgs\util\Finder;
+use pake\ext\Phar;
+use pake\ext\PEAR;
 
-tasks\PEAR::registerTasks();
+PEAR::registerTasks();
 
 Pake::task('help', 'Display this help message')
 	->usage('help <task>')
@@ -51,7 +50,7 @@ Pake::task('help', 'Display this help message')
 		}
 	});
 
-Pake::task('pake:new-project', 'Creates a new project')
+Pake::task(':new-project', 'Creates a new project')
 	->usage('pake:new-project [args] <name>')
 	->desc('Creates a new project directory called [<name>|PARAMETER] and initializes a pakefile '
 		. 'for pear-packaging and phar distribution.')
@@ -80,6 +79,6 @@ Pake::task('pake:new-project', 'Creates a new project')
 				$basedir . 'package.xml');
 		}
 		if(isset($req['with-local-pear'])) {
-			tasks\PEAR::init($basedir . 'lib');
+			PEAR::init($basedir . 'lib');
 		}
 	});

@@ -1,6 +1,8 @@
 <?php
 namespace pake\ext;
 
+use pake\Pake;
+
 class Phar extends \Phar {
 	public function getAutoloadManifest() {
 		$mf = <<<'EOF'
