@@ -1,7 +1,7 @@
 <?php
-namespace pake;
+namespace pgs\cli;
 
-use pgs\cli\Request;
+use pake\Pake;
 
 class RequestContainer implements \ArrayAccess {
 	private $request;

@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\core;
 
 class Pakefile {
 	private $name;

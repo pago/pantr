@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\core;
 
 /*
  * Locates a pakefile by looking at the current working directory and all of its
@@ -12,7 +12,7 @@ class CyclicResolutionPakefileFactory implements PakefileFactory {
 			chdir('..');
 			if(getcwd() == $here) {
 				chdir($start);
-				throw new \Exception('Could not locate pakefile. Was looking for '.$name.'.php');
+				return null;
 			}
 			$here = getcwd();
 		}

@@ -1,6 +1,8 @@
 <?php
 namespace pake;
 
+use pgs\cli\RequestContainer;
+
 class Task {
     // constants to signify the result of an executed task
     const SUCCESS = 0;
@@ -101,17 +103,10 @@ class Task {
         return $this->dependsOn;
     }
 
-    public function __invoke(Executor $ex) {
-        foreach($this->dependsOn as $taskName) {
-            $result = $ex($taskName);
-            if($result == Task::FAILED) {
-                return Task::FAILED;
-            }
-        }
+    public function __invoke(RequestContainer $args) {
         $fn = $this->run;
         $result = Task::SUCCESS;
         if(count($this->options) > 0 || $this->expectNumArgs > 0 || $this->needsRequest) {
-            $args = $ex->getTaskArgs();
             foreach($this->options as $opt) {
                 $opt->registerOn($args);
             }

@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\core;
 
 /**
  * Locates the home directory through the $_SERVER and its 'HOME' property.

@@ -35,4 +35,6 @@ spl_autoload_register(function($classname) {
 	return false;
 });
 
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__.'/lib/');
+
 require_once 'src/stub.php';

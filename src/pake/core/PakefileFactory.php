@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\core;
 
 interface PakefileFactory {
 	public function getPakefile($name);

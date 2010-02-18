@@ -1,5 +1,5 @@
 <?php
-namespace pake;
+namespace pake\core;
 
 /**
  * Provides the pake home directory where global pake configuration data

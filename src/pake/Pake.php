@@ -1,6 +1,10 @@
 <?php
 namespace pake;
 
+use pake\core\TaskRepository;
+use pake\core\Application;
+use pake\core\HomePathProvider;
+
 use pgs\cli\Output;
 use pgs\util\Finder;
 use pake\ext\Phar;
@@ -21,15 +25,21 @@ use pake\ext\Phar;
 class Pake {
 	const VERSION='0.5.1';
 	
-	private static $executor;
+	private static $taskRepository;
+	private static $application;
 	private static $out;
 	private static $homePathProvider;
+	
 	/**
 	 * Specify the executor that should be used to invoke and
 	 * and register tasks.
 	 */
-	public static function setExecutor(Executor $ex) {
-		self::$executor = $ex;
+	public static function setTaskRepository(TaskRepository $taskRepository) {
+		self::$taskRepository = $taskRepository;
+	}
+	
+	public static function setApplication(Application $application) {
+		self::$application = $application;
 	}
 	
 	/**
@@ -45,7 +55,7 @@ class Pake {
 	 * @see pake\Executor#getTasks()
 	 */
 	public static function getDefinedTasks() {
-		return self::$executor->getTasks();
+		return self::$taskRepository->getTasks();
 	}
 	
 	/**
@@ -57,7 +67,7 @@ class Pake {
 	 */
 	public static function task($name, $desc) {
 		$task = new Task($name, $desc);
-		self::$executor->registerTask($task);
+		self::$taskRepository->registerTask($task);
 		return $task;
 	}
 	
@@ -66,7 +76,7 @@ class Pake {
 	 * <code>Pake::alias('generate-pear-server-info', 'gpsi');</code>
 	 */
 	public static function alias($taskName, $alias) {
-		self::$executor->alias($taskName, $alias);
+		self::$taskRepository->alias($taskName, $alias);
 	}
 	
 	/**
@@ -74,19 +84,34 @@ class Pake {
 	 * task was provided by the user.
 	 */
 	public static function setDefault($taskName) {
-		self::$executor->setDefault($taskName);
+		self::$application->setDefaultTask($taskName);
 	}
 
 	/**
 	 * Executes the specified task and all of its dependencies.
 	 */
-	public static function run($taskName) {
-		self::$executor->run($taskName);
+	public static function run() {
+		$args = func_get_args();
+		if(count($args) == 1 && is_array($args[0])) {
+			$args = $args[0];
+		}
+		self::$application->run($args);
 	}
 	
-	public static function getArgs() {
-		// TODO: the executor should use a RequestContainer
-		return self::$executor;
+	/**
+	 * Prints the version number for pake.
+	 */
+	public function writeInfo() {
+		// display pake info
+		$copySpan = '2010';
+		$year = date('Y');
+		if($year != '2010') {
+			$copySpan .= '-'.$year;
+		}
+		self::getOut()->writeln(
+			'Pake ' . self::VERSION . ' (c) '.$copySpan.' Patrick Gotthardt',
+			self::INFO
+		)->nl();
 	}
 	
 	// output design

@@ -1,5 +1,6 @@
 <?php
 use pake\Pake;
+use pake\core\Application;
 use pake\ext\Phar;
 use pake\ext\PEAR;
 
@@ -28,12 +29,13 @@ Pake::task('help', 'Display this help message')
 				->write('pake [options]')
 				->write(' <task> ', Pake::PARAMETER)
 				->writeln('[args]');
-			Pake::getArgs()->printOptions();
+			Application::printOptions();
 			Pake::nl()
 				->writeln('Available tasks:', Pake::SECTION);
 			$showPakeTasks = isset($req['global-tasks']);
 			foreach(Pake::getDefinedTasks() as $key => $task) {
-				$isPakeTask = 0 === strpos($task->getName(), 'pake:');
+				$taskName = $task->getName();
+				$isPakeTask = $taskName[0] == ':';
 				if(($showPakeTasks && $isPakeTask) || (!$showPakeTasks && !$isPakeTask)) {
 					if($task->getName() != $key) {
 						Pake::writeAction($key, 'Alias for ['.$task->getName().'|INFO]');

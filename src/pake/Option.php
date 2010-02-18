@@ -1,6 +1,8 @@
 <?php
 namespace pake;
 
+use pgs\cli\RequestContainer;
+
 class Option {
 	private $long, $short=null, $desc='', $required=false;
 	private $task;
