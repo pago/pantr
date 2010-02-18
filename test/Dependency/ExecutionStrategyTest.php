@@ -3,7 +3,7 @@ require_once __DIR__.'/../bootstrap.php';
 
 use pake\Executor;
 use pake\Task;
-use pake\Pakefile;
+use pake\CyclicResolutionPakefileFactory;
 use pake\Dependency\ExecutionStrategy;
 
 class ExecutionStrategyTest extends PHPUnit_Framework_TestCase {
@@ -13,7 +13,7 @@ class ExecutionStrategyTest extends PHPUnit_Framework_TestCase {
 	 * @test
 	 */
 	public function it_should_add_all_dependencies() {
-		$ex = new Executor(array(), new Pakefile(''));
+		$ex = new Executor(array(), new CyclicResolutionPakefileFactory());
 		$strat = new ExecutionStrategy($ex);
 		
 		$this->addTask($ex, 'a')->dependsOn('c');

@@ -1,12 +1,17 @@
 <?php
 require_once 'PHPUnit/Framework.php';
 
-spl_autoload_register(function($classname) {
-	$file = __DIR__ . '/../src/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
+$loader = function($dir) {
+	return function($classname) use ($dir) {
+		$file = __DIR__ . '/../'.$dir.'/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';
 
-	if(file_exists($file)) {
-		require_once $file;
-		return true;
-	}
-	return false;
-});
+		if(file_exists($file)) {
+			require_once $file;
+			return true;
+		}
+		return false;
+	};
+};
+
+spl_autoload_register($loader('src'));
+spl_autoload_register($loader('lib'));
