@@ -86,9 +86,9 @@ class Executor implements \ArrayAccess {
 		$pakefile->load();
 	}
 	
-	private function getTaskName() {
-		if(isset($this[0])) {
-			$taskName = $this[0];
+	private function getTaskName($name=null) {
+		if(!is_null($name)) {
+			$taskName = $name;
 			// check out real task name (in case $taskName is an alias)
 			if(!isset($this->tasks[$taskName])) {
 				if(strpos($taskName, ':') !== 0) {
@@ -117,9 +117,14 @@ class Executor implements \ArrayAccess {
 	public function getTasks() {
 		return $this->tasks;
 	}
+	
+	public function getTask($name) {
+		$taskName = $this->getTaskName($name);
+		return $this->tasks[$taskName];
+	}
 
 	public function __invoke($taskName=null) {
-		$taskName = $taskName ?: $this->getTaskName();
+		$taskName = $taskName ?: $this->getTaskName($this[0]);
 		$task = $this->tasks[$taskName];
 		
 		$result = Task::SUCCESS;
