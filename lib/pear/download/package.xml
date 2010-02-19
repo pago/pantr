@@ -1,46 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
- <name>YAML</name>
- <channel>pear.symfony-project.com</channel>
- <summary>The Symfony YAML Component.</summary>
- <description>The Symfony YAML Component.</description>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
+ <name>vfsStream</name>
+ <channel>pear.php-tools.net</channel>
+ <summary>Mock file system calls.</summary>
+ <description>vfsStream is a stream wrapper for a virtual
+        file system that may be helpful in unit tests
+        to mock the real file system.</description>
  <lead>
-  <name>Fabien Potencier</name>
-  <user>fabpot</user>
-  <email>fabien.potencier@symfony-project.org</email>
+  <name>Frank Kleine</name>
+  <user>mikey</user>
+  <email>mikey@bovigo.org</email>
   <active>yes</active>
  </lead>
- <date>2009-12-01</date>
- <time>11:18:50</time>
+ <date>2010-02-15</date>
+ <time>16:39:13</time>
  <version>
-  <release>1.0.2</release>
-  <api>1.0.0</api>
+  <release>0.6.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>alpha</release>
+  <api>alpha</api>
  </stability>
- <license uri="http://www.symfony-project.com/license">MIT license</license>
+ <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
  <notes>
--
+- added support for $mode param when opening files, implements
+  enhancement #7 and fixes issue #13
+- vfsStreamWrapper::stream_open() now evaluates $options
+  for STREAM_REPORT_ERRORS
  </notes>
  <contents>
-  <dir name="/">
-   <file install-as="SymfonyComponents/YAML/sfYaml.php" md5sum="2b7116a9f3bf6f9e8cd914c81bf79830" name="lib/sfYaml.php" role="php" />
-   <file install-as="SymfonyComponents/YAML/sfYamlDumper.php" md5sum="28196a0efdcea67d72e1eaf71e936958" name="lib/sfYamlDumper.php" role="php" />
-   <file install-as="SymfonyComponents/YAML/sfYamlInline.php" md5sum="ac91d93377098b90a642fa689b0218cf" name="lib/sfYamlInline.php" role="php" />
-   <file install-as="SymfonyComponents/YAML/sfYamlParser.php" md5sum="748a3ddcbfd12225292424bc233abccb" name="lib/sfYamlParser.php" role="php" />
-   <file md5sum="872df9017f6485111a36d2ce9c1e8bdc" name="README.markdown" role="doc" />
-   <file md5sum="4828aab1cb984d8a5d29e1c0df3cdcbd" name="LICENSE" role="doc" />
+  <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="e4458305d3812c4ccbe4d3cac14cebb0" name="docs/metrics.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="1bce9517ab6e5b42fbb1e0c8005e507b" name="docs/pmd-cpd.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="986d3adab445cf8e5e1370ed48c9ec3f" name="docs/pmd.xml" role="doc" />
+   <file baseinstalldir="/" md5sum="e6a657c10c7b2dd72da9b22da1a3e609" name="docs/api/blank.html" role="doc" />
+   <file baseinstalldir="/" md5sum="ac21e84dc1f1642e7d53d820149587e9" name="docs/api/classtrees_bovigo_vfs.html" role="doc" />
+   <file baseinstalldir="/" md5sum="88af484a84137b006d60ed3666e14731" name="docs/api/elementindex.html" role="doc" />
+   <file baseinstalldir="/" md5sum="5459f87ed51229a92863f98eef61e3ff" name="docs/api/elementindex_bovigo_vfs.html" role="doc" />
+   <file baseinstalldir="/" md5sum="076c145cd14ddf8a02dc16e81a655995" name="docs/api/errors.html" role="doc" />
+   <file baseinstalldir="/" md5sum="41dad81eefeb65b326b83ba8f8e55ad8" name="docs/api/index.html" role="doc" />
+   <file baseinstalldir="/" md5sum="b3a5ef693262b55856b3802f59dbc117" name="docs/api/li_bovigo_vfs.html" role="doc" />
+   <file baseinstalldir="/" md5sum="8ae93dd93cbd05cf948caaffdfca6a29" name="docs/api/packages.html" role="doc" />
+   <file baseinstalldir="/" md5sum="8d42029e73cdf58165413e4d0ea48b34" name="docs/api/todolist.html" role="doc" />
+   <file baseinstalldir="/" md5sum="a9c25eaf17e182309cd53a4142431b7d" name="docs/api/bovigo_vfs/vfsStream.html" role="doc" />
+   <file baseinstalldir="/" md5sum="654c9937bcf57bec2b659098d9a0c6bb" name="docs/api/bovigo_vfs/vfsStreamAbstractContent.html" role="doc" />
+   <file baseinstalldir="/" md5sum="0593927b7a187c3e6bffcd0854ab2149" name="docs/api/bovigo_vfs/vfsStreamContainer.html" role="doc" />
+   <file baseinstalldir="/" md5sum="4a920144cf600d1acd5614a98b035e60" name="docs/api/bovigo_vfs/vfsStreamContainerIterator.html" role="doc" />
+   <file baseinstalldir="/" md5sum="1b825ea9ddefe9be7d65f0df6065335f" name="docs/api/bovigo_vfs/vfsStreamContent.html" role="doc" />
+   <file baseinstalldir="/" md5sum="3d403b15edafbeb21a5764306cd88829" name="docs/api/bovigo_vfs/vfsStreamDirectory.html" role="doc" />
+   <file baseinstalldir="/" md5sum="f6da9ff76d7e1f2e0da5d3e060ade8b9" name="docs/api/bovigo_vfs/vfsStreamException.html" role="doc" />
+   <file baseinstalldir="/" md5sum="b78b63b2c08ba8a5b9bf3e878f2e2e57" name="docs/api/bovigo_vfs/vfsStreamFile.html" role="doc" />
+   <file baseinstalldir="/" md5sum="b6fb8426a038fdaf66502094d5685d27" name="docs/api/bovigo_vfs/vfsStreamWrapper.html" role="doc" />
+   <file baseinstalldir="/" md5sum="51e77942dcdf83135290a3348f847e49" name="docs/api/bovigo_vfs/_vfsStream.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="6652a2710083de0b57e44e3ce6e28e19" name="docs/api/bovigo_vfs/_vfsStreamAbstractContent.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="d658b1628f69f0c53275cdd45481d72e" name="docs/api/bovigo_vfs/_vfsStreamContainer.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="1c7d481ac569b18f428c9f46cdc32cda" name="docs/api/bovigo_vfs/_vfsStreamContainerIterator.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="454c9ee799a9d1f69a788cfe6701613d" name="docs/api/bovigo_vfs/_vfsStreamContent.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="95332dd7918df81d3d507fb0de88a01a" name="docs/api/bovigo_vfs/_vfsStreamDirectory.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="641efbfcf8e88059bbd0bb69a4f68691" name="docs/api/bovigo_vfs/_vfsStreamException.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="8d9febe14b35ee1b01e8ff33d2821876" name="docs/api/bovigo_vfs/_vfsStreamFile.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="34f977924523573fff158dc5ccb5864e" name="docs/api/bovigo_vfs/_vfsStreamWrapper.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="36718f5cc98edc891f799dbef046d781" name="docs/api/media/banner.css" role="doc" />
+   <file baseinstalldir="/" md5sum="0d7e81141aeb01997f72b9af2a11bb9e" name="docs/api/media/stylesheet.css" role="doc" />
+   <file baseinstalldir="/" md5sum="4bbff8f473bea95d8ef39b7569ae7f1b" name="docs/api/media/images/AbstractClass.png" role="doc" />
+   <file baseinstalldir="/" md5sum="9ef54a33e73c8218b1d05bae96076718" name="docs/api/media/images/AbstractClass_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="029cdd695930282355c15771838b1b09" name="docs/api/media/images/AbstractMethod.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8fd02d30a597313ab358f67c43ca1907" name="docs/api/media/images/AbstractPrivateClass.png" role="doc" />
+   <file baseinstalldir="/" md5sum="dfae7b3c87f9e597e0e45b05f7a6c0c4" name="docs/api/media/images/AbstractPrivateClass_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="4e97a2b27a71169dd6d4e7a85d3966c0" name="docs/api/media/images/AbstractPrivateMethod.png" role="doc" />
+   <file baseinstalldir="/" md5sum="9dc3fb889eab6ca02847e7cc44520747" name="docs/api/media/images/blank.png" role="doc" />
+   <file baseinstalldir="/" md5sum="61a377b4e70e93180c55612e05a18d6a" name="docs/api/media/images/Class.png" role="doc" />
+   <file baseinstalldir="/" md5sum="dbfb1b7eba9f8bc6cceca66d273c248f" name="docs/api/media/images/class_folder.png" role="doc" />
+   <file baseinstalldir="/" md5sum="b54c35523a90bb948fbff09fbd7a3c2d" name="docs/api/media/images/Class_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="7081fd7a2eb997858e2998f43edd98ee" name="docs/api/media/images/Constant.png" role="doc" />
+   <file baseinstalldir="/" md5sum="4d46bda6ada647127b68743ec29f2727" name="docs/api/media/images/Constructor.png" role="doc" />
+   <file baseinstalldir="/" md5sum="a5bf284c6f9d1a5983769f618def998f" name="docs/api/media/images/Destructor.png" role="doc" />
+   <file baseinstalldir="/" md5sum="2b6dcce32fe06111d2e7a5a068997e1b" name="docs/api/media/images/empty.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8c092768f85b3c268a506002a949b132" name="docs/api/media/images/file.png" role="doc" />
+   <file baseinstalldir="/" md5sum="3a95fa77866149bf2c93b73cec195bd6" name="docs/api/media/images/folder.png" role="doc" />
+   <file baseinstalldir="/" md5sum="493f5f771389ee0c2a6d3699f6871920" name="docs/api/media/images/Function.png" role="doc" />
+   <file baseinstalldir="/" md5sum="bc31b4d50e39311fc1a97f45c7f876e4" name="docs/api/media/images/function_folder.png" role="doc" />
+   <file baseinstalldir="/" md5sum="52b1b9efe19b2484b9af6762dc08fd92" name="docs/api/media/images/Global.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8cdb41d4407690691fb1ab5265ee0b7c" name="docs/api/media/images/I.png" role="doc" />
+   <file baseinstalldir="/" md5sum="4f8fa20dd8f20d4a1ff0415ccdac3a38" name="docs/api/media/images/Index.png" role="doc" />
+   <file baseinstalldir="/" md5sum="f17ae615d414b0ed571693f5955c44fa" name="docs/api/media/images/Interface.png" role="doc" />
+   <file baseinstalldir="/" md5sum="b54c35523a90bb948fbff09fbd7a3c2d" name="docs/api/media/images/Interface_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="9c75e77d6c1dc1697f225c0f8a90ba85" name="docs/api/media/images/L.png" role="doc" />
+   <file baseinstalldir="/" md5sum="10d4789e288c445ab5e6c4b93d01c884" name="docs/api/media/images/Lminus.png" role="doc" />
+   <file baseinstalldir="/" md5sum="498f5c3f351867da496ace814682cbfd" name="docs/api/media/images/Lplus.png" role="doc" />
+   <file baseinstalldir="/" md5sum="126fd34376bed811aab5051fc8c2e3b9" name="docs/api/media/images/Method.png" role="doc" />
+   <file baseinstalldir="/" md5sum="b8b0ea738955db1a94c8ab2a178c5fd4" name="docs/api/media/images/minus.gif" role="doc" />
+   <file baseinstalldir="/" md5sum="c6ec5b9d231a9fad30330d8260d6d086" name="docs/api/media/images/next_button.png" role="doc" />
+   <file baseinstalldir="/" md5sum="f47ba09d08f3c3e0346f6e1874d65d4a" name="docs/api/media/images/next_button_disabled.png" role="doc" />
+   <file baseinstalldir="/" md5sum="5e4e26d47ecc2b15a8319fffaf572b14" name="docs/api/media/images/package.png" role="doc" />
+   <file baseinstalldir="/" md5sum="11a33590cbcbe60ed17af5353baa3953" name="docs/api/media/images/package_folder.png" role="doc" />
+   <file baseinstalldir="/" md5sum="6e72f301e455ef1c0ba4ea3407f6c344" name="docs/api/media/images/Page.png" role="doc" />
+   <file baseinstalldir="/" md5sum="a5392e65b9fd11dcd08b788cbd50dc5b" name="docs/api/media/images/Page_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="5782c811d664e208fb8fd3efd706ff4a" name="docs/api/media/images/plus.gif" role="doc" />
+   <file baseinstalldir="/" md5sum="0c31f4ecb81d1a95b1caeda8fcd4b533" name="docs/api/media/images/previous_button.png" role="doc" />
+   <file baseinstalldir="/" md5sum="03528f21c88d4cc28eea2a8892b4048e" name="docs/api/media/images/previous_button_disabled.png" role="doc" />
+   <file baseinstalldir="/" md5sum="c9be21e373cbbe64254240ce952cb462" name="docs/api/media/images/PrivateClass.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8c4268bfa53e6370a7cf91e84107ebf2" name="docs/api/media/images/PrivateClass_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="4d8ab6a57d5c6c3eb3cea0aa47e1742b" name="docs/api/media/images/PrivateMethod.png" role="doc" />
+   <file baseinstalldir="/" md5sum="32f2c857eff1d8486b4efd97873cc79e" name="docs/api/media/images/PrivateVariable.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8c4268bfa53e6370a7cf91e84107ebf2" name="docs/api/media/images/private_class_logo.png" role="doc" />
+   <file baseinstalldir="/" md5sum="126fd34376bed811aab5051fc8c2e3b9" name="docs/api/media/images/StaticMethod.png" role="doc" />
+   <file baseinstalldir="/" md5sum="127cfe571d543d38dd1d8faf4dd6f081" name="docs/api/media/images/StaticVariable.png" role="doc" />
+   <file baseinstalldir="/" md5sum="6346415134bebdc6fcba24a14e6a2f69" name="docs/api/media/images/T.png" role="doc" />
+   <file baseinstalldir="/" md5sum="83ced60c3a5307605dc25ef7df3800bc" name="docs/api/media/images/Tminus.png" role="doc" />
+   <file baseinstalldir="/" md5sum="f0b02c1ecc496aafce1ca1f78bc53ddc" name="docs/api/media/images/Tplus.png" role="doc" />
+   <file baseinstalldir="/" md5sum="8ef82dba493e25ef00a0eac2c61c7133" name="docs/api/media/images/tutorial.png" role="doc" />
+   <file baseinstalldir="/" md5sum="eaf972b7be6f45c70d4c024f8eb5feb9" name="docs/api/media/images/tutorial_folder.png" role="doc" />
+   <file baseinstalldir="/" md5sum="31e9c574f92b3b3a51fc237329927b5e" name="docs/api/media/images/up_button.png" role="doc" />
+   <file baseinstalldir="/" md5sum="127cfe571d543d38dd1d8faf4dd6f081" name="docs/api/media/images/Variable.png" role="doc" />
+   <file baseinstalldir="/" md5sum="edb1c297511efd3d4440e7900e69cfe4" name="docs/api/media/lib/classTree.js" role="doc" />
+   <file baseinstalldir="/" md5sum="b86e7f3e01ba19fc13fd8f33de5d7ff8" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStream.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="dcaa7b21436e996e279db82adba66923" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="afdb377563492ac20aef47cf6a6032ee" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamContainer.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="e36de2568d178861011ba21eb7a0c58b" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamContainerIterator.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="8f5f745ba6adacfc26c78fbbcb69a0bb" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamContent.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="f624e36d41a8a5a691be2db663b9f91c" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamDirectory.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="41e519e763d75157f9778696aa24c174" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamException.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="9847e07043597c45a90042e0431693c1" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamFile.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="f5796acbca0701fc878a318e53d13d1f" name="docs/api/__filesource/fsource_bovigo_vfs__vfsStreamWrapper.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="521e849d37d1f1e3b769ccc7138c69c1" name="docs/coverage/butter.png" role="doc" />
+   <file baseinstalldir="/" md5sum="24abc354105ffce45a55cf5a0949527b" name="docs/coverage/chameleon.png" role="doc" />
+   <file baseinstalldir="/" md5sum="770d9c592b4300457ae025448c4c6816" name="docs/coverage/close12_1.gif" role="doc" />
+   <file baseinstalldir="/" md5sum="cac1924c31ce2ac5ec14a0a95583696f" name="docs/coverage/container-min.js" role="doc" />
+   <file baseinstalldir="/" md5sum="30d926224d525d460a79e393b2eac872" name="docs/coverage/container.css" role="doc" />
+   <file baseinstalldir="/" md5sum="d0bcded9081d6a0efda48c495867da73" name="docs/coverage/glass.png" role="doc" />
+   <file baseinstalldir="/" md5sum="fe524ad9479854f04f52546611efad90" name="docs/coverage/index.html" role="doc" />
+   <file baseinstalldir="/" md5sum="e7e94dd89a3b37b6d8bae1cfc1c00be5" name="docs/coverage/scarlet_red.png" role="doc" />
+   <file baseinstalldir="/" md5sum="3d0fcd32ed86be159672d1fe52f8d3cc" name="docs/coverage/snow.png" role="doc" />
+   <file baseinstalldir="/" md5sum="5170c6342b0296fc8c744f74ffde7bf2" name="docs/coverage/style.css" role="doc" />
+   <file baseinstalldir="/" md5sum="fef6f6c5a050663cb1ffe8789794803f" name="docs/coverage/vfsStream.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="d09df21fbeff093b65d1dca98117afd7" name="docs/coverage/vfsStreamAbstractContent.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="1efbbf2e60fc40845c1a599f672ff022" name="docs/coverage/vfsStreamContainerIterator.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="f98ee92a4f0a4f6b48b1952210d06e06" name="docs/coverage/vfsStreamDirectory.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="64a882711dda8e6e1dcc9e3fdb3ebee1" name="docs/coverage/vfsStreamFile.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="ce8a58a3e3c30e40f0747922834e786a" name="docs/coverage/vfsStreamWrapper.php.html" role="doc" />
+   <file baseinstalldir="/" md5sum="3ae37167c141a29c1c11f254de0d7abf" name="docs/coverage/yahoo-dom-event.js" role="doc" />
+   <file baseinstalldir="/" md5sum="575017b88f800210e99554ef00567b4a" name="examples/Example.php" role="doc" />
+   <file baseinstalldir="/" md5sum="c129fd2bfb410a79f49fa13d99a787d8" name="examples/ExampleTestCaseOldWay.php" role="doc" />
+   <file baseinstalldir="/" md5sum="a0181bfd81395016016c93d89a98eec6" name="examples/ExampleTestCaseWithVfsStream.php" role="doc" />
+   <file baseinstalldir="/" md5sum="6593e2ebf68e7dd176e5769c22aede96" name="examples/FailureExample.php" role="doc" />
+   <file baseinstalldir="/" md5sum="3ba76d673fe73c0aada359b0d7b5af08" name="examples/FailureExampleTestCase.php" role="doc" />
+   <file baseinstalldir="/" md5sum="7d23117577b919c0a965b7e91c187856" name="examples/FilemodeExample.php" role="doc" />
+   <file baseinstalldir="/" md5sum="f2f02d82501e322001271b4d4a62a044" name="examples/FileModeExampleTestCaseOldWay.php" role="doc" />
+   <file baseinstalldir="/" md5sum="8840564afd4d945d2b09286c9bfdd17a" name="examples/FilemodeExampleTestCaseWithVfsStream.php" role="doc" />
+   <file baseinstalldir="/" md5sum="dc421d3c8d3e2c77866efb163ae20f01" name="vfsStream/vfsStream.php" role="php" />
+   <file baseinstalldir="/" md5sum="c6111b1384852577ba3a23ff70a089fa" name="vfsStream/vfsStreamAbstractContent.php" role="php" />
+   <file baseinstalldir="/" md5sum="e3c5b823bcdc81dc2ff14d18d119acc2" name="vfsStream/vfsStreamContainer.php" role="php" />
+   <file baseinstalldir="/" md5sum="fb2728f933c8c54ee89cd4c155f812a0" name="vfsStream/vfsStreamContainerIterator.php" role="php" />
+   <file baseinstalldir="/" md5sum="bfa2c6da5e02a212dd915c503dd487e5" name="vfsStream/vfsStreamContent.php" role="php" />
+   <file baseinstalldir="/" md5sum="e394a6ceb880eabbfbe9da3537f3ecae" name="vfsStream/vfsStreamDirectory.php" role="php" />
+   <file baseinstalldir="/" md5sum="47552e94ef5794a71bd740ff43edbadf" name="vfsStream/vfsStreamException.php" role="php" />
+   <file baseinstalldir="/" md5sum="2cebec268e904e19cd7bf01bb89bc90c" name="vfsStream/vfsStreamFile.php" role="php" />
+   <file baseinstalldir="/" md5sum="46c3dc470d9182e215e798b4587d753e" name="vfsStream/vfsStreamWrapper.php" role="php" />
+   <file baseinstalldir="/" md5sum="d13f8287534a700d86b899ae55863c85" name="LICENSE" role="data" />
+   <file baseinstalldir="/" md5sum="631e12ddda502de0af024770ce500c4b" name="VERSION" role="data" />
   </dir>
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>5.2.4</min>
+    <min>5.2.0</min>
    </php>
    <pearinstaller>
-    <min>1.4.1</min>
+    <min>1.4.0</min>
    </pearinstaller>
   </required>
  </dependencies>
@@ -48,50 +176,158 @@
  <changelog>
   <release>
    <version>
-    <release>1.0.2</release>
-    <api>1.0.0</api>
+    <release>0.6.0</release>
+    <api>0.4.0</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>alpha</release>
+    <api>alpha</api>
    </stability>
-   <license uri="http://www.symfony-project.com/license">MIT license</license>
-   <license>MIT</license>
-   <date>2009-12-01</date>
+   <date>2010-02-15</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD</license>
    <notes>
-* fabien: fixed \ usage in quoted string
+- added support for $mode param when opening files, implements
+  enhancement #7 and fixes issue #13
+- vfsStreamWrapper::stream_open() now evaluates $options
+  for STREAM_REPORT_ERRORS
    </notes>
   </release>
   <release>
    <version>
-    <release>1.0.1</release>
-    <api>1.0.0</api>
+    <release>0.5.0</release>
+    <api>0.4.0</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>alpha</release>
+    <api>alpha</api>
    </stability>
-   <license uri="http://www.symfony-project.com/license">MIT license</license>
-   <license>MIT</license>
-   <date>2009-12-01</date>
+   <date>2010-01-25</date>
+   <license />
    <notes>
-* fabien: fixed a possible loop in parsing a non-valid quoted string
+- added support for rename(), patch provided by Benoit Aubuchon
+        - added support for . as directory alias so that vfs://foo/. resolves to
+          vfs://foo, can be used as workaround for bug #8
    </notes>
   </release>
   <release>
    <version>
-    <release>1.0.0</release>
-    <api>1.0.0</api>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
    </version>
    <stability>
-    <release>stable</release>
-    <api>stable</api>
+    <release>alpha</release>
+    <api>alpha</api>
    </stability>
-   <license uri="http://www.symfony-project.com/license">MIT license</license>
-   <license>MIT</license>
-   <date>2009-11-30</date>
+   <date>2009-07-13</date>
+   <license />
    <notes>
-* fabien: first stable release as a Symfony Component
+- added support for file modes, users and groups (with restrictions,
+          see http://code.google.com/p/bovigo/wiki/vfsStreamDocsKnownIssues)
+        - fixed bug #5: vfsStreamDirectory::addChild() does not replace child
+          with same name
+        - fixed bug with is_writable() because of missing stat() fields, patch
+          provided by Sergey Galkin
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.2</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2009-02-16</date>
+   <license />
+   <notes>
+- support trailing slashes on directories in vfsStream urls, patch
+          provided by Gabriel Birke
+        - fixed bug #4: vfsstream can only be read once, reported by
+          Christoph Bloemer
+        - enabled multiple iterations at the same time over the same directory
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.1</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2008-02-18</date>
+   <license />
+   <notes>
+- fixed path/directory separator issues under linux systems
+        - fixed uid/gid issues under linux systems
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.3.0</release>
+    <api>0.3.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2008-01-02</date>
+   <license />
+   <notes>
+- added support for rmdir()
+        - added vfsStream::newDirectory(), dropped vfsStreamDirectory::ceate()
+        - added new interface vfsStreamContainer
+        - added vfsStreamContent::at() which allows code like
+          $file = vfsStream::newFile(&apos;file.txt.&apos;)-&gt;withContent(&apos;foo&apos;)-&gt;at($otherDir);
+        - added vfsStreamContent::lastModified(), made
+          vfsStreamContent::setFilemtime() an alias for this
+        - moved from Stubbles development environment
+          to bovigo
+        - refactorings to reduce crap index of various methods
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.2.0</release>
+    <api>0.2.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2007-12-29</date>
+   <license />
+   <notes>
+- moved vfsStreamWrapper::PROTOCOL to
+          vfsStream::SCHEME
+        - added new vfsStream::url() method to assist
+          in creating correct vfsStream urls
+        - added vfsStream::path() method as opposite to
+          vfsStream::url()
+        - a call to vfsStreamWrapper::register() will
+          now reset the root to null (implemented
+          on request from David Zuelke)
+        - added support for is_readable(), is_dir(),
+          is_file()
+        - added vfsStream::newFile() to be able to do 
+          $file = vfsStream::newFile(&quot;foo.txt&quot;)-&gt;withContent(&quot;bar&quot;);
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.1.0</release>
+    <api>0.1.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2007-12-14</date>
+   <license />
+   <notes>
+Initial release.
    </notes>
   </release>
  </changelog>

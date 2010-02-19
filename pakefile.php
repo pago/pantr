@@ -18,9 +18,9 @@ Pake::task('init', 'Create dist environment')
 	->run(function() {
 		Pake::mkdirs('dist');
 	});
-	
-Pake::task('phar', 'Create a phar archive')->
-run(Pake::phar('pake.phar', array('src', 'lib')));
+
+Pake::task('phar', 'Create a phar archive')
+	->run(Pake::phar('pake.phar', array('src', 'lib')));
 	
 Pake::task('dist', 'Create distribution package')
 	->dependsOn('clean', 'init', 'phar')

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics files="6" functions="0" cls="6" clsa="1" clsc="5" roots="2" leafs="4" interfs="0" maxdit="1">
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamContainerIterator.php" classes="1" functions="0" loc="88" cloc="42" ncloc="46" locExecutable="16" locExecuted="16" coverage="100.000000">
+    <class name="vfsStreamContainerIterator" loc="76" locExecutable="16" locExecuted="16" aif="0.000000" ahf="100.000000" ca="1" ce="0" csz="7" cis="6" coverage="100.000000" dit="0" i="0.000000" impl="2" mif="0.000000" mhf="0.000000" noc="0" pf="0.000000" vars="1" varsnp="0" varsi="1" wmc="8" wmcnp="8" wmci="8">
+      <method name="__construct" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="rewind" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="current" loc="9" locExecutable="4" locExecuted="4" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="0"/>
+      <method name="key" loc="9" locExecutable="4" locExecuted="4" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="0"/>
+      <method name="next" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="valid" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+    </class>
+  </file>
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStream.php" classes="1" functions="0" loc="140" cloc="83" ncloc="57" locExecutable="20" locExecuted="20" coverage="100.000000">
+    <class name="vfsStream" loc="124" locExecutable="20" locExecuted="20" aif="0.000000" ahf="0.000000" ca="0" ce="2" csz="6" cis="6" coverage="100.000000" dit="0" i="1.000000" impl="0" mif="0.000000" mhf="0.000000" noc="0" pf="0.000000" vars="0" varsnp="0" varsi="0" wmc="10" wmcnp="10" wmci="10">
+      <method name="url" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="path" loc="10" locExecutable="5" locExecuted="5" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="newFile" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="2"/>
+      <method name="newDirectory" loc="17" locExecutable="11" locExecuted="11" coverage="100.000000" ccn="3" crap="3.000000" npath="8" parameters="2"/>
+      <method name="getCurrentUser" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="0"/>
+      <method name="getCurrentGroup" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="0"/>
+    </class>
+  </file>
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamDirectory.php" classes="1" functions="0" loc="200" cloc="91" ncloc="109" locExecutable="41" locExecuted="41" coverage="100.000000">
+    <class name="vfsStreamDirectory" loc="181" locExecutable="41" locExecuted="41" aif="85.714286" ahf="100.000000" ca="1" ce="5" csz="13" cis="10" coverage="100.000000" dit="1" i="0.833333" impl="4" mif="55.555556" mhf="7.407407" noc="0" pf="11.764706" vars="1" varsnp="0" varsi="7" wmc="23" wmcnp="20" wmci="38">
+      <method name="__construct" loc="9" locExecutable="4" locExecuted="4" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="2"/>
+      <method name="size" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="sizeSummarized" loc="13" locExecutable="8" locExecuted="8" coverage="100.000000" ccn="3" crap="3.000000" npath="3" parameters="0"/>
+      <method name="rename" loc="8" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="addChild" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="removeChild" loc="11" locExecutable="6" locExecuted="6" coverage="100.000000" ccn="3" crap="3.000000" npath="3" parameters="1"/>
+      <method name="hasChild" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getChild" loc="15" locExecutable="8" locExecuted="8" coverage="100.000000" ccn="5" crap="5.000000" npath="5" parameters="1"/>
+      <method name="getRealChildName" loc="8" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="getChildName" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="2"/>
+      <method name="getChildren" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="getIterator" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+    </class>
+  </file>
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamAbstractContent.php" classes="1" functions="0" loc="246" cloc="140" ncloc="106" locExecutable="29" locExecuted="29" coverage="100.000000">
+    <class name="vfsStreamAbstractContent" loc="230" locExecutable="29" locExecuted="29" aif="0.000000" ahf="100.000000" ca="2" ce="2" csz="23" cis="17" coverage="100.000000" dit="0" i="0.500000" impl="1" mif="5.555556" mhf="0.000000" noc="2" pf="0.000000" vars="6" varsnp="0" varsi="6" wmc="17" wmcnp="17" wmci="18">
+      <method name="__construct" loc="8" locExecutable="5" locExecuted="5" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="2"/>
+      <method name="getName" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="rename" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="appliesTo" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getType" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="setFilemtime" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="lastModified" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="filemtime" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="at" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="chmod" loc="6" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getPermissions" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="chown" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="isOwnedByUser" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getUser" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="chgrp" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="isOwnedByGroup" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getGroup" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+    </class>
+  </file>
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamWrapper.php" classes="1" functions="0" loc="634" cloc="244" ncloc="390" locExecutable="207" locExecuted="201" coverage="97.101449">
+    <class name="vfsStreamWrapper" loc="615" locExecutable="207" locExecuted="201" aif="0.000000" ahf="100.000000" ca="0" ce="2" csz="32" cis="21" coverage="97.101449" dit="0" i="1.000000" impl="0" mif="0.000000" mhf="19.230769" noc="1" pf="0.000000" vars="6" varsnp="0" varsi="6" wmc="74" wmcnp="60" wmci="74">
+      <method name="register" loc="13" locExecutable="6" locExecuted="6" coverage="100.000000" ccn="3" crap="3.000000" npath="4" parameters="0"/>
+      <method name="setRoot" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getRoot" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="getContent" loc="16" locExecutable="7" locExecuted="7" coverage="100.000000" ccn="4" crap="4.000000" npath="8" parameters="1"/>
+      <method name="getContentOfType" loc="9" locExecutable="4" locExecuted="4" coverage="100.000000" ccn="3" crap="3.000000" npath="2" parameters="2"/>
+      <method name="splitPath" loc="11" locExecutable="6" locExecuted="6" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="resolvePath" loc="8" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="stream_open" loc="61" locExecutable="42" locExecuted="42" coverage="100.000000" ccn="15" crap="15.000000" npath="2106" parameters="4"/>
+      <method name="calculateMode" loc="12" locExecutable="5" locExecuted="5" coverage="100.000000" ccn="3" crap="3.000000" npath="4" parameters="2"/>
+      <method name="stream_close" loc="4" locExecutable="0" locExecuted="0" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="stream_read" loc="8" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="stream_write" loc="8" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="1"/>
+      <method name="stream_eof" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="stream_tell" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="stream_seek" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="2"/>
+      <method name="stream_flush" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="stream_stat" loc="18" locExecutable="15" locExecuted="14" coverage="93.333333" ccn="1" crap="1.000296" npath="1" parameters="0"/>
+      <method name="unlink" loc="20" locExecutable="12" locExecuted="12" coverage="100.000000" ccn="3" crap="3.000000" npath="4" parameters="1"/>
+      <method name="rename" loc="30" locExecutable="18" locExecuted="16" coverage="88.888889" ccn="4" crap="4.021948" npath="8" parameters="2"/>
+      <method name="mkdir" loc="34" locExecutable="24" locExecuted="24" coverage="100.000000" ccn="10" crap="10.000000" npath="544" parameters="3"/>
+      <method name="rmdir" loc="25" locExecutable="14" locExecuted="14" coverage="100.000000" ccn="4" crap="4.000000" npath="8" parameters="2"/>
+      <method name="dir_opendir" loc="11" locExecutable="6" locExecuted="6" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="2"/>
+      <method name="dir_readdir" loc="10" locExecutable="5" locExecuted="5" coverage="100.000000" ccn="2" crap="2.000000" npath="2" parameters="0"/>
+      <method name="dir_rewinddir" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="dir_closedir" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="url_stat" loc="28" locExecutable="22" locExecuted="19" coverage="86.363636" ccn="3" crap="3.022821" npath="3" parameters="2"/>
+    </class>
+  </file>
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamFile.php" classes="1" functions="0" loc="191" cloc="99" ncloc="92" locExecutable="32" locExecuted="32" coverage="100.000000">
+    <class name="vfsStreamFile" loc="175" locExecutable="32" locExecuted="32" aif="75.000000" ahf="100.000000" ca="1" ce="3" csz="14" cis="12" coverage="100.000000" dit="1" i="0.750000" impl="1" mif="55.555556" mhf="0.000000" noc="0" pf="11.764706" vars="2" varsnp="0" varsi="8" wmc="15" wmcnp="15" wmci="30">
+      <method name="__construct" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="2"/>
+      <method name="appliesTo" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="setContent" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="withContent" loc="5" locExecutable="2" locExecuted="2" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="getContent" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="read" loc="6" locExecutable="3" locExecuted="3" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="readUntilEnd" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="write" loc="8" locExecutable="5" locExecuted="5" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="1"/>
+      <method name="eof" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="getBytesRead" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+      <method name="seek" loc="21" locExecutable="12" locExecuted="12" coverage="100.000000" ccn="4" crap="4.000000" npath="2" parameters="2"/>
+      <method name="size" loc="4" locExecutable="1" locExecuted="1" coverage="100.000000" ccn="1" crap="1.000000" npath="1" parameters="0"/>
+    </class>
+  </file>
+</metrics>

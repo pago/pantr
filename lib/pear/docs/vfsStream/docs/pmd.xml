@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="PHPUnit 3.4.10">
+  <file name="C:\dev\php\bovigo\vfs\trunk\src\main\php\org\bovigo\vfs\vfsStreamWrapper.php">
+    <violation rule="NPathComplexity" priority="1" line="213" to-line="273" package="bovigo_vfs" class="vfsStreamWrapper" method="stream_open">The NPath complexity is 2106.
+The NPath complexity of a function or method is the number of acyclic execution paths through that method. A threshold of 200 is generally considered the point where measures should be taken to reduce complexity.</violation>
+    <violation rule="NPathComplexity" priority="1" line="473" to-line="506" package="bovigo_vfs" class="vfsStreamWrapper" method="mkdir">The NPath complexity is 544.
+The NPath complexity of a function or method is the number of acyclic execution paths through that method. A threshold of 200 is generally considered the point where measures should be taken to reduce complexity.</violation>
+  </file>
+</pmd>

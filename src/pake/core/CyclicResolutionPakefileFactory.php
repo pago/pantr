@@ -6,26 +6,34 @@ namespace pake\core;
  * parent directories.
  */
 class CyclicResolutionPakefileFactory implements PakefileFactory {
+	private $path;
+	
+	public function __construct($path=null) {
+		if(is_null($path)) {
+			$this->path = getcwd();
+		} else {
+			$this->path = $path;
+		}
+	}
+	
 	public function getPakefile($name) {
-		$start = $here = getcwd();
-		while(!$this->pakefileExists($name)) {
-			chdir('..');
-			if(getcwd() == $here) {
-				chdir($start);
+		$here = $this->path;
+		while(!$this->pakefileExists($here, $name)) {
+			$parent = dirname($here);
+			if($parent == $here) {
 				return null;
 			}
-			$here = getcwd();
+			$here = $parent;
 		}
-		$pakefile = new Pakefile($this->getPakefilePath($name));
-		chdir($start);
+		$pakefile = new Pakefile($this->getPakefilePath($here, $name));
 		return $pakefile;
 	}
 	
-	private function pakefileExists($name) {
-		return file_exists($this->getPakefilePath($name));
+	private function pakefileExists($here, $name) {
+		return file_exists($this->getPakefilePath($here, $name));
 	}
 	
-	private function getPakefilePath($name) {
-		return getcwd() . DIRECTORY_SEPARATOR . $name . '.php';
+	private function getPakefilePath($here, $name) {
+		return $here . DIRECTORY_SEPARATOR . $name . '.php';
 	}
 }

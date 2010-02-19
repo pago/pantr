@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>Docs For Class vfsStreamAbstractContent</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+						<script src="../media/lib/classTree.js"></script>
+												<script language="javascript" type="text/javascript">
+				var imgPlus = new Image();
+				var imgMinus = new Image();
+				imgPlus.src = "../media/images/plus.png";
+				imgMinus.src = "../media/images/minus.png";
+				
+				function showNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgMinus.src;
+					oTable.style.display = "block";
+				}
+				
+				function hideNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgPlus.src;
+					oTable.style.display = "none";
+				}
+				
+				function nodeIsVisible(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+									break;
+							}
+					return (oTable && oTable.style.display == "block");
+				}
+				
+				function toggleNodeVisibility(Node){
+					if (nodeIsVisible(Node)){
+						hideNode(Node);
+					}else{
+						showNode(Node);
+					}
+				}
+			</script>
+					</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../media/images/AbstractClass_logo.png"
+														alt="Abstract Class"
+														title="Abstract Class"
+														style="vertical-align: middle"> vfsStreamAbstractContent</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+							<a href="#sec-descendents">Descendents</a>
+			|											<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+                <p class="implements">
+            Implements interfaces:
+            <ul>
+                <li><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></li>            </ul>
+        </p>
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Base stream contents container.</p>
+	<ul class="tags">
+				<li><span class="field">abstract:</span> </li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_vfsStreamAbstractContent.php.html">/vfsStreamAbstractContent.php</a> (line <span class="field"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a17">17</a></span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+								|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em; white-space: nowrap">
+						<img src="../media/images/Class.png"
+								 alt=" class"
+								 title=" class"
+								 style="vertical-align: center"/>
+						<a href="../bovigo_vfs/vfsStreamDirectory.html">vfsStreamDirectory</a>
+					</td>
+					<td>
+											Directory container.
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em; white-space: nowrap">
+						<img src="../media/images/Class.png"
+								 alt=" class"
+								 title=" class"
+								 style="vertical-align: center"/>
+						<a href="../bovigo_vfs/vfsStreamFile.html">vfsStreamFile</a>
+					</td>
+					<td>
+											File container.
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">int</span>
+					<a href="#$group" title="details" class="var-name">$group</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">int</span>
+					<a href="#$lastModified" title="details" class="var-name">$lastModified</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$name" title="details" class="var-name">$name</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">int</span>
+					<a href="#$permissions" title="details" class="var-name">$permissions</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">string</span>
+					<a href="#$type" title="details" class="var-name">$type</a>
+				</div>
+																<div class="var-title">
+					<img src="../media/images/Variable.png" alt=" " />
+					<span class="var-type">int</span>
+					<a href="#$user" title="details" class="var-name">$user</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																							
+				<div class="method-definition">
+					<img src="../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">vfsStreamAbstractContent</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$permissions</span> = <span class="var-default">0777</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">bool</span>
+										<a href="#appliesTo" title="details" class="method-name">appliesTo</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#at" title="details" class="method-name">at</a>
+											(<span class="var-type"><a href="../bovigo_vfs/vfsStreamContainer.html">vfsStreamContainer</a></span>&nbsp;<span class="var-name">$container</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#chgrp" title="details" class="method-name">chgrp</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$group</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#chmod" title="details" class="method-name">chmod</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$permissions</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#chown" title="details" class="method-name">chown</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$user</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">int</span>
+										<a href="#filemtime" title="details" class="method-name">filemtime</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">int</span>
+										<a href="#getGroup" title="details" class="method-name">getGroup</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#getName" title="details" class="method-name">getName</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">int</span>
+										<a href="#getPermissions" title="details" class="method-name">getPermissions</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">int</span>
+										<a href="#getType" title="details" class="method-name">getType</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">int</span>
+										<a href="#getUser" title="details" class="method-name">getUser</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">bool</span>
+										<a href="#isOwnedByGroup" title="details" class="method-name">isOwnedByGroup</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$group</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">bool</span>
+										<a href="#isOwnedByUser" title="details" class="method-name">isOwnedByUser</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$user</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#lastModified" title="details" class="method-name">lastModified</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$filemtime</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#rename" title="details" class="method-name">rename</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$newName</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+										<a href="#setFilemtime" title="details" class="method-name">setFilemtime</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$filemtime</span>)
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+<a name="var$group" id="$group"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$group</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a54">54</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">owner group of the file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$lastModified" id="$lastModified"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$lastModified</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a36">36</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">timestamp of last modification</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$name" id="$name"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$name</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a24">24</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">name of the container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$permissions" id="$permissions"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$permissions</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a42">42</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">permissions for content</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$type" id="$type"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$type</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a30">30</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">type of the container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$user" id="$user"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$user</span>
+						(line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a48">48</a></span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">owner of the file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a62">62</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">constructor</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">vfsStreamAbstractContent</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$permissions</span> = <span class="var-default">0777</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$permissions</span>			</li>
+				</ul>
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../bovigo_vfs/vfsStreamDirectory.html#method__construct">vfsStreamDirectory::__construct()</a>
+								: constructor
+							</li>
+					<li>
+				<a href="../bovigo_vfs/vfsStreamFile.html#method__construct">vfsStreamFile::__construct()</a>
+								: constructor
+							</li>
+				</ul>
+	</div>
+<a name="methodappliesTo" id="appliesTo"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">appliesTo</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a97">97</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">checks whether the container can be applied to given name</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			appliesTo
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodappliesTo">vfsStreamContent::appliesTo()</a></dt>
+						<dd>checks whether the container can be applied to given name</dd>
+					</dl>
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../bovigo_vfs/vfsStreamFile.html#methodappliesTo">vfsStreamFile::appliesTo()</a>
+								: checks whether the container can be applied to given name
+							</li>
+				</ul>
+	</div>
+<a name="methodat" id="at"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">at</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a152">152</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">adds content to given container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			at
+		</span>
+					(<span class="var-type"><a href="../bovigo_vfs/vfsStreamContainer.html">vfsStreamContainer</a></span>&nbsp;<span class="var-name">$container</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../bovigo_vfs/vfsStreamContainer.html">vfsStreamContainer</a></span>
+				<span class="var-name">$container</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodat">vfsStreamContent::at()</a></dt>
+						<dd>adds content to given container</dd>
+					</dl>
+			
+	</div>
+<a name="methodchgrp" id="chgrp"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">chgrp</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a220">220</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">change owner group of file to given group</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			chgrp
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$group</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$group</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodchgrp">vfsStreamContent::chgrp()</a></dt>
+						<dd>change owner group of file to given group</dd>
+					</dl>
+			
+	</div>
+<a name="methodchmod" id="chmod"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">chmod</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a164">164</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">change file mode to given permissions</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			chmod
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$permissions</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$permissions</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodchmod">vfsStreamContent::chmod()</a></dt>
+						<dd>change file mode to given permissions</dd>
+					</dl>
+			
+	</div>
+<a name="methodchown" id="chown"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">chown</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a187">187</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">change owner of file to given user</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			chown
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$user</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$user</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodchown">vfsStreamContent::chown()</a></dt>
+						<dd>change owner of file to given user</dd>
+					</dl>
+			
+	</div>
+<a name="methodfilemtime" id="filemtime"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">filemtime</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a141">141</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the last modification time of the stream content</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			filemtime
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodfilemtime">vfsStreamContent::filemtime()</a></dt>
+						<dd>returns the last modification time of the stream content</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetGroup" id="getGroup"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getGroup</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a242">242</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns owner group of file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			getGroup
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodgetGroup">vfsStreamContent::getGroup()</a></dt>
+						<dd>returns owner group of file</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetName" id="getName"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getName</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a76">76</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the file name of the content</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getName
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodgetName">vfsStreamContent::getName()</a></dt>
+						<dd>returns the file name of the content</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetPermissions" id="getPermissions"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getPermissions</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a176">176</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns permissions</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			getPermissions
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodgetPermissions">vfsStreamContent::getPermissions()</a></dt>
+						<dd>returns permissions</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetType" id="getType"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getType</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a107">107</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the type of the container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			getType
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodgetType">vfsStreamContent::getType()</a></dt>
+						<dd>returns the type of the container</dd>
+					</dl>
+			
+	</div>
+<a name="methodgetUser" id="getUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">getUser</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a209">209</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns owner of file</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			getUser
+		</span>
+				()
+			</div>
+	
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodgetUser">vfsStreamContent::getUser()</a></dt>
+						<dd>returns owner of file</dd>
+					</dl>
+			
+	</div>
+<a name="methodisOwnedByGroup" id="isOwnedByGroup"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">isOwnedByGroup</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a232">232</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">checks whether file is owned by group</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			isOwnedByGroup
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$group</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$group</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodisOwnedByGroup">vfsStreamContent::isOwnedByGroup()</a></dt>
+						<dd>checks whether file is owned by group</dd>
+					</dl>
+			
+	</div>
+<a name="methodisOwnedByUser" id="isOwnedByUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">isOwnedByUser</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a199">199</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">checks whether file is owned by given user</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			isOwnedByUser
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$user</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$user</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodisOwnedByUser">vfsStreamContent::isOwnedByUser()</a></dt>
+						<dd>checks whether file is owned by given user</dd>
+					</dl>
+			
+	</div>
+<a name="methodlastModified" id="lastModified"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">lastModified</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a130">130</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">sets the last modification time of the stream content</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			lastModified
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$filemtime</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$filemtime</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodlastModified">vfsStreamContent::lastModified()</a></dt>
+						<dd>sets the last modification time of the stream content</dd>
+					</dl>
+			
+	</div>
+<a name="methodrename" id="rename"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">rename</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a86">86</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">renames the content</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			rename
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$newName</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$newName</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodrename">vfsStreamContent::rename()</a></dt>
+						<dd>renames the content</dd>
+					</dl>
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../bovigo_vfs/vfsStreamDirectory.html#methodrename">vfsStreamDirectory::rename()</a>
+								: renames the content
+							</li>
+				</ul>
+	</div>
+<a name="methodsetFilemtime" id="setFilemtime"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../media/images/Method.png" />
+		<span class="method-title">setFilemtime</span> (line <span class="line-number"><a href="../__filesource/fsource_bovigo_vfs__vfsStreamAbstractContent.php.html#a119">119</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">alias for lastModified()</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../bovigo_vfs/vfsStreamAbstractContent.html#methodlastModified">vfsStreamAbstractContent::lastModified()</a></li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../bovigo_vfs/vfsStreamContent.html">vfsStreamContent</a></span>
+		<span class="method-name">
+			setFilemtime
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$filemtime</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$filemtime</span>			</li>
+				</ul>
+		
+				<hr class="separator" />
+		<div class="notes">Implementation of:</div>
+			<dl>
+			<dt><a href="../bovigo_vfs/vfsStreamContent.html#methodsetFilemtime">vfsStreamContent::setFilemtime()</a></dt>
+						<dd>alias for lastModified()</dd>
+					</dl>
+			
+	</div>
+						
+		</div>
+	</div>
+
+	
+	<p class="notes" id="credit">
+		Documentation generated on Mon, 15 Feb 2010 16:39:02 +0100 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.2</a>
+	</p>
+	</div></body>
+</html>

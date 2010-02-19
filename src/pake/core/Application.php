@@ -46,9 +46,11 @@ class Application {
 		$req = self::getRequestContainer($args);
 		
 		// load local pakefile
-		$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile.php');
-		if(is_null($pakefile) == false) {
+		$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile');
+		if(!is_null($pakefile)) {
 			$pakefile->load();
+		} else {
+			\pake\Pake::writeln('No pakefile found.', \pake\Pake::WARNING);
 		}
 		
 		// prepare task
