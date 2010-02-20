@@ -44,17 +44,17 @@ class Application {
 		
 		// this request
 		$req = self::getRequestContainer($args);
+		$taskName = $req[0];
 		
 		// load local pakefile
 		$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile');
 		if(!is_null($pakefile)) {
 			$pakefile->load();
-		} else {
+		} else if($taskName[0] != ':') { // not a global task
 			\pake\Pake::writeln('No pakefile found.', \pake\Pake::WARNING);
 		}
 		
 		// prepare task
-		$taskName = $req[0];
 		$task = $this->getTask($taskName);
 		if(is_null($task)) {
 			throw new NoTaskFoundException($taskName);
@@ -79,7 +79,7 @@ class Application {
 	private function getTask($taskName) {
 		if(isset($this->tasks[$taskName])) {
 			return $this->tasks[$taskName];
-		} else if(strpos($taskName, ':') !== 0) {
+		} else if(strpos($taskName, ':') !== false) {
 			// has category?
 			list($category, $taskName) = explode(':', $taskName);
 			if(isset($this->tasks[$category])) {

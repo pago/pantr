@@ -23,4 +23,20 @@ class CyclicResolutionPakefileFactoryTest extends PHPUnit_Framework_TestCase {
 		$pfile = $fac->getPakefile($fname);
 		$this->assertNotNull($pfile);
 	} // it should find the pakefile
+	
+	/**
+	 * it should look for pakefile in parent directories
+	 * @author Patrick Gotthardt
+	 * @test
+	 */
+	public function it_should_look_for_pakefile_in_parent_directories() {
+		$file = vfsStream::url('r/pakefile.php');
+		file_put_contents($file, 'test');
+		
+		$basedir = 'r/foo/bar/baz';
+		$dir = vfsStream::newDirectory($basedir);
+		$fac = new CyclicResolutionPakefileFactory(vfsStream::url($basedir));
+		$pfile = $fac->getPakefile('pakefile');
+		$this->assertNotNull($pfile);
+	} // it should look for pakefile in parent directories
 }

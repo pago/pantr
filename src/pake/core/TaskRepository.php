@@ -3,7 +3,7 @@ namespace pake\core;
 
 use pake\Task;
 
-class TaskRepository implements \ArrayAccess {
+class TaskRepository implements \ArrayAccess, \Countable, \IteratorAggregate {
 	private $tasks;
 	
 	public function __construct() {
@@ -55,8 +55,8 @@ class TaskRepository implements \ArrayAccess {
 		return $this->tasks[$taskName];
 	}
 
-	public function offsetExists($name) {
-		$taskName = $this->getTaskName($name);
+	public function offsetExists($taskName) {
+//		$taskName = $this->getTaskName($name);
 		return isset($this->tasks[$taskName]);
 	}
 
@@ -73,5 +73,13 @@ class TaskRepository implements \ArrayAccess {
 
 	public function offsetUnset($offset) {
 		throw new \Exception('Cannot unregister task.');
+	}
+	
+	public function count() {
+		return count($this->tasks);
+	}
+	
+	public function getIterator() {
+		return new \ArrayIterator($this->tasks);
 	}
 }
