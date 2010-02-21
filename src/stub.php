@@ -34,6 +34,18 @@ $loader->load(__DIR__.'/pake/core/services.yml');
 $args = $_SERVER['argv'];
 array_shift($args);
 
+// add PAKE_HOME to path
+$path = null;
+if(isset($_SERVER['PAKE_HOME'])) {
+	$path = $_SERVER['PAKE_HOME'];
+} else {
+	$path = $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.pake';
+}
+
+if(!is_null($path)) {
+	set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+}
+
 // setup pake
 Pake::setTaskRepository($sc->taskRepository);
 Pake::setApplication($sc->application);
