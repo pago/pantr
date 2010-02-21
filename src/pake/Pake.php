@@ -172,23 +172,33 @@ class Pake {
 		return self::$homePathProvider->get() ?: '';
 	}
 	
-	private static $globalConfig;
-	public static function getGlobalConfig($file='pake.yaml') {
-		$home = self::getHomePath();
-		$file = $home . DIRECTORY_SEPARATOR . $file;
-		if(file_exists($file)) {
-			return sfYaml::load($file);
-		}
-		// this behaviour might change!
-		return array();
-	}
-	
 	private static $properties = array();
 	public static function property($key, $value=null) {
 		if(is_null($value)) {
 			return self::$properties[$key];
 		}
 		self::$properties[$key] = $value;
+	}
+	
+	/** Loads the specified yaml file from PAKE_HOME (if it exists)
+	 *  and a local file (if it exists).
+	 *  This mechanism can be used to build config cascades.
+	 */
+	public static function loadProperties($name='pake.yaml') {
+		$home = self::getHomePath();
+		$file = $home . DIRECTORY_SEPARATOR . $name;
+		if(file_exists($file)) {
+			$props = \sfYaml::load($file);
+			foreach($props as $k => $v) {
+				self::$properties[$k] = $v;
+			}
+		}
+		if(file_exists($name)) {
+			$props = \sfYaml::load($name);
+			foreach($props as $k => $v) {
+				self::$properties[$k] = $v;
+			}
+		}
 	}
 	
 	public static function _getFinderFromArg($arg, $target_dir = '', $relative = false) {

@@ -4,6 +4,7 @@ use pake\ext\Phar;
 use pake\ext\PHPUnit;
 
 Pake::property('pake.version', '0.6.1');
+Pake::loadProperties();
 
 $testfiles = Pake::fileset()
 	->name('*Test.php')
@@ -81,4 +82,11 @@ Pake::task('dist', 'Create distribution package')
 		));
 
 		Pake::create_pear_package('dist/package.xml', 'dist');
+	});
+
+Pake::task('publish', 'Publish the pear package on pear channel')
+	->dependsOn('dist')
+	->run(function() {
+		Pirum::onChannel(Pake::property('pear.dir'))
+			->addLatestVersion('dist');
 	});
