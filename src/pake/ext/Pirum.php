@@ -1,6 +1,8 @@
 <?php
 namespace pake\ext;
 
+use pake\Pake;
+
 class Pirum {
 	private static function loadPirum() {
 		if(class_exists('\Pirum_CLI')) {
@@ -39,6 +41,7 @@ class Pirum {
 	}
 	
 	public function add($pearPackage) {
+		Pake::writeAction('pirum', 'Adding '.$pearPackage.' to '.$this->channel);
 		$this->exec('add', $this->channel, $pearPackage);
 	}
 	

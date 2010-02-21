@@ -2,8 +2,9 @@
 use pake\Pake;
 use pake\ext\Phar;
 use pake\ext\PHPUnit;
+use pake\ext\Pirum;
 
-Pake::property('pake.version', '0.6.1');
+Pake::property('pake.version', '0.7.0');
 Pake::loadProperties();
 
 $testfiles = Pake::fileset()
@@ -99,7 +100,7 @@ Pake::task('sync-pear', 'install/remove channels and packages')
 				->package('cli')
 				->package('parser')
 			->fromChannel('pear.php-tools.net')
-				->package('vfsstream')
+				->package('vfsstream', 'alpha')
 			->fromChannel('pear.symfony-project.com')
 				->package('yaml')
 			->sync();
