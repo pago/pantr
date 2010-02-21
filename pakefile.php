@@ -7,11 +7,29 @@ PHPUnit::task('unit-test', 'Run all tests',
 	Pake::fileset()
 		->name('*Test.php')
 		->in('test'));
+		
+Pake::task('test', 'description')
+	->dependsOn('clean')
+	->run(function() {
+		$lib = Pake::finder()
+			->discard('vfsStream')->prune('vfsStream')
+			->prune('pear')->discard('pear')
+			->prune('data')->discard('data')
+			->prune('.*')->discard('.*')
+			->not_name('.*')
+			->ignore_version_control();
+		
+		// copy source files
+		Pake::mkdirs('build');
+		Pake::mirror(Pake::finder(), 'src', 'build');
+		Pake::mirror($lib, 'lib', 'build');
+	});
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
-		Pake::rm('dist/pake.phar');
-		Pake::rm(Pake::fileset()->name('.DS_STORE'));
+		// get rid of .DS_Store files
+		Pake::rm(Pake::finder()->name('.DS_Store')->in('src'));
+		Pake::rm('build', true);
 	});
 
 Pake::task('init', 'Create dist environment')

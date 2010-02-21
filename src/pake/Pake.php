@@ -23,7 +23,7 @@ use pake\ext\Phar;
  * There should not be an instance of the Pake class, since all of its methods are static.
  */
 class Pake {
-	const VERSION='0.5.1';
+	const VERSION='DEV';
 	
 	private static $taskRepository;
 	private static $application;
@@ -156,8 +156,12 @@ class Pake {
 	}
 	
 	// Utility-methods
+	const TYPE_FILES = 'file';
+	const TYPE_DIR = 'dir';
+	const TYPE_ANY = 'any';
+	
 	public static function fileset() {
-		return Finder::type(Finder::TYPE_FILES);
+		return Finder::type(self::TYPE_FILES);
 	}
 	
 	public static function finder($type='any') {
@@ -291,18 +295,28 @@ class Pake {
 		unlink($src);
 	}
 	
-	public static function rm($arg, $target_dir='') {
+	public static function rm($arg, $target_dir='', $recursive=null) {
+		if(!is_string($target_dir) && is_null($recursive)) {
+			$recursive = $target_dir;
+			$target_dir = '';
+		}
 		$files = array_reverse(Pake::_getFinderFromArg($arg, $target_dir));
 		foreach($files as $target) {
 			if(!file_exists($target)) {
 				Pake::writeAction('rm', $target . ' does not exist', Pake::INFO);
 				return;
 			}
-			Pake::writeAction('rm', $target);
+			
 			if(is_dir($target) && !is_link($target)) {
-				Pake::rm(Pake::finder()->in($target));
+				// remove all files
+				Pake::rm(Pake::fileset()->in($target);
+
+				// and now all empty directories
+				Pake::rm(Pake::finder(self::TYPE_DIR)->in($target));
+				Pake::writeAction('rm', $target);
 				rmdir($target);
 			} else {
+				Pake::writeAction('rm', $target);
 				unlink($target);
 			}
 		}
