@@ -6,8 +6,10 @@ namespace pake\core;
  */
 class ServerHomePathProvider implements HomePathProvider {
 	public function get() {
-		$home = getcwd();
-		if(isset($_SERVER['HOME'])) {
+		$home = null;
+		if(isset($_SERVER['PAKE_HOME'])) {
+			$home = $_SERVER['PAKE_HOME'];
+		} else if(isset($_SERVER['HOME'])) {
 			$home = $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.pake';
 		}
 		return $home;
