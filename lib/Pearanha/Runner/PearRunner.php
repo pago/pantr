@@ -94,6 +94,10 @@ class Pearanha_Runner_PearRunner
         $verbose = 1;
  
         $config = PEAR_Config::singleton($this->_pearConfigFile, "#no#system#config#");
+		if($config instanceof PEAR_Error) {
+			echo $config, "\n";
+			exit(1);
+		}
 		$config->set('verbose', 1);
 //        $config->set('verbose', -1); // supress all kind of annoying stuff.
  

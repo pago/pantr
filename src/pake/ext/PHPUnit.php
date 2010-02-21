@@ -14,7 +14,7 @@ class PHPUnit {
 		}
 		$task = Pake::task($name, $desc);
 		if($addVerboseOption) {
-			$task->option('verbose')
+			$task = $task->option('verbose')
 				->shorthand('v')
 				->desc('Output detailed test information');
 		}

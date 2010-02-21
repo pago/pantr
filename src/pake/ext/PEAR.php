@@ -23,7 +23,7 @@ class PEAR {
 		if(count($args) == 1 && is_string($args[0])) {
 			$args = explode(' ', $args[0]);
 		}
-		array_unshift($name);
+		array_unshift($args, $name);
 		$this($args);
 	}
 	
@@ -41,56 +41,9 @@ class PEAR {
 				. 'pake pear:<command> [args]')
 			->option('pearrc')
 				->desc('Define the .pearrc file to use. Defaults to lib/.pearrc and .pearrc')
-			->run(function($req) use ($pearrc) {
-				$isTaskName = function($taskName) {
-					if(strpos($taskName, 'pear:') === 0) {
-						$taskName = substr($taskName, 5);
-						return true;
-					} else if($taskName == 'pear') {
-						return true;
-					}
-					return false;
-				};
-				$args = $_SERVER['argv'];
-				array_shift($args);
-
-				// drop everything before task name
-				while(count($args) > 0 && !$isTaskName($args[0])) {
-					array_shift($args);
-				}
-				// drop the task name itself
-				if(count($args > 0)) {
-					$taskName = $args[0];
-					if(strpos($taskName, 'pear:') === 0) {
-						// change pear:foo to foo
-						$taskName = substr($taskName, 5);
-						$args[0] = $taskName;
-					} else {
-						// remove 'pear' from stack
-						$taskName = array_shift($args);
-					}
-				}
-				// drop pearrc option
-				if(isset($req['pearrc'])) {
-					$pearrc = $req['pearrc'];
-					array_shift($args);
-				}
-				
-				// try to find a .pearrc in current directory
-				// this is typical if there is no pakefile
-				if(!isset($req['pearrc']) && !file_exists($pearrc) && file_exists('.pearrc')) {
-					$pearrc = '.pearrc';
-				}
-				if(!file_exists($pearrc)) {
-					throw new \Exception('Could not find .pearrc');
-				}
-				$pear = new PEAR($pearrc);
-				try {
-					$pear($args);
-				} catch(\Exception $e) {
-					Pake::writeln($e->getMessage(), Pake::WARNING);
-				}
-			});
+			->run(self::getPearTask($pearrc));
+			
+		self::registerPakeTasks();
 		
 		Pake::task('pear:init', 'Creates a local pear repository')
 			->usage('pear:init [directory]')
@@ -101,5 +54,83 @@ class PEAR {
 				$dir = isset($req[0]) ? $req[0] : 'lib';
 				PEAR::init($dir);
 			});
+	}
+	
+	private static function registerPakeTasks() {
+		Pake::task('::init-pake-home', 'Creates a local pear repository in PAKE_HOME')
+			->run(function() {
+				$home = Pake::getHomePath();
+				if($home === '') {
+					Pake::writeln('No home path specified. Please set `PAKE_HOME`.', Pake::ERROR);
+					return Status::FAILURE;
+				}
+				if(!file_exists($home)) {
+					Pake::mkdirs($home);
+				}
+				if(!file_exists($home . DIRECTORY_SEPARATOR . '.pearrc')) {
+					Pake::writeAction('init', 'Initializing pake home (test)');
+					PEAR::init($home);
+				}
+			});
+		Pake::task(':bundle', 'Execute a local PEAR command')
+			->usage(":bundle <command> [args]")
+			->dependsOn('::init-pake-home')
+			->needsRequest()
+			->run(self::getPearTask(
+				Pake::getHomePath() . DIRECTORY_SEPARATOR . '.pearrc',
+				':bundle'));
+	}
+	
+	private static function getPearTask($pearrc, $prefix='pear') {
+		return function($req) use ($pearrc, $prefix) {
+			$isTaskName = function($taskName) use($prefix) {
+				if(strpos($taskName, $prefix.':') === 0) {
+					$taskName = substr($taskName, 5);
+					return true;
+				} else if($taskName == $prefix) {
+					return true;
+				}
+				return false;
+			};
+			$args = $_SERVER['argv'];
+			array_shift($args);
+
+			// drop everything before task name
+			while(count($args) > 0 && !$isTaskName($args[0])) {
+				array_shift($args);
+			}
+			// drop the task name itself
+			if(count($args) > 0) {
+				$taskName = $args[0];
+				if(strpos($taskName, 'pear:') === 0) {
+					// change pear:foo to foo
+					$taskName = substr($taskName, 5);
+					$args[0] = $taskName;
+				} else {
+					// remove 'pear' from stack
+					$taskName = array_shift($args);
+				}
+			}
+			// drop pearrc option
+			if(isset($req['pearrc'])) {
+				$pearrc = $req['pearrc'];
+				array_shift($args);
+			}
+			
+			// try to find a .pearrc in current directory
+			// this is typical if there is no pakefile
+			if(!isset($req['pearrc']) && !file_exists($pearrc) && file_exists('.pearrc')) {
+				$pearrc = '.pearrc';
+			}
+			if(!file_exists($pearrc)) {
+				throw new \Exception('Could not find .pearrc');
+			}
+			$pear = new PEAR($pearrc);
+			try {
+				$pear($args);
+			} catch(\Exception $e) {
+				Pake::writeln($e->getMessage(), Pake::WARNING);
+			}
+		};
 	}
 }

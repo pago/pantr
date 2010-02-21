@@ -31,16 +31,24 @@ EOF;
 		$this->setStub($this->createDefaultStub('stub.php'));
 	}
 	
+	public function addDirectories($src) {
+		$files = Pake::_getFinderFromArg($src);
+		foreach($files as $dir) {
+			Pake::writeAction('phar incl', $dir);
+			$this->buildFromDirectory($dir);
+		}
+	}
+	
 	public static function create($phar, $src='src') {
 		Pake::writeAction('phar', $phar);
 		$p = new Phar($phar);
 		$p->startBuffering();
-		$files = Pake::_getFinderFromArg($src);
-		foreach($files as $dir) {
-			Pake::writeAction('phar incl', $dir);
-			$p->buildFromDirectory($dir);
+		if(is_callable($src)) {
+			$src($p);
+		} else {
+			$p->addDirectories($src);
+			$p->setDefaultStub();
 		}
-		$p->setDefaultStub();
 		$p->stopBuffering();
 	}
 }

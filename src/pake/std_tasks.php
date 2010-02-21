@@ -1,5 +1,6 @@
 <?php
 use pake\Pake;
+use pake\core\Status;
 use pake\core\Application;
 use pake\ext\Phar;
 use pake\ext\PEAR;
@@ -83,4 +84,39 @@ Pake::task(':new-project', 'Creates a new project')
 		if(isset($req['with-local-pear'])) {
 			PEAR::init($basedir . 'lib');
 		}
+	});
+
+Pake::task(':pake-bundle-project', 'Creates a new project for a pake bundle')
+	->expectNumArgs(1)
+	->run(function($req) {
+		$name = $req[0];
+		Pake::mkdirs($name);
+		Pake::mkdirs($name.DIRECTORY_SEPARATOR.'src');
+		$pakefile = <<<'EOF'
+<?php
+use pake\Pake;
+use pake\ext\Phar;
+
+Pake::task('clean', 'Remove unused files')
+	->run(function() {
+		Pake::rm('##NAME##.phar');
+	});
+	
+Pake::task('phar', 'Create a phar archive')
+	->dependsOn('clean')
+	->run(function() {
+		Phar::create('##NAME##.phar', 'src');
+	});
+	
+Pake::task('install', 'Install in PAKE_HOME')
+	->dependsOn('phar')
+	->run(function() {
+		$home = Pake::getHomePath();
+		Pake::move('##NAME##.phar', $home.DIRECTORY_SEPARATOR.'##NAME##.phar');
+	});
+EOF;
+		Pake::writeAction('create', 'pakefile.php');
+		file_put_contents($name.DIRECTORY_SEPARATOR.'pakefile.php',
+			str_replace('##NAME##', $name, $pakefile)
+		);
 	});

@@ -9,7 +9,7 @@ $testfiles = Pake::fileset()
 	->name('*Test.php')
 	->in('test');
 PHPUnit::task('unit-test', 'Run all tests',
-	$testfiles, $addVerbose=false);
+	$testfiles);
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
@@ -43,7 +43,6 @@ Pake::task('init', 'Create build directory')
 Pake::task('set-version', 'Changes the pake version for the release')
 	->option('version')
 		->desc('Set the version to the specified value')
-		->shorthand('v')
 	->run(function($req) {
 		if(isset($req['version'])) {
 			Pake::property('pake.version', $req['version']);

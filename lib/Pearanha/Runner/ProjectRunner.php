@@ -42,7 +42,7 @@ class Pearanha_Runner_ProjectRunner
     {
         try {
             $this->_doRun($argv);
-            exit(0);
+//            exit(0);
         } catch(Exception $e) {
             echo "An error occured: ".$e->getMessage().PHP_EOL;
             exit(1);

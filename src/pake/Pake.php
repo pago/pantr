@@ -169,7 +169,7 @@ class Pake {
 	}
 	
 	public static function getHomePath() {
-		return $this->homePathProvider->get() ?: '';
+		return self::$homePathProvider->get() ?: '';
 	}
 	
 	private static $globalConfig;
