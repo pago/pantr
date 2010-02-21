@@ -1,3 +1,0 @@
-#!/bin/sh
-php -f lpake.php dist
-cp -R ./dist/ ~/bin/pake

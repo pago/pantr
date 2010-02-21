@@ -183,6 +183,14 @@ class Pake {
 		return array();
 	}
 	
+	private static $properties = array();
+	public static function property($key, $value=null) {
+		if(is_null($value)) {
+			return self::$properties[$key];
+		}
+		self::$properties[$key] = $value;
+	}
+	
 	public static function _getFinderFromArg($arg, $target_dir = '', $relative = false) {
 		$files = array();
 	
@@ -206,6 +214,19 @@ class Pake {
 	    return $files;
 	}
 	
+	public static function beginSilent($action=null, $msg=null, $style=null) {
+		if(!is_null($action) && is_null($msg)) {
+			Pake::writeln($action, $style);
+		} else if(!is_null($action) && !is_null($msg)) {
+			Pake::writeAction($action, $msg, $style ?: Pake::PARAMETER);
+		}
+		ob_start();
+	}
+	
+	public static function endSilent() {
+		ob_end_clean();
+	}
+	
 	public static function writeAction($action, $desc, $style='PARAMETER') {
 		return Pake::writeln(sprintf('[%20s|%s]    %s', $action, $style, $desc));
 	}
@@ -227,12 +248,28 @@ class Pake {
 	        }
 	    }
 		
-		Pake::writeAction('pear-package', $packageXml);
 	    $packager = new \PEAR_Packager();
 	    $packager->debug = 0; // silence output
 	    $archive = $packager->package($packageXml, true);
+		Pake::writeAction('pear-package', $archive);
 		return $archive;
 	}
+	
+	public static function replace_in($arg, $origin_dir='', $fn=null) {
+		if(!is_string($origin_dir) && is_null($fn)) {
+			$fn = $origin_dir;
+			$origin_dir = '';
+		}
+		$files = Pake::_getFinderFromArg($arg, $origin_dir);
+		
+		foreach($files as $file) {
+			$content = file_get_contents($file);
+			$content = $fn($file, $content);
+			file_put_contents($file, $content);
+		}
+	}
+	
+	const SILENT = 1;
 	
 	// this part is based on http://wiki.github.com/indeyets/pake/
 	/* 
@@ -258,9 +295,20 @@ class Pake {
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	 * THE SOFTWARE.
 	 */
-	public static function mirror($arg, $origin_dir, $target_dir, $options = array()) {
+	public static function mirror($arg, $origin_dir, $target_dir, $isSilent = false, $options = array()) {
 		$files = Pake::_getFinderFromArg($arg, $origin_dir, true);
-	
+		
+		// switch silent <-> options
+		if(is_array($isSilent)) {
+			$options = $isSilent;
+			$isSilent = false;
+		}
+		
+		if($isSilent) {
+			Pake::writeAction('mirror', $origin_dir.' -> '.$target_dir);
+			Pake::beginSilent();
+		}
+		
 		foreach($files as $file) {
 			if(is_dir($origin_dir.DIRECTORY_SEPARATOR.$file)) {
 				Pake::mkdirs($target_dir.DIRECTORY_SEPARATOR.$file);
@@ -272,6 +320,10 @@ class Pake {
 			} else {
 				throw new \Exception(sprintf('Unable to determine "%s" type', $file));
 			}
+		}
+		
+		if($isSilent) {
+			Pake::endSilent();
 		}
 	}
 	
@@ -309,7 +361,7 @@ class Pake {
 			
 			if(is_dir($target) && !is_link($target)) {
 				// remove all files
-				Pake::rm(Pake::fileset()->in($target);
+				Pake::rm(Pake::fileset()->in($target));
 
 				// and now all empty directories
 				Pake::rm(Pake::finder(self::TYPE_DIR)->in($target));
