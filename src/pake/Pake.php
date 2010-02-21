@@ -201,6 +201,10 @@ class Pake {
 		}
 	}
 	
+	public static function dependencies() {
+		return new \pake\ext\PEARSync();
+	}
+	
 	public static function _getFinderFromArg($arg, $target_dir = '', $relative = false) {
 		$files = array();
 	

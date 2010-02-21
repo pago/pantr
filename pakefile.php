@@ -90,3 +90,17 @@ Pake::task('publish', 'Publish the pear package on pear channel')
 		Pirum::onChannel(Pake::property('pear.dir'))
 			->addLatestVersion('dist');
 	});
+	
+Pake::task('sync-pear', 'install/remove channels and packages')
+	->run(function() {
+		Pake::dependencies()->in('lib')
+			->fromChannel('pear.pagosoft.com')
+				->package('util')
+				->package('cli')
+				->package('parser')
+			->fromChannel('pear.php-tools.net')
+				->package('vfsstream')
+			->fromChannel('pear.symfony-project.com')
+				->package('yaml')
+			->sync();
+	});
