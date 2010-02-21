@@ -5,10 +5,11 @@ use pake\ext\PHPUnit;
 
 Pake::property('pake.version', '0.6.1');
 
+$testfiles = Pake::fileset()
+	->name('*Test.php')
+	->in('test');
 PHPUnit::task('unit-test', 'Run all tests',
-	Pake::fileset()
-		->name('*Test.php')
-		->in('test'));
+	$testfiles, $addVerbose=false);
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
@@ -39,9 +40,10 @@ Pake::task('init', 'Create build directory')
 		Pake::mirror(Pake::finder(), 'src', 'build', Pake::SILENT);
 	});
 	
-Pake::task('set-version', 'Changes the pake version if --version is specified')
+Pake::task('set-version', 'Changes the pake version for the release')
 	->option('version')
 		->desc('Set the version to the specified value')
+		->shorthand('v')
 	->run(function($req) {
 		if(isset($req['version'])) {
 			Pake::property('pake.version', $req['version']);
@@ -79,7 +81,5 @@ Pake::task('dist', 'Create distribution package')
 			'CURRENT_DATE' => date('Y-m-d')
 		));
 
-		chdir('dist');
-		Pake::create_pear_package();
-		chdir('..');
+		Pake::create_pear_package('dist/package.xml', 'dist');
 	});

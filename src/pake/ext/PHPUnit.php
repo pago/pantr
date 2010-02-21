@@ -8,15 +8,17 @@ use pake\Pake;
 use pake\Task;
 
 class PHPUnit {
-	public static function task($name, $desc, $files=null) {
+	public static function task($name, $desc, $files=null, $addVerboseOption=true) {
 		if(is_null($files)) {
 			$files = Pake::fileset()->name('*Test.php')->in('test');
 		}
-		Pake::task($name, $desc)
-			->option('verbose')
+		$task = Pake::task($name, $desc);
+		if($addVerboseOption) {
+			$task->option('verbose')
 				->shorthand('v')
-				->desc('Output detailed test information')
-			->run(function($req) use ($files) {
+				->desc('Output detailed test information');
+		}
+		return $task->run(function($req=array()) use ($files) {
 				return PHPUnit::forAllTests($files)->run(isset($req['verbose']));
 			});
 	}

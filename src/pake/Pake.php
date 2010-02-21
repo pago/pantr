@@ -237,7 +237,7 @@ class Pake {
 		};
 	}
 	
-	public static function create_pear_package($packageXml='package.xml') {
+	public static function create_pear_package($packageXml='package.xml', $dest=null) {
 		if (!class_exists('PEAR_Packager')) {
 	        @include('PEAR/Packager.php');
 	
@@ -252,6 +252,13 @@ class Pake {
 	    $packager->debug = 0; // silence output
 	    $archive = $packager->package($packageXml, true);
 		Pake::writeAction('pear-package', $archive);
+		
+		if(!is_null($dest)) {
+			Pake::beginSilent();
+			Pake::move($archive, $dest.DIRECTORY_SEPARATOR.$archive);
+			Pake::endSilent();
+		}
+		
 		return $archive;
 	}
 	
