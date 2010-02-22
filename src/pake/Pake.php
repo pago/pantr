@@ -175,7 +175,21 @@ class Pake {
 	private static $properties = array();
 	public static function property($key, $value=null) {
 		if(is_null($value)) {
-			return self::$properties[$key];
+			$path = explode(':', $key);
+			if(count($path) == 1) {
+				return self::$properties[$key];
+			}
+			$top = self::$properties[$path[0]];
+			array_shift($path);
+			foreach($path as $k) {
+				if(isset($top[$k])) {
+					$top = $top[$k];
+				} else {
+					// key does not exist
+					return null;
+				}
+			}
+			return $top;
 		}
 		self::$properties[$key] = $value;
 	}
@@ -187,17 +201,15 @@ class Pake {
 	public static function loadProperties($name='pake.yaml') {
 		$home = self::getHomePath();
 		$file = $home . DIRECTORY_SEPARATOR . $name;
+		$props = array();
 		if(file_exists($file)) {
 			$props = \sfYaml::load($file);
-			foreach($props as $k => $v) {
-				self::$properties[$k] = $v;
-			}
 		}
 		if(file_exists($name)) {
-			$props = \sfYaml::load($name);
-			foreach($props as $k => $v) {
-				self::$properties[$k] = $v;
-			}
+			$props = array_merge_recursive($props, \sfYaml::load($name));
+		}
+		foreach($props as $k => $v) {
+			self::$properties[$k] = $v;
 		}
 	}
 	
