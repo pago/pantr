@@ -20,15 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
+namespace Pagosoft\ClassLoader;
 
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
+/**
+ * Description of DynamicClassLoader
+ *
+ * @author pago
+ */
+class DirectoryClassLoader extends ClassLoader {
+	private $path;
+	function __construct($path) {
+		$this->path = $path;
+	}
+
+	public function getResource($resourceName) {
+		$path = $this->path . DIRECTORY_SEPARATOR . $resourceName;
+		if(file_exists($path)) {
+			return $path;
+		}
+		return null;
 	}
 	
-	public function load() {
-		require $this->name;
+	public function loadClass($classname) {
+		foreach($this->translate($classname) as $classfile) {
+			$file = $this->path . DIRECTORY_SEPARATOR . $classfile;
+			if(file_exists($file)) {
+				require_once $file;
+				return true;
+			}
+		}
+		return false;
 	}
 }

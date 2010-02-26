@@ -20,15 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
+namespace Pagosoft\ClassLoader;
 
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
+/**
+ * A ClassLoader is an object that is responsible for loading classes.
+ * The way of loading the classes is an implementation detail
+ * but will most likely be accomplished either by transforming the class name
+ * into a file name and looking for this file in one or more places, or by looking it
+ * up in a dictonary.
+ *
+ * @author pago
+ */
+abstract class ClassLoader {
+	public abstract function loadClass($classname);
+	public abstract function getResource($resourceName);
+
+	public function registerAutoload() {
+		spl_autoload_register(array($this, 'loadClass'));
 	}
 	
-	public function load() {
-		require $this->name;
+	protected function translate($classname) {
+		return array(str_replace(
+			array('_', '\\'),
+			array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+			$classname) . '.php');
 	}
 }

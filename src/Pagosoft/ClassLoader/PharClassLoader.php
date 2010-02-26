@@ -20,15 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
+namespace Pagosoft\ClassLoader;
 
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
-	}
-	
-	public function load() {
-		require $this->name;
+class PharClassLoader extends DirectoryClassLoader {
+	private $phar;
+	public function __construct($phar) {
+		parent::__construct('phar://'.$phar);
 	}
 }

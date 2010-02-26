@@ -20,15 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
-
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
-	}
-	
-	public function load() {
-		require $this->name;
-	}
-}
+require_once __DIR__.DIRECTORY_SEPARATOR.'ClassLoader.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'ClassLoaderComposite.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'DirectoryClassLoader.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'GlobalClassLoader.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'PharClassLoader.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'StaticClassLoader.php';

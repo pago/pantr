@@ -1,4 +1,25 @@
 <?php
+/* 
+ * Copyright (c) 2010 Patrick Gotthardt
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 namespace pake;
 
 use pake\core\TaskRepository;
@@ -197,12 +218,14 @@ class Pake {
 	/** Loads the specified yaml file from PAKE_HOME (if it exists)
 	 *  and a local file (if it exists).
 	 *  This mechanism can be used to build config cascades.
+	 *
+	 * If $onlyLocal is true the cascade mechanism is deactivated.
 	 */
-	public static function loadProperties($name='pake.yaml') {
+	public static function loadProperties($name='pake.yaml', $onlyLocal=false) {
 		$home = self::getHomePath();
 		$file = $home . DIRECTORY_SEPARATOR . $name;
 		$props = array();
-		if(file_exists($file)) {
+		if(file_exists($file) && !$onlyLocal) {
 			$props = \sfYaml::load($file);
 		}
 		if(file_exists($name)) {
@@ -253,10 +276,49 @@ class Pake {
 		ob_end_clean();
 	}
 	
+	/** Instead of manually tracking the beginning and end of a silent
+	 *  block you can use this method to execute a function silently.
+	 *  Overloaded method calls:
+	 *  <code>Pake::silent($action, $msg, $fn)</code>
+	 *  <code>Pake::silent($msg, $fn)</code>
+	 *  <code>Pake::silent($fn)</code>
+	 *
+	 *  If $action and $msg (or just $msg) are specified pake will emit
+	 *  them as output before switching to silent mode.
+	 *  It is recommended to do this in order to notify the user of
+	 *  what is happening.
+	 */
+	public static function silent() {
+		$args = func_get_args();
+		switch(count($args)) {
+			case 3:
+				Pake::writeAction($args[0], $args[1]);
+				$fn = $args[2];
+				break;
+			case 2:
+				Pake::writeln($args[0]);
+				$fn = $args[1];
+				break;
+			case 1: $fn = $args[0]; break;
+			default: throw new \Exception('Invalid method invokation.');
+		}
+		Pake::beginSilent();
+		$fn();
+		Pake::endSilent();
+	}
+	
+	/** Output a formatted message to the user explaining
+	 *  the current task. $action is the performed task (i.e. "move", "build", "create")
+	 *  and $desc is the more detailed description ("to some other directory",
+	 *  "the PEAR channel", "a PEAR package")
+	 */
 	public static function writeAction($action, $desc, $style='PARAMETER') {
 		return Pake::writeln(sprintf('[%20s|%s]    %s', $action, $style, $desc));
 	}
 	
+	/**
+	 * @deprecated use pake\ext\Phar instead
+	 */
 	public static function phar($pharName, $paths='src') {
 		return function() use ($pharName, $paths) {
 			Phar::create($pharName, $paths);
@@ -288,6 +350,15 @@ class Pake {
 		return $archive;
 	}
 	
+	/** Invokes the specified function on the content of all specified
+	 *  files. The result will be written to the same file the input
+	 *  came from. This is supposed to be used when you're rewriting a
+	 *  file after having copied it in some build directory.
+	 *  
+	 *  Overloads:
+	 *  Pake::replaceIn(fileset|finder, $dir, $fn)
+	 *  Pake::replaceIn(array<filepath>, $fn)
+	 */
 	public static function replace_in($arg, $origin_dir='', $fn=null) {
 		if(!is_string($origin_dir) && is_null($fn)) {
 			$fn = $origin_dir;

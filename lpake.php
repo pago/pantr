@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-spl_autoload_register(function($classname) {
+/*spl_autoload_register(function($classname) {
 	$classname = str_replace(
 		array('\\', '_'),
 		array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR), $classname);
@@ -33,8 +33,8 @@ spl_autoload_register(function($classname) {
 		}
 	}
 	return false;
-});
+});//*/
 
-set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__.'/lib/');
+//set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__.'/lib/');
 
 require_once 'src/cliapp.php';

@@ -20,15 +20,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
 
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
-	}
+// load ClassLoader framework
+require_once implode(DIRECTORY_SEPARATOR,
+	array(__DIR__, 'Pagosoft','ClassLoader', 'load.php'));
+
+use Pagosoft\ClassLoader\DirectoryClassLoader;
+use Pagosoft\ClassLoader\GlobalClassLoader;
+
+// autoload this directory
+$cl = new DirectoryClassLoader(__DIR__);
+$cl->registerAutoload();
+
+if(file_exists(__DIR__.'/../lib/pgs')) {
+	// might be a local instance of pake running so include lib directory
+	$cl = new DirectoryClassLoader(__DIR__.'/../lib');
+	$cl->registerAutoload();
 	
-	public function load() {
-		require $this->name;
-	}
+	// load local symfony
+	require_once __DIR__.'/../lib/SymfonyComponents/YAML/sfYaml.php';
+	require_once __DIR__.'/../lib/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
 }
+
+if(!class_exists('sfYaml')) {
+	require_once __DIR__.'/SymfonyComponents/YAML/sfYaml.php';
+}
+if(!class_exists('sfServiceContainerAutoloader')) {
+	require_once __DIR__.'/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+}
+
+// and everything else in the path (mostly for pake bundle support)
+$cl = new GlobalClassLoader();
+$cl->registerAutoload();

@@ -20,15 +20,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pake\core;
+namespace Pagosoft\ClassLoader;
 
-class Pakefile {
-	private $name;
-	public function __construct($name) {
-		$this->name = $name;
+class GlobalClassLoader extends ClassLoader {
+	public function loadClass($classname) {
+		foreach($this->translate($classname) as $file) {
+			if(file_exists($file)) {
+				require_once $file;
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public function load() {
-		require $this->name;
+	public function getResource($resourceName) {
+		if(file_exists($resourceName)) {
+			return $resourceName;
+		}
+		return null;
 	}
 }
