@@ -34,9 +34,9 @@ goto cleanup
 
 :run
 IF EXIST "@PEAR-DIR@" (
-  %PHP_COMMAND% -d html_errors=off -qC "@PEAR-DIR@\pake.phar" %1 %2 %3 %4 %5 %6 %7 %8 %9
+  %PHP_COMMAND% -d html_errors=off -qC "@PEAR-DIR@\pake\cliapp.php" %1 %2 %3 %4 %5 %6 %7 %8 %9
 ) ELSE (
-  %PHP_COMMAND% -d html_errors=off -qC "%PAKE_HOME%\bin\pake.phar" %1 %2 %3 %4 %5 %6 %7 %8 %9
+  %PHP_COMMAND% -d html_errors=off -qC "%PAKE_HOME%\cliapp.php" %1 %2 %3 %4 %5 %6 %7 %8 %9
 )
 goto cleanup
 

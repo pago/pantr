@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -z "$PAKE_HOME" ] ; then
-	PAKE_HOME="@PEAR-DIR@"
+	PAKE_HOME="@PEAR-DIR@/pake"
 fi
  
 if (test -z "$PHP_COMMAND") ; then
@@ -12,4 +12,4 @@ if (test -z "$PHP_COMMAND") ; then
   fi
 fi
 
-$PHP_COMMAND -d html_errors=off -qC $PAKE_HOME/pake.phar "$@"
+$PHP_COMMAND -d html_errors=off -qC $PAKE_HOME/cliapp.php "$@"

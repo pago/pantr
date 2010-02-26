@@ -3,11 +3,11 @@ use pake\Pake;
 
 // pake class loader
 spl_autoload_register(function($classname) {
-	$file = str_replace(
+	$file = __DIR__.DIRECTORY_SEPARATOR.str_replace(
 		array('\\', '_'),
-		// phar packaging requires the use of '/' over DIRECTORY_SEPARATOR
-		// as the latter won't work on windows (see #1)
-		array('/', '/'), $classname) . '.php';
+		array(DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+		$classname
+	) . '.php';
 	
 	if(file_exists($file)) {
 		require_once $file;
@@ -21,8 +21,14 @@ if(!class_exists('pake\Pake')) {
 }
 
 // load requirements
-require_once 'SymfonyComponents/YAML/sfYaml.php';
-require_once 'SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+if(file_exists(__DIR__.'/SymfonyComponents')) {
+	require_once __DIR__.'/SymfonyComponents/YAML/sfYaml.php';
+	require_once __DIR__.'/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+} else {
+	// most likely running a local pake copy
+	require_once __DIR__.'/../lib/SymfonyComponents/YAML/sfYaml.php';
+	require_once __DIR__.'/../lib/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+}
 
 // load dependency injection container
 sfServiceContainerAutoloader::register();

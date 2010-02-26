@@ -21,25 +21,26 @@
   <api>##VERSION##</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>##STABILITY##</release>
+  <api>##STABILITY##</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/mit-license.php">MIT</license>
  <notes>-</notes>
  <contents>
   <dir name="/">
-   <file baseinstalldir="/" name="pake" role="script" />
-   <file role="script" baseinstalldir="/" name="pake">
+   <file role="script" baseinstalldir="/" name="bin/pake" install-as="pake">
     <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
     <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
     <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
    </file>
-   <file role="script" baseinstalldir="/" name="pake.bat">
+   <file role="script" baseinstalldir="/" name="bin/pake.bat" install-as="pake.bat">
     <tasks:replace type="pear-config" from="@PHP-BIN@" to="php_bin"/>
     <tasks:replace type="pear-config" from="@BIN-DIR@" to="bin_dir"/>
     <tasks:replace type="pear-config" from="@PEAR-DIR@" to="php_dir"/>
    </file>
-   <file role="php" baseinstalldir="/" name="pake.phar"/>
+		<dir name="pake">
+	 		##CLASS_FILES##
+		</dir>
   </dir>
  </contents>
  <dependencies>
