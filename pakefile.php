@@ -26,14 +26,13 @@ use pake\ext\Phar;
 use pake\ext\PHPUnit;
 use pake\ext\Pirum;
 
-Pake::property('pake.version', '0.7.0');
+Pake::property('pake.version', '0.7.2');
 Pake::loadProperties();
 
 $testfiles = Pake::fileset()
 	->name('*Test.php')
 	->in('test');
-PHPUnit::task('unit-test', 'Run all tests',
-	$testfiles);
+PHPUnit::task('unit-test', 'Run all tests', $testfiles);
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
@@ -51,9 +50,14 @@ Pake::task('init', 'Create build directory')
 	->dependsOn('clean')
 	->run(function() {
 		$lib = Pake::finder()
+			// we don't want to distribute vfsStream
 			->discard('vfsStream')->prune('vfsStream')
-			->prune('pear')->discard('pear')
+			->prune('pear')->discard('pear') // or pear
 			->prune('data')->discard('data')
+			// or the IOC-documentation and tests
+			->prune('doc')->discard('doc')
+			->prune('test')->discard('test')
+			// and no hidden files!
 			->prune('.*')->discard('.*')
 			->not_name('.*')
 			->ignore_version_control();
@@ -62,6 +66,11 @@ Pake::task('init', 'Create build directory')
 		Pake::mkdirs('build/pake');
 		Pake::mirror($lib, 'lib', 'build/pake', Pake::SILENT);
 		Pake::mirror(Pake::finder(), 'src', 'build/pake', Pake::SILENT);
+		
+		// and executables
+		Pake::mkdirs('build/bin');
+		Pake::copy('bin/pake', 'build/bin/pake');
+		Pake::copy('bin/pake.bat', 'build/bin/pake.bat');
 		
 		// compile dependency injection layer
 		$sc = new sfServiceContainerBuilder();
@@ -103,19 +112,13 @@ Pake::task('dist', 'Create distribution package')
 	->run(function() {
 		Pake::mkdirs('dist');
 		
-		Pake::mkdirs('build/bin');
-		Pake::copy('bin/pake', 'build/bin/pake');
-		Pake::copy('bin/pake.bat', 'build/bin/pake.bat');
-		
+		// prepare class file data for PEAR package
 		$class_files = Pake::fileset()->ignore_version_control()
 			->relative()
 			->in('build/pake');
-	    $xml_classes = '';
-	    foreach ($class_files as $file) {
-	        $dir_name  = dirname($file);
-	        $file_name = basename($file);
-	        $xml_classes .= '<file role="php" name="'.$file.'"/>'."\n";
-	    }
+		$xml_classes = array_reduce($class_files, function($prev, $file) {
+			return $prev . '<file role="php" name="'.$file.'"/>'."\n";
+		});
 		
 		Pake::copy('package.xml', 'build/package.xml', array(
 			'VERSION' => Pake::property('pake.version'),
@@ -138,12 +141,12 @@ Pake::task('sync-pear', 'install/remove channels and packages')
 	->run(function() {
 		Pake::dependencies()->in('lib')
 			->fromChannel('pear.pagosoft.com')
-				->package('util')
-				->package('cli')
-				->package('parser')
+				->usePackage('util')
+				->usePackage('cli')
+				->usePackage('parser')
 			->fromChannel('pear.php-tools.net')
-				->package('vfsstream', 'alpha')
+				->usePackage('vfsstream', 'alpha')
 			->fromChannel('pear.symfony-project.com')
-				->package('yaml')
+				->usePackage('yaml')
 			->sync();
 	});

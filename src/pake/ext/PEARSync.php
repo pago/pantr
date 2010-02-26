@@ -60,7 +60,14 @@ class PEARSync {
 		return $this;
 	}
 	
+	/** Specify the required package
+	 *  @deprecated use #usePackage($pkg, $v) instead
+	 */
 	public function package($pkg, $v='') {
+		return $this->usePackage($pkg, $v);
+	}
+	
+	public function usePackage($pkg, $v='') {
 		$this->channels[$this->lastChannel][$pkg] = $v;
 		return $this;
 	}

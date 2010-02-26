@@ -93,7 +93,7 @@ class PEAR {
 					PEAR::init($home);
 				}
 			});
-		Pake::task(':bundle', 'Execute a local PEAR command')
+		Pake::task(':bundle', 'Execute a pake-local PEAR command')
 			->usage(":bundle <command> [args]")
 			->dependsOn('::init-pake-home')
 			->needsRequest()
@@ -132,6 +132,14 @@ class PEAR {
 					$taskName = array_shift($args);
 				}
 			}
+			
+			// handle the (non-standard) "pear init" task
+			if($args[0] == 'init') {
+				$dir = isset($args[1]) ? $args[1] : 'lib';
+				PEAR::init($dir);
+				return;
+			}
+			
 			// drop pearrc option
 			if(isset($req['pearrc'])) {
 				$pearrc = $req['pearrc'];

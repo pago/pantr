@@ -27,12 +27,20 @@ namespace pake\core;
  */
 class ServerHomePathProvider implements HomePathProvider {
 	public function get() {
-		$home = null;
 		if(isset($_SERVER['PAKE_HOME'])) {
-			$home = $_SERVER['PAKE_HOME'];
+			return $_SERVER['PAKE_HOME'];
 		} else if(isset($_SERVER['HOME'])) {
-			$home = $_SERVER['HOME'] . DIRECTORY_SEPARATOR . '.pake';
+			$home = $_SERVER['HOME'];
+			// backwards compatible and most intuitive to linux users
+			if(file_exists($home . DIRECTORY_SEPARATOR . '.pake')) {
+				return $home . DIRECTORY_SEPARATOR . '.pake';
+			}
+			// for mac users
+			if(file_exists($home . '/Library/Application Support')) {
+				return $home . '/Library/Application Support/pake';
+			}
+			// default to linux style
+			return $home . DIRECTORY_SEPARATOR . '.pake';
 		}
-		return $home;
 	}
 }

@@ -27,4 +27,14 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($id, Pake::property('test'));
 	} // store a property
 	
+	/**
+	 * it should throw an exception when colon is used in property name
+	 * @author Patrick Gotthardt
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function it_should_throw_an_exception_when_colon_is_used_in_property_name() {
+		Pake::property('test:bar', 'foo');
+	} // throw an exception when colon is used in property name
+	
 }

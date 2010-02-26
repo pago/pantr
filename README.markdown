@@ -1,4 +1,4 @@
-pake is a simple php build tool
+pake is a simple php task automation and build tool
 ===============================
 
 With pake you can manage automate tasks (for example the build process and distribution)
@@ -69,7 +69,11 @@ Invoke it:
 	Hello Patrick
 
 If your terminal supports it, "Patrick" will be displayed using a different color.
-pake also includes a help system, invoked through the
+To invoke the version with argument:
+
+	$ pake greet -i Patrick
+
+pake also includes a help system, invoked with the
 
 	$ pake help
 
@@ -107,23 +111,107 @@ and so on.
 
 You can use PEAR in your pakefile to automate certain tasks, too:
 
-	use pake\tasks\PEAR;
+	use pake\ext\PEAR;
 
 	Pake::task('pear-upgrade', 'Updates all dependencies')
 		->run(function() {
 			$pear = new PEAR('lib/.pearrc');
 			$pear->upgrade();
 		});
-	
-pake as a project generator
----------------------------
+		
+Since version 0.7.0 pake supports handling your PEAR dependencies in a much nicer way.
+Instead of issuing a pear command from the command line you can specify your PEAR
+dependencies in the pakefile and pake will sync it automatically, thus removing obsolete
+and installing new packages.
 
-pake can also create a project for you. This functionality is in its infancy, but it might still
-be useful to get you started.
+	Pake::dependencies()->in('lib')
+		->fromChannel('pear.pagosoft.com')
+			->usePackage('util')
+			->usePackage('cli')
+			->usePackage('parser')
+		->fromChannel('pear.php-tools.net')
+			->usePackage('vfsstream', 'alpha')
+		->fromChannel('pear.symfony-project.com')
+			->usePackage('yaml')
+		->sync();
 
-	$ pake pake:new-project --with-local-pear --with-pear-package test
+It is up to you to either use it as a task (invoked manually) or put at the beginning/end of
+your pakefile (always invoked when pake is run).
+The preferred way is to include it in a task.
 
-will create a new project directory (test) and create a pakefile for you
-that can build a pear package from the project as well as a phar file.
-It will also automatically generate a test/lib directory in which you can manage your
-project local pear dependencies.
+Storing configuration
+----------------------
+
+pake bundles the really nice sfYaml library and makes it available in any pakefile.
+In order to help you with your configuration needs, pake provides a config cascade.
+Whenever you use the Pake::loadProperties function to load a config file, pake
+will try to load a file with the same name in ~/.pake first.
+You can change the directory by setting the PAKE_HOME environment variable.
+If you want to disable the cascade you can pass in "false" as the second value
+of Pake::loadProperties (the first argument being the name of the file you'd like to load).
+
+After you have loaded a configuration file, you can access its data using
+
+	Pake::property('name')
+
+Since yaml files are usually deeply nested trees pake provides a special syntax
+to help you get the property you'd like to get a little bit easier.
+If the property name contains a ":" (colon), pake will traverse the tree until
+it reaches the specified property or ends up with a dead end (in that case *null* is returned).
+
+~/.pake/pake.yml
+
+	pear:
+		local:
+			server: pear.localhost.lo
+
+Usage in pakefile:
+
+	Pake::property('pear:local:server');
+
+To set a property in your pakefile you can provide its value as the second parameter to the
+*Pake::property* function:
+
+	Pake::property('foo', 'bar');
+
+Note that you cannot set a nested property using the colon syntax.
+
+Installing libraries for use in pakefiles
+------------------------------------------
+
+Since pake has been created to automate your usual processes, you might want to
+make certain libraries available in all your pakefiles. A rather stupid solution
+is to install those libraries using pear. It's stupid since it'll force you
+to use that library version in all of your php projects. You could fix that if you
+lay out your include path properly but easy is usually better than smart, thus
+pake provides a set of commands to manage a pear repository which is made available
+to your pakefiles but not outside of those.
+
+To access these specific pear commands, use the :bundle command:
+
+	pake :bundle channel-discover pear.pagosoft.com
+	pake :bundle install pgs/util
+
+and so on. pake stores these files in *PAKE_HOME* (default: ~/.pake).
+It is managed with pear but you can place any files you'd like to be available
+in all your pakefiles in that directory. This includes configuration files (the config facade)
+and any php file.
+
+PAKE_HOME
+---------
+
+pake tries to resolve its home directory through the PAKE_HOME environment setting.
+If you do not specify such a variable it'll try to select a sensible default path.
+
+If there is a *~/Library/Application Support* directory (OS X has those by default):
+
+	~/Library/Application Support/pake
+
+Otherwise:
+
+	~/.pake
+
+License
+---------
+
+pake is released under the OpenSource MIT license.

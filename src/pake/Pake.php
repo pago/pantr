@@ -195,6 +195,7 @@ class Pake {
 	
 	private static $properties = array();
 	public static function property($key, $value=null) {
+		// retrieval
 		if(is_null($value)) {
 			$path = explode(':', $key);
 			if(count($path) == 1) {
@@ -211,6 +212,11 @@ class Pake {
 				}
 			}
 			return $top;
+		}
+		// storing
+		if(strpos($key, ':') !== false) {
+			throw new \InvalidArgumentException(
+				'Property key cannot contain reserved character ":" but is "'.$key.'"');
 		}
 		self::$properties[$key] = $value;
 	}
