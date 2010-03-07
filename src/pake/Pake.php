@@ -26,7 +26,10 @@ use pake\core\TaskRepository;
 use pake\core\Application;
 use pake\core\HomePathProvider;
 
-use pgs\cli\Output;
+use Pagosoft\Console\Console;
+use Pagosoft\Console\Output;
+use Pagosoft\Console\Input;
+
 use pgs\util\Finder;
 use pake\ext\Phar;
 
@@ -46,9 +49,13 @@ use pake\ext\Phar;
 class Pake {
 	const VERSION='DEV';
 	
+	//-----------------------------------------------------------------------
+	// Task execution part
+	//-----------------------------------------------------------------------
+	
 	private static $taskRepository;
 	private static $application;
-	private static $out;
+	private static $console, $log;
 	private static $homePathProvider;
 	
 	/**
@@ -126,6 +133,87 @@ class Pake {
 		self::$application->run($args);
 	}
 	
+	//-----------------------------------------------------------------------
+	// formatted printing, dealing with the console
+	//-----------------------------------------------------------------------
+	
+	// output design
+	const PARAMETER='PARAMETER';
+	const COMMENT='COMMENT';
+	const INFO='INFO';
+	const WARNING='WARNING';
+	const ERROR='ERROR';
+	const SECTION='SECTION';
+	
+	/**
+	 * Outputs the given text as it is (without indenting it)
+	 * @param string $t
+	 * @return Output
+	 */
+	public function write($t, $style = null) {
+		return self::console()->out()->write($t, $style);
+	}
+
+	/**
+	 * @return Output
+	 */
+	public function writeln($t, $style = null) {
+		return self::console()->out()->writeln($t, $style);
+	}
+
+	/**
+	 * @return Output
+	 */
+	public function writeblock($t) {
+		return self::console()->out()->writeblock($t);
+	}
+	
+	/**
+	 * @return Output
+	 */
+	public function writeOption($short, $long, $description=null) {
+		// is there a shorthand?
+		if(is_null($description)) {
+			$description = $long;
+			$long = $short;
+			return self::writeln(sprintf("   --%-20s %s", $long, $description));
+		}
+		return self::writeln(sprintf("-%s --%-20s %s", $short, $long, $description));
+	}
+
+	/**
+	 * @return Output
+	 */
+	public function writeHelp($name, $usage, $longDesc) {
+		return self::writeln('NAME', 'BOLD')
+			->indent()
+			->writeln($name)
+			->dedent()->nl()
+			->writeln('USAGE', 'BOLD')
+			->indent()
+			->writeln($usage)
+			->dedent()->nl()
+			->writeln('DESCRIPTION', 'BOLD')
+			->indent()
+			->writeblock($longDesc)
+			->dedent();
+	}
+	
+	/** 
+	 * Output a formatted message to the user explaining
+	 * the current task. $action is the performed task (i.e. "move", "build", "create")
+	 * and $desc is the more detailed description ("to some other directory",
+	 * "the PEAR channel", "a PEAR package")
+	 *
+	 * It will also log the action with a Zend_Log::NOTICE priority.
+	 *
+	 * @return Output
+	 */
+	public static function writeAction($action, $desc, $style='PARAMETER') {
+		self::log()->notice($action . ': ' . $desc);
+		return self::writeln(sprintf('[%20s|%s]    %s', $action, $style, $desc));
+	}
+	
 	/**
 	 * Prints the version number for pake.
 	 */
@@ -136,30 +224,63 @@ class Pake {
 		if($year != '2010') {
 			$copySpan .= '-'.$year;
 		}
-		self::getOut()->writeln(
+		self::writeln(
 			'Pake ' . self::VERSION . ' (c) '.$copySpan.' Patrick Gotthardt',
 			self::INFO
 		)->nl();
 	}
 	
-	// output design
-	const PARAMETER='PARAMETER';
-	const COMMENT='COMMENT';
-	const INFO='INFO';
-	const WARNING='WARNING';
-	const ERROR='ERROR';
-	const SECTION='SECTION';
-	
-	private static function getOut() {
-		if(self::$out == null) {
-			self::$out = new Output();
-			self::$out->registerStyle('INFO', array('fg' => 'yellow'))
-				->registerStyle('WARNING', array('fg' => 'red'))
-				->registerStyle('ERROR', array('fg' => 'red', 'reverse' => true, 'bold' => true))
-				->registerStyle('SECTION', array('bold' => true));
+	/** 
+	 * Provides access to the console
+	 */
+	public static function console() {
+		if(is_null(self::$console)) {
+			self::$console = new Console(new Input(), new Output());
 		}
-		return self::$out;
+		return self::$console;;
 	}
+	
+	public static function out() {
+		return self::console()->out();
+	}
+	
+	public static function in() {
+		return self::console()->in();
+	}
+	
+	//-----------------------------------------------------------------------
+	// Logging
+	//-----------------------------------------------------------------------
+	public static function setLog(\Zend_Log $log) {
+		self::$log = $log;
+	}
+	
+	/**
+     * Log a message at a priority.
+	 * If called with no arguments at all, this method will return
+	 * the current Zend_Log instance.
+     *
+     * @param  string   $message   Message to log
+     * @param  integer  $priority  Priority of message
+     * @param  mixed    $extras    Extra information to log in event
+     * @return void
+     * @throws Zend_Log_Exception
+     */
+    public static function log($message=null, $priority=null, $extras = null) {
+		if(is_null(self::$log)) {
+			// we initialize the log with the Null Writer in case the user
+			// does not specify any other writer
+			self::$log = new \Zend_Log(\Zend_Log_Writer_Null::factory(array()));
+		}
+		if(is_null($message) && is_null($priority) && is_null($extras)) {
+			return self::$log;
+		}
+		self::$log->log($message, $priority, $extras);
+	}
+	
+	//-----------------------------------------------------------------------
+	// Misc
+	//-----------------------------------------------------------------------
 	
 	private static $enhancements = array();
 	/**
@@ -173,17 +294,16 @@ class Pake {
 	
 	public static function __callStatic($name, $arguments) {
 		if(!isset(self::$enhancements[$name])) {
-			$out = self::getOut();
-			if(method_exists($out, $name)) {
-				return call_user_func_array(array($out, $name), $arguments);
-			}
 			throw new \Exception('Calling undefined function '.$name);
 		}
 		$fn = self::$enhancements[$name];
 		return call_user_func_array($fn, $arguments);
 	}
 	
-	// Utility-methods
+	//-----------------------------------------------------------------------
+	// Utility methods
+	//-----------------------------------------------------------------------
+	
 	const TYPE_FILES = 'file';
 	const TYPE_DIR = 'dir';
 	const TYPE_ANY = 'any';
@@ -318,15 +438,6 @@ class Pake {
 		Pake::beginSilent();
 		$fn();
 		Pake::endSilent();
-	}
-	
-	/** Output a formatted message to the user explaining
-	 *  the current task. $action is the performed task (i.e. "move", "build", "create")
-	 *  and $desc is the more detailed description ("to some other directory",
-	 *  "the PEAR channel", "a PEAR package")
-	 */
-	public static function writeAction($action, $desc, $style='PARAMETER') {
-		return Pake::writeln(sprintf('[%20s|%s]    %s', $action, $style, $desc));
 	}
 	
 	/**

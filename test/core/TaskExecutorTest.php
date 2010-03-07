@@ -15,6 +15,15 @@ use pgs\cli\Request;
 use pgs\cli\RequestContainer;
 
 class TaskExecutorTest extends PHPUnit_Extensions_OutputTestCase {
+	public function setUp() {
+		Pake::out()->disableColorizedOutput(true);
+	}
+
+	public function tearDown() {
+		Pake::out()->disableColorizedOutput(false);
+	}
+
+	
 	/**
 	 * it should invoke all tasks
 	 * @author Patrick Gotthardt
@@ -42,8 +51,7 @@ class TaskExecutorTest extends PHPUnit_Extensions_OutputTestCase {
 		$b = $taskRepository->addDummyTask('b', Status::FAILURE);
 		
 		$taskExecutor = $this->getTaskExecutor($taskRepository, $a);
-		$this->expectOutputString(Pake::colorize(
-			'Task "b" failed. Aborting.'."\n", Pake::ERROR));
+		$this->expectOutputString('Task "b" failed. Aborting.'."\n");
 		$status = $taskExecutor->execute($a);
 		
 		$this->assertEquals(Status::FAILURE, $status);

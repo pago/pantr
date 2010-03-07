@@ -22,6 +22,7 @@
  */
 namespace pake\core;
 
+use pake\Pake;
 use pake\Task;
 use pgs\cli\Request;
 use pgs\cli\RequestContainer;
@@ -29,6 +30,7 @@ use pgs\cli\RequestContainer;
 class Application {
 	private $defaultTaskName;
 	private $tasks, $pakefileFactory, $taskExecutorFactory;
+	private $pakefileLoaded=false;
 	
 	public function __construct(
 			TaskRepository $tasks,
@@ -68,11 +70,17 @@ class Application {
 		$taskName = $req[0];
 		
 		// load local pakefile
-		$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile');
-		if(!is_null($pakefile)) {
-			$pakefile->load();
-		} else if($taskName[0] != ':') { // not a global task
-			\pake\Pake::writeln('No pakefile found.', \pake\Pake::WARNING);
+		// we only need to load this once
+		// unless the --file option is specified in which case
+		// we load it
+		if($this->pakefileLoaded == false || isset($req['file'])) {
+			$this->pakefileLoaded = true;
+			$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile');
+			if(!is_null($pakefile)) {
+				$pakefile->load();
+			} else if($taskName[0] != ':') { // not a global task
+				Pake::writeln('No pakefile found.', \pake\Pake::WARNING);
+			}
 		}
 		
 		// prepare task
@@ -97,10 +105,31 @@ class Application {
 		return new RequestContainer(new Request($args));
 	}
 	
+	private function getTaskAlternatives($taskName) {
+		$pattern = '`^'
+			. str_replace(array('-', ':'), array('.*-', '.*:'), $taskName)
+			. '.*`i';
+		return array_filter(array_keys($this->tasks->getTasks()),
+				function($a) use ($pattern) {
+					return preg_match($pattern, $a);
+		});
+	}
+	
 	private function getTask($taskName) {
+		// direct try
 		if(isset($this->tasks[$taskName])) {
 			return $this->tasks[$taskName];
-		} else if(strpos($taskName, ':') !== false) {
+		}
+		
+		// fuzzy search
+		$candidates = $this->getTaskAlternatives($taskName);
+		if(count($candidates) == 1) {
+			$taskName = array_shift($candidates);
+			return $this->tasks[$taskName];
+		}
+		
+		// category
+		if(strpos($taskName, ':') !== false) {
 			// has category?
 			list($category, $taskName) = explode(':', $taskName);
 			if(isset($this->tasks[$category])) {
@@ -119,7 +148,6 @@ class Application {
 		}
 		
 		// no default task, no help task -> PANIC
-		Pake::writeln('Could not find any task to execute. Aborting.', Pake::ERROR);
 		return null;
 	}
 }

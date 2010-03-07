@@ -60,6 +60,74 @@ class ApplicationTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($foo->wasExecuted());
 	} // use category when no specific task was found
 	
+	/**
+	 * it should run abbreviated tasks
+	 * @author Patrick Gotthardt
+	 * @test
+	 */
+	public function it_should_locate_abbreviated_tasks() {
+		// GIVEN a task repository with a "foobar" task
+		$foobar = $this->taskRepository->addDummyTask('foobar');
+		
+		// WHEN executing task "foo"
+		$this->app->run('foo');
+		
+		// THEN "foobar" was executed
+		$this->assertTrue($foobar->wasExecuted());
+	} // locate abbreviated tasks
+	
+	/**
+	 * it should throw an exception if two abbreviated tasks match
+	 * @author Patrick Gotthardt
+	 * @test
+	 * @expectedException \pake\core\NoTaskFoundException
+	 */
+	public function it_should_throw_an_exception_if_two_abbreviated_tasks_match() {
+		// GIVEN a task repository with two tasks
+		$this->taskRepository->addDummyTask('bar');
+		$this->taskRepository->addDummyTask('baz');
+		
+		// WHEN using an ambigious task name
+		$this->app->run('ba');
+		
+		// THEN throw an exception
+	} // throw an exception if two abbreviated tasks match
+	
+	/**
+	 * it should use a fully qualified task name if it exists before checking for abbreviations
+	 * @author Patrick Gotthardt
+	 * @test
+	 */
+	public function it_should_use_a_fully_qualified_task_name_if_it_exists_before_checking_for_abbreviations() {
+		// GIVEN a task repository with two tasks
+		$foo = $this->taskRepository->addDummyTask('foo');
+		$foobar = $this->taskRepository->addDummyTask('foobar');
+		
+		// WHEN running task "foo"
+		$this->app->run('foo');
+		
+		// THEN task "foo" should have been executed
+		$this->assertTrue($foo->wasExecuted());
+	} // use a fully qualified task name if it exists before checking for abbreviations
+	
+	/**
+	 * it should accept the dash sign as word seperator
+	 * @author Patrick Gotthardt
+	 * @test
+	 */
+	public function it_should_accept_the_dash_sign_as_word_seperator() {
+		// GIVEN a task repository with two tasks
+		$t1 = $this->taskRepository->addDummyTask('foo-bar');
+		$t2 = $this->taskRepository->addDummyTask('foo:bar');
+		
+		// WHEN running task "foo"
+		$this->app->run('f-b');
+		$this->app->run('f:b');
+		
+		// THEN task "foo" should have been executed
+		$this->assertTrue($t1->wasExecuted());
+		$this->assertTrue($t2->wasExecuted());
+	} // accept the dash sign as word seperator
 	
 	private function getApplication(TaskRepository $taskRepository) {
 		$executionStrategyFactory = new ExecutionStrategyFactory($taskRepository);

@@ -36,6 +36,7 @@ class Task {
     private $needsRequest = false;
     private $run;
 	private $before = array(), $after = array();
+	private $properties = array();
 
     public function __construct($name, $desc='') {
         $this->name = $name;
@@ -121,6 +122,22 @@ class Task {
         return $this;
     }
 
+	public function __set($name, $value) {
+		$this->properties[$name] = $value;
+	}
+	
+	public function __get($name) {
+		return $this->properties[$name];
+	}
+	
+	public function __isset($name) {
+		return isset($this->properties[$name]);
+	}
+	
+	public function __unset($name) {
+		unset($this->properties[$name]);
+	}
+
 	/** The supplied function will be invoked before
 	 *  the actual task is run. The function must have
 	 *  the following signature:
@@ -180,8 +197,9 @@ class Task {
             }
             $args->expectNumArgs($this->expectNumArgs);
             if($args->isValid()) {
+				$this->args = $args;
 				if($this->runBefore()) {
-					$result = $fn($args);
+					$result = $fn($args, $this);
 					$result = $this->runAfter($result);
 				}
             } else {
@@ -189,7 +207,7 @@ class Task {
             }
         } else {
 			if($this->runBefore()) {
-				$result = $fn();
+				$result = $fn($this);
 				$result = $this->runAfter($result);
 			}
         }
