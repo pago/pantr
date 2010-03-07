@@ -23,5 +23,8 @@
 namespace pake\core;
 
 class NoTaskFoundException extends \Exception {
-	
+	private $alternatives;
+	public function __construct($alternatives = array()) {
+		$this->alternatives = $alternatives;
+	}
 }

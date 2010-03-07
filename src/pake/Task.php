@@ -35,6 +35,7 @@ class Task {
     private $expectNumArgs = 0;
     private $needsRequest = false;
     private $run;
+	private $before = array(), $after = array();
 
     public function __construct($name, $desc='') {
         $this->name = $name;
@@ -120,9 +121,55 @@ class Task {
         return $this;
     }
 
+	/** The supplied function will be invoked before
+	 *  the actual task is run. The function must have
+	 *  the following signature:
+	 *  fn(task: Task):boolean
+	 *
+	 *  If it returns <code>false</code> the task will not be executed
+	 *  but unlike returning Status::FAILURE the others tasks in the row
+	 *  will still be executed.
+	 *
+	 *  This method is to be used to conditionally enable or disable
+	 *  a task and add or modify its properties.
+	 *
+	 *  You can specify more than one function to run before a task.
+	 */
+	public function before($fn) {
+		$this->before[] = $fn;
+		return $this;
+	}
+	
+	/** The supplied function will be invoked after the task was run.
+	 *  It must have the following signature:
+	 *  fn(task: Task, status: Status): Status
+	 *
+	 *  It can be used to try to re-run a failed task
+	 *  or to clean up after it.
+	 */
+	public function after($fn) {
+		$this->after[] = $fn;
+		return $this;
+	}
+
     public function getDependencies() {
         return $this->dependsOn;
     }
+
+	private function runBefore() {
+		foreach($this->before as $fn) {
+			$result = $fn($this);
+			if($result === false) return false;
+		}
+		return true;
+	}
+	
+	private function runAfter($result) {
+		foreach($this->after as $fn) {
+			$result = $fn($this, $result);
+		}
+		return $result;
+	}
 
     public function __invoke(RequestContainer $args) {
         $fn = $this->run;
@@ -133,12 +180,18 @@ class Task {
             }
             $args->expectNumArgs($this->expectNumArgs);
             if($args->isValid()) {
-                $result = $fn($args);
+				if($this->runBefore()) {
+					$result = $fn($args);
+					$result = $this->runAfter($result);
+				}
             } else {
                 $this->printHelp();
             }
         } else {
-            $result = $fn();
+			if($this->runBefore()) {
+				$result = $fn();
+				$result = $this->runAfter($result);
+			}
         }
         return $result ?: Task::SUCCESS;
     }

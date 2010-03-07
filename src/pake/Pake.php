@@ -80,6 +80,13 @@ class Pake {
 	}
 	
 	/**
+	 * Returns the specified task or null, if it does not exist.
+	 */
+	public static function getTask($name) {
+		return self::$taskRepository[$name];
+	}
+	
+	/**
 	 * Register a new task and return it for further specification.
 	 *
 	 * This is the main entrance point for pakefiles.

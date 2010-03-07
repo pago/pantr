@@ -52,6 +52,17 @@ class TaskRepository implements \ArrayAccess, \Countable, \IteratorAggregate {
 	 * Find real task name (alias-aware)
 	 */
 	private function getTaskName($taskName) {
+		if(!isset($this[$taskName])) {
+			$pattern = '`^'.str_replace('-', '.*-', $taskName).'.*`i';
+			$candidates = array_filter(array_keys($this->tasks), function($a) use ($pattern) {
+				return preg_match($pattern, $a);
+			});
+			if(count($candidates) == 1) {
+				$taskName = $candidates[0];
+			} else {
+				throw new NoTaskFoundException($candidates);
+			}
+		}
 		// check for alias
 		$task = $this->tasks[$taskName];
 		if($taskName != $task->getName()) {
@@ -66,8 +77,7 @@ class TaskRepository implements \ArrayAccess, \Countable, \IteratorAggregate {
 	}
 	
 	public function getTask($name) {
-		$taskName = $this->getTaskName($name);
-		return $this->tasks[$taskName];
+		return $this[$name];
 	}
 	
 	// ArrayAccess implementation
