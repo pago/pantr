@@ -332,6 +332,14 @@ class Finder
     return $this;
   }
 
+	public function findIn($dir) {
+		$this->relative();
+		$files = $this->in($dir);
+		return array_map(function($file) use ($dir) {
+			return $dir . '/' . $file;
+		}, $files);
+	}
+
   /**
    * Searches files and directories which match defined rules.
    *

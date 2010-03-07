@@ -53,7 +53,7 @@ Pake::task('help', 'Display this help message')
 				->write(' <task> ', Pake::PARAMETER)
 				->writeln('[args]');
 			Application::printOptions();
-			Pake::nl()
+			Pake::out()->nl()
 				->writeln('Available tasks:', Pake::SECTION);
 			$showPakeTasks = isset($req['global-tasks']);
 			foreach(Pake::getDefinedTasks() as $key => $task) {
@@ -67,7 +67,7 @@ Pake::task('help', 'Display this help message')
 					}
 				}
 			}
-			Pake::nl()->writeln('Help', Pake::SECTION)
+			Pake::out()->nl()->writeln('Help', Pake::SECTION)
 				->write('See ')
 				->write('pake help ', Pake::COMMENT)
 				->write('<task> ', Pake::PARAMETER)

@@ -157,7 +157,7 @@ class Pake {
 	/**
 	 * @return Output
 	 */
-	public function writeln($t, $style = null) {
+	public function writeln($t='', $style = null) {
 		return self::console()->out()->writeln($t, $style);
 	}
 
@@ -212,6 +212,10 @@ class Pake {
 	public static function writeAction($action, $desc, $style='PARAMETER') {
 		self::log()->notice($action . ': ' . $desc);
 		return self::writeln(sprintf('[%20s|%s]    %s', $action, $style, $desc));
+	}
+	
+	public static function writeActionPrefix($action, $style='PARAMETER') {
+		return self::write(sprintf('[%20s|%s]    ', $action, $style));
 	}
 	
 	/**

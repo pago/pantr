@@ -150,15 +150,3 @@ Pake::task('sync-pear', 'install/remove channels and packages')
 				->usePackage('yaml')
 			->sync();
 	});
-	
-Pake::task('test:bar', 'description')
-	->run(function() {
-		$in = new \Pagosoft\Console\Input();
-		echo "Name: ";
-		$name = $in->readline();
-		echo "Hello $name!\n";
-	});
-Pake::task('testing', 'description')
-	->run(function() {
-		Pake::writeln('test');
-	});

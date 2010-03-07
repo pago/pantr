@@ -43,7 +43,7 @@ class RequestContainer implements \ArrayAccess {
 	
 	public function printOptions() {
 		if(count($this->descriptionTable) > 0) {
-			Pake::nl()->writeln('Options:', 'BOLD');
+			Pake::out()->nl()->writeln('Options:', 'BOLD');
 			foreach($this->descriptionTable as $long => $desc) {
 				// check if there is a short version
 				if(isset($this->requestAliasTable[$long])) {

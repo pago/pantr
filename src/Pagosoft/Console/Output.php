@@ -23,7 +23,7 @@ class Output {
 	private $styles = array();
 
 	function __construct() {
-		if(self::canHandleColorizedOutput()) {
+		if(!self::canHandleColorizedOutput()) {
 			self::$colorizedOutputSupported = false;
 		}
 
