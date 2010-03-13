@@ -114,6 +114,10 @@ class Pake {
 		return self::$taskRepository[$name];
 	}
 	
+	public static function getTaskRepository() {
+		return self::$taskRepository;
+	}
+	
 	/**
 	 * Register a new task and return it for further specification.
 	 *

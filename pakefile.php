@@ -22,32 +22,56 @@
  */
 
 use pake\Pake;
-use pake\ext\Phar;
+use pake\ext\File;
 use pake\ext\PHPUnit;
 use pake\ext\Pirum;
 use pake\ext\Pearfarm\PackageSpec;
 
+Pake::setDefault('build:package');
 Pake::property('pake.version', '0.7.2');
 Pake::loadProperties();
 
-$testfiles = Pake::fileset()
-	->name('*Test.php')
-	->in('test');
-PHPUnit::task('test:unit', 'Run all tests', $testfiles);
-
+// global namespace
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
-		Pake::beginSilent('clean', 'Cleaning up');
-		
-		// get rid of .DS_Store files
-		Pake::rm(Pake::finder()->name('.DS_Store')->in('src'));
-		Pake::rm('build', true);
-		Pake::rm('dist', true);
-		
-		Pake::endSilent();
+		Pake::silent('clean', 'Cleaning up', function() {
+			// get rid of .DS_Store files
+			Pake::rm(Pake::finder()->name('.DS_Store')->in('src'));
+			Pake::rm('build', true);
+			Pake::rm('dist', true);
+		});
 	});
+
+// tests
+PHPUnit::task('test:unit', 'Run all tests');
 	
-Pake::task('init', 'Create build directory')
+// config
+Pake::task('config:set-version', 'Changes the pake version for the release')
+	->option('version')
+		->desc('Set the version to the specified value')
+	->run(function($req) {
+		if(isset($req['version'])) {
+			Pake::property('pake.version', $req['version']);
+			Pake::writeAction('set-version', $req['version']);
+		}
+	});
+
+Pake::task('config:sync-pear', 'install/remove channels and packages')
+	->run(function() {
+		Pake::dependencies()->in('lib')
+			->fromChannel('pear.pagosoft.com')
+				->usePackage('util')
+				->usePackage('cli')
+				->usePackage('parser')
+			->fromChannel('pear.php-tools.net')
+				->usePackage('vfsstream', 'alpha')
+			->fromChannel('pear.symfony-project.com')
+				->usePackage('yaml')
+			->sync();
+	});
+
+// build process
+Pake::task('build:init', 'Create build directory')
 	->dependsOn('clean')
 	->run(function() {
 		$lib = Pake::finder()
@@ -72,30 +96,51 @@ Pake::task('init', 'Create build directory')
 		Pake::mkdirs('build/bin');
 		Pake::copy('bin/pake', 'build/bin/pake');
 		Pake::copy('bin/pake.bat', 'build/bin/pake.bat');
-		
+	});
+	
+Pake::task('build:package', 'description')
+	->dependsOn('test:unit', 'build:init')
+	->run(function() {
+		$spec = PackageSpec::in('build')
+			->setName('pake')
+			->setChannel('pear.pagosoft.com')
+			->setSummary('Pake is a simple php build tool.')
+			->setDescription('Pake is a simple php build tool.')
+			->setNotes('n/a')
+			->setVersion(Pake::property('pake.version'))
+			->setStability('beta')
+			->setLicense(PackageSpec::LICENSE_MIT)
+			->addMaintainer('lead', 'Patrick Gotthardt', 'pago', 'patrick@pagosoft.com')
+			->setDependsOnPHPVersion('5.3.0')
+			->addFiles(Pake::fileset()
+					->ignore_version_control()
+					->relative()
+					->in('build'))
+			->addFiles(array('bin/pake', 'bin/pake.bat'))
+			->addExecutable('bin/pake')
+			->addExecutable('bin/pake.bat', null, PackageSpec::PLATFORM_WIN)
+			->writePackageFile();
+		Pake::mkdirs('dist');
+		Pake::create_pear_package('build/package.xml', 'dist');
+	});
+
+// compilation
+File::task('compile:services', 'build/pake/pake/core/services.yml', ':dirname/:filename.php')
+	->run(function($src, $target) {
 		// compile dependency injection layer
 		$sc = new sfServiceContainerBuilder();
 
 		$loader = new sfServiceContainerLoaderFileYaml($sc);
-		$loader->load('build/pake/pake/core/services.yml');
+		$loader->load($src);
 
 		$dumper = new sfServiceContainerDumperPhp($sc);
 		$code = $dumper->dump(array('class' => 'PakeContainer'));
-		file_put_contents('build/pake/pake/core/services.php', $code);
+		file_put_contents($target, $code);
 	});
-	
-Pake::task('set-version', 'Changes the pake version for the release')
-	->option('version')
-		->desc('Set the version to the specified value')
-	->run(function($req) {
-		if(isset($req['version'])) {
-			Pake::property('pake.version', $req['version']);
-			Pake::writeAction('set-version', $req['version']);
-		}
-	});
+Pake::getTask('build:init')->after(Pake::getTask('compile:services'));
 
-Pake::task('update-version', 'Updates the version number in the Pake.php file')
-	->dependsOn('set-version', 'init')
+Pake::task('compile:version', 'Updates the version number in the Pake.php file')
+	->dependsOn('config:set-version')
 	->run(function() {
 		// update version number
 		Pake::replace_in('build/pake/pake/Pake.php', function($f, $c) {
@@ -107,71 +152,13 @@ Pake::task('update-version', 'Updates the version number in the Pake.php file')
 			);
 		});
 	});
-	
-Pake::task('dist', 'Create distribution package')
-	->dependsOn('test:unit', 'update-version')
-	->run(function() {
-		Pake::mkdirs('dist');
-		
-		// prepare class file data for PEAR package
-		$class_files = Pake::fileset()->ignore_version_control()
-			->relative()
-			->in('build/pake');
-		$xml_classes = array_reduce($class_files, function($prev, $file) {
-			return $prev . '<file role="php" name="'.$file.'"/>'."\n";
-		});
-		
-		Pake::copy('package.xml', 'build/package.xml', array(
-			'VERSION' => Pake::property('pake.version'),
-			'CURRENT_DATE' => date('Y-m-d'),
-			'CLASS_FILES' => $xml_classes,
-			'STABILITY' => 'beta'
-		));
+Pake::getTask('build:init')->after(Pake::getTask('compile:version'));
 
-		Pake::create_pear_package('build/package.xml', 'dist');
-	});
 
+// publish
 Pake::task('publish', 'Publish the pear package on pear channel')
-	->dependsOn('dist')
+	->dependsOn('build:package')
 	->run(function() {
 		Pirum::onChannel(Pake::property('pear.dir'))
 			->addLatestVersion('dist');
-	});
-	
-Pake::task('sync-pear', 'install/remove channels and packages')
-	->run(function() {
-		Pake::dependencies()->in('lib')
-			->fromChannel('pear.pagosoft.com')
-				->usePackage('util')
-				->usePackage('cli')
-				->usePackage('parser')
-			->fromChannel('pear.php-tools.net')
-				->usePackage('vfsstream', 'alpha')
-			->fromChannel('pear.symfony-project.com')
-				->usePackage('yaml')
-			->sync();
-	});
-	
-Pake::task('create:pear-package-file', 'description')
-	->dependsOn('test:unit', 'update-version')
-	->run(function() {
-		$spec = PackageSpec::in('build')
-			->setName('pake')
-			->setChannel('pear.pagosoft.com')
-			->setSummary('Pake is a simple php build tool.')
-			->setDescription('Pake is a simple php build tool.')
-			->setNotes('')
-			->setVersion(Pake::property('pake.version'))
-			->setStability('beta')
-			->setLicense(PackageSpec::LICENSE_MIT)
-			->addMaintainer('lead', 'Patrick Gotthardt', 'pago', 'patrick@pagosoft.com')
-			->setDependsOnPHPVersion('5.3.0')
-			->addFiles(Pake::fileset()
-					->ignore_version_control()
-					->relative()
-					->in('build/pake'))
-			->addFiles(array('bin/pake', 'bin/pake.bat'))
-			->addExecutable('bin/pake')
-			->addExecutable('bin/pake.bat', null, PackageSpec::PLATFORM_WIN)
-			->writePackageFile();
 	});

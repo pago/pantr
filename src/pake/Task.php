@@ -179,17 +179,17 @@ class Task {
         return $this->dependsOn;
     }
 
-	private function runBefore() {
+	private function runBefore($args) {
 		foreach($this->before as $fn) {
-			$result = $fn($this);
+			$result = $fn($args, $this);
 			if($result === false) return false;
 		}
 		return true;
 	}
 	
-	private function runAfter($result) {
+	private function runAfter($args, $result) {
 		foreach($this->after as $fn) {
-			$result = $fn($this, $result);
+			$result = $fn($args, $this, $result);
 		}
 		return $result;
 	}
@@ -204,17 +204,20 @@ class Task {
             $args->expectNumArgs($this->expectNumArgs);
             if($args->isValid()) {
 				$this->args = $args;
-				if($this->runBefore()) {
+				if($this->runBefore($args)) {
 					$result = $fn($args, $this);
-					$result = $this->runAfter($result);
+					$result = $this->runAfter($args, $result);
 				}
             } else {
                 $this->printHelp();
             }
         } else {
-			if($this->runBefore()) {
+			if($this->runBefore($args)) {
+				if(is_null($fn)) {
+					Pake::writeln($this->getName());
+				}
 				$result = $fn($this);
-				$result = $this->runAfter($result);
+				$result = $this->runAfter($args, $result);
 			}
         }
         return $result ?: Task::SUCCESS;

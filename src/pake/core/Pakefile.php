@@ -31,4 +31,8 @@ class Pakefile {
 	public function load() {
 		require $this->name;
 	}
+	
+	public function getPath() {
+		return dirname($this->name);
+	}
 }

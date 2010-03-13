@@ -77,6 +77,8 @@ class Application {
 			$this->pakefileLoaded = true;
 			$pakefile = $this->pakefileFactory->getPakefile($req['file'] ?: 'pakefile');
 			if(!is_null($pakefile)) {
+				// change current dir to pakefile
+				chdir($pakefile->getPath());
 				$pakefile->load();
 			} else if($taskName[0] != ':') { // not a global task
 				Pake::writeln('No pakefile found.', \pake\Pake::WARNING);
