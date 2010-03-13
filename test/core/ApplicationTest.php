@@ -139,9 +139,12 @@ class ApplicationTest extends PHPUnit_Framework_TestCase {
 			
 		$taskExecutorFactory = new TaskExecutorFactory($taskRepository, $executionStrategyFactory);
 		
-		$pakefile = $this->getMock('pake\core\Pakefile', array('load'), array(''));
+		$pakefile = $this->getMock('pake\core\Pakefile', array('load', 'getPath'), array(''));
 		$pakefile->expects($this->once())
 			->method('load');
+		$pakefile->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue(getcwd()));
 		$pakefileFactory = $this->getMock('pake\core\PakefileFactory');
 		$pakefileFactory->expects($this->once())
 			->method('getPakefile')
