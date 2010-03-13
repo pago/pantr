@@ -1,6 +1,8 @@
 <?php
 namespace pake\ext\Pearfarm;
 
+use pake\Pake;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'load.php';
 
 class PackageSpec extends \Pearfarm_PackageSpec {
@@ -23,5 +25,14 @@ class PackageSpec extends \Pearfarm_PackageSpec {
 	public function addFiles($files) {
 		$this->addFilesSimple($files);
 		return $this;
+	}
+	
+	public function createPackage($in=null) {
+		$this->writePackageFile();
+		if(!is_null($in)) {
+			Pake::mkdirs($in);
+		}
+		$pkgFile = $this->options[self::OPT_BASEDIR].DIRECTORY_SEPARATOR.'package.xml';
+		Pake::create_pear_package($pkgFile, $in);
 	}
 }

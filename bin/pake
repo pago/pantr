@@ -1,15 +1,15 @@
 #!/bin/sh
 if [ -z "$PAKE_HOME" ] ; then
-	PAKE_HOME="@PEAR-DIR@/pake"
+	PAKE_HOME="@pear_directory@/pake"
 fi
  
 if (test -z "$PHP_COMMAND") ; then
   # echo "WARNING: PHP_COMMAND environment not set. (Assuming php on PATH)"
-  if [ -e "@PHP-BIN@" ] ; then
-	export PHP_COMMAND="@PHP-BIN@"
+  if [ -e "@php_bin@" ] ; then
+	export PHP_COMMAND="@php_bin@"
   else
     export PHP_COMMAND=php
   fi
 fi
 
-$PHP_COMMAND -d html_errors=off -qC $PAKE_HOME/cliapp.php "$@"
+$PHP_COMMAND -d html_errors=off -qC $PAKE_HOME/pake/cliapp.php "$@"

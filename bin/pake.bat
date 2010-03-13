@@ -33,8 +33,8 @@ goto run
 goto cleanup
 
 :run
-IF EXIST "@PEAR-DIR@" (
-  %PHP_COMMAND% -d html_errors=off -qC "@PEAR-DIR@\pake\cliapp.php" %1 %2 %3 %4 %5 %6 %7 %8 %9
+IF EXIST "@pear_directory@" (
+  %PHP_COMMAND% -d html_errors=off -qC "@pear_directory@\pake\cliapp.php" %1 %2 %3 %4 %5 %6 %7 %8 %9
 ) ELSE (
   %PHP_COMMAND% -d html_errors=off -qC "%PAKE_HOME%\cliapp.php" %1 %2 %3 %4 %5 %6 %7 %8 %9
 )

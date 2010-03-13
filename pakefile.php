@@ -29,6 +29,7 @@ use pake\ext\Pearfarm\PackageSpec;
 
 Pake::setDefault('build:package');
 Pake::property('pake.version', '0.7.2');
+Pake::property('pear.channel', 'pear.pagosoft.com');
 Pake::loadProperties();
 
 // global namespace
@@ -53,6 +54,17 @@ Pake::task('config:set-version', 'Changes the pake version for the release')
 		if(isset($req['version'])) {
 			Pake::property('pake.version', $req['version']);
 			Pake::writeAction('set-version', $req['version']);
+		}
+	});
+
+Pake::task('config:deploy-local', 'Configures pake to create a local pear package')
+	->option('local')
+		->shorthand('l')
+	->run(function($req) {
+		if(isset($req['l'])) {
+			Pake::writeAction('switch', 'to local pear channel');
+			Pake::property('pear.channel', 'pear.localhost');
+			Pake::property('pear.dir', __DIR__.'/../lpear');
 		}
 	});
 
@@ -100,10 +112,11 @@ Pake::task('build:init', 'Create build directory')
 	
 Pake::task('build:package', 'description')
 	->dependsOn('test:unit', 'build:init')
+	->before(Pake::getTask('config:deploy-local'))
 	->run(function() {
 		$spec = PackageSpec::in('build')
 			->setName('pake')
-			->setChannel('pear.pagosoft.com')
+			->setChannel(Pake::property('pear.channel'))
 			->setSummary('Pake is a simple php build tool.')
 			->setDescription('Pake is a simple php build tool.')
 			->setNotes('n/a')
@@ -119,9 +132,7 @@ Pake::task('build:package', 'description')
 			->addFiles(array('bin/pake', 'bin/pake.bat'))
 			->addExecutable('bin/pake')
 			->addExecutable('bin/pake.bat', null, PackageSpec::PLATFORM_WIN)
-			->writePackageFile();
-		Pake::mkdirs('dist');
-		Pake::create_pear_package('build/package.xml', 'dist');
+			->createPackage('dist');
 	});
 
 // compilation
@@ -140,7 +151,6 @@ File::task('compile:services', 'build/pake/pake/core/services.yml', ':dirname/:f
 Pake::getTask('build:init')->after(Pake::getTask('compile:services'));
 
 Pake::task('compile:version', 'Updates the version number in the Pake.php file')
-	->dependsOn('config:set-version')
 	->run(function() {
 		// update version number
 		Pake::replace_in('build/pake/pake/Pake.php', function($f, $c) {
@@ -151,12 +161,13 @@ Pake::task('compile:version', 'Updates the version number in the Pake.php file')
 				$c
 			);
 		});
-	});
+	})
+	->before(Pake::getTask('config:set-version'));
 Pake::getTask('build:init')->after(Pake::getTask('compile:version'));
 
 
 // publish
-Pake::task('publish', 'Publish the pear package on pear channel')
+Pake::task('deploy', 'Publish the pear package on pear channel')
 	->dependsOn('build:package')
 	->run(function() {
 		Pirum::onChannel(Pake::property('pear.dir'))
