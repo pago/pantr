@@ -1,16 +1,7 @@
 <?php
 namespace pake\ext\Pearfarm;
 
-// try to load pearfarm
-foreach(explode(PATH_SEPARATOR, get_include_path()) as $path) {
-	$file = $path . DIRECTORY_SEPARATOR . 'pearfarm/src/Pearfarm/PackageSpec.php';
-	if(file_exists($file)) {
-		require_once $file;
-	}
-}
-if(!class_exists('Pearfarm_PackageSpec')) {
-	throw new \Exception('Pearfarm is not installed!');
-}
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'load.php';
 
 class PackageSpec extends \Pearfarm_PackageSpec {
 	public static function in($basedir) {
@@ -32,9 +23,5 @@ class PackageSpec extends \Pearfarm_PackageSpec {
 	public function addFiles($files) {
 		$this->addFilesSimple($files);
 		return $this;
-	}
-	
-	public function listFiles() {
-		print_r($this->files);
 	}
 }
