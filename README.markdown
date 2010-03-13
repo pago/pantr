@@ -139,6 +139,48 @@ It is up to you to either use it as a task (invoked manually) or put at the begi
 your pakefile (always invoked when pake is run).
 The preferred way is to include it in a task.
 
+Creating a PEAR Package
+-----------------------
+
+Since version 0.7.3 there is a new API for creating PEAR packages.
+In order to use the API you will have to have Pearfarm installed.
+
+	$ pear channel-discover pearfarm.pearfarm.org
+	$ pear install pearfarm/pearfarm
+
+After you have performed those tasks, you could use pearfarm directly to build and publish
+your PEAR packages, or you can use pake to do the same.
+
+To create your PEAR package just create a new task:
+
+	use pake\ext\Pearfarm\PackageSpec;
+	Pake::task('build:package', 'Build a pear package')
+		->run(function() {
+			$spec = PackageSpec::in('src')
+			->setName('<project name>')
+			->setChannel('pear.yourserver.com')
+			->setSummary('whatever')
+			->setDescription('whatever')
+			->setNotes('n/a')
+			->setVersion('1.0.0')
+			->setStability('stable')
+			->setLicense(PackageSpec::LICENSE_MIT)
+			->addMaintainer('lead', '<your name>', '<username>', '<email>')
+			->setDependsOnPHPVersion('5.3.0')
+			->addFiles(Pake::fileset()
+				->ignore_version_control()
+				->relative()
+				->in('src'))
+			->createPackage();
+		});
+
+The PackageSpec class extends Pearfarms Pearfarm_PackageSpec class and adds a few methods.
+You have, however, the full Pearfarm API at your disposal.
+
+After you have created your package you can deploy it using Pirum on your own server or
+on Pearfarm. The APIs for Pirum already exist (pake\ext\Pirum) and we will improve
+Pearfarm deployment support soon.
+
 Storing configuration
 ----------------------
 
