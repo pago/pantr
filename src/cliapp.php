@@ -53,6 +53,7 @@ include_once __DIR__.'/pake/std_tasks.php';
 $bundleManager = $sc->bundleManager;
 $bundleManager->registerIncludePath();
 $bundleManager->loadBundles();
+Pake::setBundleManager($bundleManager);
 
 // display pake info and run it
 Pake::writeInfo();

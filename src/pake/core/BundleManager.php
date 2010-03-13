@@ -25,7 +25,7 @@ namespace pake\core;
 use pake\Pake;
 
 class BundleManager {
-	private $homePathProvider;
+	private $homePathProvider, $bundles = array();
 	public function __construct(HomePathProvider $homePathProvider) {
 		$this->homePathProvider = $homePathProvider;
 	}
@@ -37,16 +37,41 @@ class BundleManager {
 		}
 	}
 	
+	public function getBundle($name) {
+		return $this->bundles[$name];
+	}
+	
 	public function loadBundles() {
-		$path = $this->homePathProvider->get();
-		if(!is_null($path)) {
-			// load all phar files
-			$phars = Pake::fileset()
-				->name('*.phar')
-				->in($path);
-			foreach($phars as $phar) {
-				require_once $phar;
+		$this->loadBundlesFromPath(__DIR__.'/../bundles');
+		$this->loadBundlesFromPath($this->homePathProvider->get());
+	}
+	
+	public function loadBundlesFromPath($path) {	
+		if(!is_null($path) && file_exists($path)) {
+			// load bundles
+			foreach(new \DirectoryIterator($path) as $f) {
+				if(!$f->isDot() && $f->isDir()) {
+					$name = $f->getFilename();
+					$bundle = $this->loadBundle($name);
+					if(!is_null($bundle)) {
+						$bundle->registerClassLoader();
+						$bundle->registerGlobalTasks();
+						$this->bundles[$name] = $bundle;
+					}
+				}
 			}
 		}
+	}
+	
+	private function loadBundle($name) {
+		// path: ~/.pake/$name/$NameBundle.php
+		$path = $this->homePathProvider->get() . DIRECTORY_SEPARATOR
+				. $name . DIRECTORY_SEPARATOR . ucfirst($name).'Bundle.php';
+		if(file_exists($path)) {
+			require_once $path;
+			$className = ucfirst($name).'Bundle';
+			return new $className();
+		}
+		return null;
 	}
 }

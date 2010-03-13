@@ -25,6 +25,7 @@ use pake\Pake;
 use pake\ext\Phar;
 use pake\ext\PHPUnit;
 use pake\ext\Pirum;
+use pake\ext\Pearfarm\PackageSpec;
 
 Pake::property('pake.version', '0.7.2');
 Pake::loadProperties();
@@ -32,7 +33,7 @@ Pake::loadProperties();
 $testfiles = Pake::fileset()
 	->name('*Test.php')
 	->in('test');
-PHPUnit::task('unit-test', 'Run all tests', $testfiles);
+PHPUnit::task('test:unit', 'Run all tests', $testfiles);
 
 Pake::task('clean', 'Remove unused files')
 	->run(function() {
@@ -108,7 +109,7 @@ Pake::task('update-version', 'Updates the version number in the Pake.php file')
 	});
 	
 Pake::task('dist', 'Create distribution package')
-	->dependsOn('unit-test', 'update-version')
+	->dependsOn('test:unit', 'update-version')
 	->run(function() {
 		Pake::mkdirs('dist');
 		
@@ -149,4 +150,28 @@ Pake::task('sync-pear', 'install/remove channels and packages')
 			->fromChannel('pear.symfony-project.com')
 				->usePackage('yaml')
 			->sync();
+	});
+	
+Pake::task('create:pear-package-file', 'description')
+	->dependsOn('test:unit', 'update-version')
+	->run(function() {
+		$spec = PackageSpec::in('build')
+			->setName('pake')
+			->setChannel('pear.pagosoft.com')
+			->setSummary('Pake is a simple php build tool.')
+			->setDescription('Pake is a simple php build tool.')
+			->setNotes('')
+			->setVersion(Pake::property('pake.version'))
+			->setStability('beta')
+			->setLicense(PackageSpec::LICENSE_MIT)
+			->addMaintainer('lead', 'Patrick Gotthardt', 'pago', 'patrick@pagosoft.com')
+			->setDependsOnPHPVersion('5.3.0')
+			->addFiles(Pake::fileset()
+					->ignore_version_control()
+					->relative()
+					->in('build/pake'))
+			->addFiles(array('bin/pake', 'bin/pake.bat'))
+			->addExecutable('bin/pake')
+			->addExecutable('bin/pake.bat', null, PackageSpec::PLATFORM_WIN)
+			->writePackageFile();
 	});

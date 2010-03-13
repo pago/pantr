@@ -23,6 +23,7 @@
 namespace pake\ext;
 
 use pake\Pake;
+use pake\ext\Pearfarm\PackageSpec;
 
 class PEARSync {
 	private $in;
@@ -70,6 +71,14 @@ class PEARSync {
 	public function usePackage($pkg, $v='') {
 		$this->channels[$this->lastChannel][$pkg] = $v;
 		return $this;
+	}
+	
+	public function registerIn(PackageSpec $packageSpec) {
+		foreach($this->channels as $channel => $packages) {
+			foreach($packages as $pkg => $version) {
+				$packageSpec->addPackageDependency($pkg, $channel);
+			}
+		}
 	}
 	
 	public function sync($silent=true) {

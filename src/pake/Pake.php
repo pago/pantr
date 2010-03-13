@@ -25,6 +25,7 @@ namespace pake;
 use pake\core\TaskRepository;
 use pake\core\Application;
 use pake\core\HomePathProvider;
+use pake\core\BundleManager;
 
 use Pagosoft\Console\Console;
 use Pagosoft\Console\Output;
@@ -32,6 +33,8 @@ use Pagosoft\Console\Input;
 
 use pgs\util\Finder;
 use pake\ext\Phar;
+
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
 
 /**
  * The Pake class is the public API that pakefiles should use to create tasks,
@@ -57,6 +60,7 @@ class Pake {
 	private static $application;
 	private static $console, $log;
 	private static $homePathProvider;
+	private static $bundleManager;
 	
 	/**
 	 * Specify the executor that should be used to invoke and
@@ -68,6 +72,23 @@ class Pake {
 	
 	public static function setApplication(Application $application) {
 		self::$application = $application;
+	}
+	
+	public static function setBundleManager(BundleManager $bundleManager) {
+		self::$bundleManager = $bundleManager;
+	}
+	
+	public static function getBundle($name) {
+		return self::$bundleManager->getBundle($name);
+	}
+	
+	public static function importBundle($name) {
+		$bundle = self::getBundle($name);
+		if(!is_null($bundle)) {
+			$bundle->registerLocalTasks();
+		} else {
+			throw new \Exception('Bundle '.$name.' not found!');
+		}
 	}
 	
 	/**
@@ -373,8 +394,19 @@ class Pake {
 		}
 	}
 	
+	public static function importProperties($yaml) {
+		$props = \sfYaml::load($yaml);
+		foreach($props as $k => $v) {
+			self::$properties[$k] = $v;
+		}
+	}
+	
+	private static $dependencies;
 	public static function dependencies() {
-		return new \pake\ext\PEARSync();
+		if(is_null(self::$dependencies)) {
+			self::$dependencies = new \pake\ext\PEARSync();
+		}
+		return self::$dependencies;
 	}
 	
 	public static function _getFinderFromArg($arg, $target_dir = '', $relative = false) {
@@ -560,12 +592,21 @@ class Pake {
 	}
 	
 	public static function copy($src, $target, $vars=null) {
+		// read content and modify it
 		$package = file_get_contents($src);
 		if(!is_null($vars)) {
-			foreach($vars as $k => $v) {
-				$package = str_replace('##'.$k.'##', $v, $package);
+			if(is_callable($vars)) {
+				$package = $vars($package);
+			} else {
+				foreach($vars as $k => $v) {
+					$package = str_replace('##'.$k.'##', $v, $package);
+				}
 			}
 		}
+		
+		// make path from pattern
+		$target = fileNameTransform($src, $target);
+		
 		if(!is_dir(dirname($target))) {
 			Pake::mkdirs(dirname($target));
 		}

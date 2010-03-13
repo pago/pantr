@@ -1,6 +1,5 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-
 $loader = function($dir) {
 	return function($classname) use ($dir) {
 		$file = __DIR__ . '/../'.$dir.'/' . str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php';

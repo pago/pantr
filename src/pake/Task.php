@@ -122,6 +122,12 @@ class Task {
         return $this;
     }
 
+	// for fluent API
+	public function property($name, $value) {
+		$this->properties[$name] = $value;
+		return $this;
+	}
+
 	public function __set($name, $value) {
 		$this->properties[$name] = $value;
 	}
