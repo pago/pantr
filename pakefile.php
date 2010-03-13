@@ -28,7 +28,7 @@ use pake\ext\Pirum;
 use pake\ext\Pearfarm\PackageSpec;
 
 Pake::setDefault('build:package');
-Pake::property('pake.version', '0.7.2');
+Pake::property('pake.version', '0.7.3');
 Pake::property('pear.channel', 'pear.pagosoft.com');
 Pake::loadProperties();
 
