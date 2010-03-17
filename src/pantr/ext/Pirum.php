@@ -42,8 +42,12 @@ class Pirum {
 		
 		require_once 'PEAR/Config.php';
 		$pirumFile = PEAR_CONFIG_DEFAULT_BIN_DIR . DIRECTORY_SEPARATOR . 'pirum';
+		echo "$pirumFile\n";
 		if(file_exists($pirumFile)) {
+			ob_start();
 			require_once $pirumFile;
+			ob_end_clean();
+			return;
 		}
 		
 		throw new \Exception('Pirum was not found.');

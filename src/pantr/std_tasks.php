@@ -63,7 +63,9 @@ pantr::task('help', 'Display this help message')
 				$task = $tasks[$key];
 				$taskName = $task->getName();
 				$isGlobalTask = $task->isGlobal();
-				if(($showGlobalTasks && $isGlobalTask) || (!$showGlobalTasks && !$isGlobalTask)) {
+				$showTask = $task->isHidden() == false
+						&& ($showGlobalTasks == $isGlobalTask);
+				if($showTask) {
 					if($task->getName() != $key) {
 						pantr::writeAction($key, 'Alias for ['.$task->getName().'|INFO]');
 					} else {

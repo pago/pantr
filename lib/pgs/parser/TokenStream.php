@@ -35,7 +35,7 @@ class TokenStream {
 	}
 	
 	public function consume() {
-		if($p < $this->tokensSize) {
+		if($this->p < $this->tokensSize) {
 			$this->p++;
 		}
 	}
@@ -45,7 +45,7 @@ class TokenStream {
 		if($k == 0) return null;
 		if($k < 0) return $this->LB(-$k);
 		if(($this->p+$k-1) >= $this->tokensSize) {
-			return EOF_TOKEN;
+			return null;
 		}
 		return $this->tokens[$this->p+$k-1];
 	}
@@ -58,7 +58,9 @@ class TokenStream {
 	}
 	
 	public function LA($k) {
-		return $this->LT($k)->type;
+		$token = $this->LT($k);
+		if(is_null($token)) return -1;
+		return $token->type;
 	}
 	
 	public function mark() {

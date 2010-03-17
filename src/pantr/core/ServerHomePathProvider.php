@@ -27,8 +27,8 @@ namespace pantr\core;
  */
 class ServerHomePathProvider implements HomePathProvider {
 	public function get() {
-		if(isset($_SERVER['PAKE_HOME'])) {
-			return $_SERVER['PAKE_HOME'];
+		if(isset($_SERVER['PANTR_HOME'])) {
+			return $_SERVER['PANTR_HOME'];
 		} else if(isset($_SERVER['HOME'])) {
 			$home = $_SERVER['HOME'];
 			// backwards compatible and most intuitive to linux users
@@ -37,7 +37,11 @@ class ServerHomePathProvider implements HomePathProvider {
 			}
 			// for mac users
 			if(file_exists($home . '/Library/Application Support')) {
-				return $home . '/Library/Application Support/pantr';
+				$home = $home . '/Library/Application Support/pantr';
+				if(!file_exists($home)) {
+					@mkdir($home);
+				}
+				return $home;
 			}
 			// default to linux style
 			return $home . DIRECTORY_SEPARATOR . '.pantr';

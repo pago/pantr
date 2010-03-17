@@ -23,13 +23,17 @@
 namespace pantr\core;
 
 class TaskFile {
-	private $name;
+	private $name, $docparser;
 	public function __construct($name) {
 		$this->name = $name;
 	}
 	
 	public function load() {
 		require $this->name;
+	}
+	
+	public function getFullPath() {
+		return $this->name;
 	}
 	
 	public function getPath() {

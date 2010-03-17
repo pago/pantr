@@ -29,8 +29,7 @@ function task($name, $fnOrDesc, $fn=null) {
 	} else {
 		$desc = $fnOrDesc;
 	}
-	return \pantr\pantr::task($name, $desc)
-		->run($fn);
+	return \pantr\pantr::task($name, $desc)->run($fn);
 }
 
 namespace pantr;

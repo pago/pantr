@@ -38,6 +38,7 @@ class Task {
 	private $before = array(), $after = array();
 	private $properties = array();
 	private $isGlobal = false;
+	private $hidden = false;
 
     public function __construct($name, $desc='') {
         $this->name = $name;
@@ -65,7 +66,7 @@ class Task {
 
         // OPTIONS
         if(count($this->options) > 0) {
-            pantr::nl()->writeln('Options:', 'BOLD');
+            pantr::out()->nl()->writeln('Options:', 'BOLD');
             foreach($this->options as $opt) {
                 $opt->printHelp();
             }
@@ -80,6 +81,11 @@ class Task {
         return $this->desc;
     }
 
+	public function setDescription($desc) {
+		$this->desc = $desc;
+		return $this;
+	}
+
     public function getUsage() {
         return $this->usage;
     }
@@ -88,12 +94,31 @@ class Task {
         $this->detail = $desc;
         return $this;
     }
+
+	public function appendDetails($desc) {
+		if(empty($this->detail)) {
+			$this->detail = $desc;
+		} else {
+			$this->detail = "\n".$desc;
+		}
+	}
 	
 	public function isGlobal($flag=null) {
 		if(is_null($flag)) {
 			return $this->isGlobal;
 		}
 		$this->isGlobal = $flag;
+		return $this;
+	}
+	
+	/**
+	 * A hidden task won't show up in help
+	 */
+	public function isHidden($flag=null) {
+		if(is_null($flag)) {
+			return $this->hidden;
+		}
+		$this->hidden = $flag;
 		return $this;
 	}
 
