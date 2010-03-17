@@ -20,41 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+namespace pantr\ext;
 
 use pantr\pantr;
-if(!class_exists('pantr\pantr')) {
-	exit("pantr has not been installed properly!\n");
+
+class Phar extends \Phar {
+	public function getAutoloadManifest() {
+		$mf = <<<'EOF'
+<?php
+spl_autoload_register(function($classname) {
+	$pearStyle = str_replace('_', '/', $classname) . '.php';
+	$nsStyle = str_replace('\\', '/', $classname) . '.php';
+	$files = array($nsStyle, $pearStyle);
+
+	foreach($files as $file) {
+		if(file_exists($file)) {
+			require_once $file;
+			return true;
+		}
+	}
+	return false;
+});
+EOF;
+		return $mf;
+	}
+	
+	public function setDefaultStub() {
+		if(!isset($this['stub.php'])) {
+			$this->addFromString('stub.php', $this->getAutoloadManifest());
+		}
+		$this->setStub($this->createDefaultStub('stub.php'));
+	}
+	
+	public function addDirectories($src) {
+		$files = pantr::_getFinderFromArg($src);
+		foreach($files as $dir) {
+			pantr::writeAction('phar incl', $dir);
+			$this->buildFromDirectory($dir);
+		}
+	}
+	
+	public static function create($phar, $src='src') {
+		pantr::writeAction('phar', $phar);
+		$p = new Phar($phar);
+		$p->startBuffering();
+		if(is_callable($src)) {
+			$src($p);
+		} else {
+			$p->addDirectories($src);
+			$p->setDefaultStub();
+		}
+		$p->stopBuffering();
+	}
 }
-
-// load dependency injection container
-sfServiceContainerAutoloader::register();
-if(file_exists(__DIR__.'/pantr/core/services.php')) {
-	require_once __DIR__.'/pantr/core/services.php';
-	$sc = new pantrContainer();
-} else {
-	$sc = new sfServiceContainerBuilder();
-	$loader = new sfServiceContainerLoaderFileYaml($sc);
-	$loader->load(__DIR__.'/pantr/core/services.yml');
-}
-// drop script name from args
-$args = $_SERVER['argv'];
-array_shift($args);
-
-// setup pantr
-pantr::setTaskRepository($sc->taskRepository);
-pantr::setApplication($sc->application);
-pantr::setHomePathProvider($sc->homePathProvider);
-
-// load standard tasks
-include_once __DIR__.'/pantr/std_tasks.php';
-
-// include bundles
-$bundleManager = $sc->bundleManager;
-$bundleManager->registerIncludePath();
-$bundleManager->loadBundles();
-pantr::setBundleManager($bundleManager);
-
-// display pantr info and run it
-pantr::writeInfo();
-pantr::run($args);

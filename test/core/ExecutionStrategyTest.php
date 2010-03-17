@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__.'/../bootstrap.php';
 
-use pake\Task;
-use pake\core\TaskRepository;
-use pake\core\ExecutionStrategy;
+use pantr\Task;
+use pantr\core\TaskRepository;
+use pantr\core\ExecutionStrategy;
 
 class ExecutionStrategyTest extends PHPUnit_Framework_TestCase {
 	/**

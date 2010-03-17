@@ -3,15 +3,15 @@ require_once dirname(__FILE__).'/../bootstrap.php';
 
 require_once __DIR__.'/../mocks/MockTaskRepository.php';
 
-use pake\Pake;
-use pake\Task;
-use pake\core\Status;
-use pake\core\TaskExecutor;
-use pake\core\TaskExecutorFactory;
-use pake\core\TaskRepository;
-use pake\core\ExecutionStrategy;
-use pake\core\ExecutionStrategyFactory;
-use pake\core\Application;
+use pantr\pantr;
+use pantr\Task;
+use pantr\core\Status;
+use pantr\core\TaskExecutor;
+use pantr\core\TaskExecutorFactory;
+use pantr\core\TaskRepository;
+use pantr\core\ExecutionStrategy;
+use pantr\core\ExecutionStrategyFactory;
+use pantr\core\Application;
 
 use pgs\cli\Request;
 use pgs\cli\RequestContainer;
@@ -80,7 +80,7 @@ class ApplicationTest extends PHPUnit_Framework_TestCase {
 	 * it should throw an exception if two abbreviated tasks match
 	 * @author Patrick Gotthardt
 	 * @test
-	 * @expectedException \pake\core\NoTaskFoundException
+	 * @expectedException \pantr\core\NoTaskFoundException
 	 */
 	public function it_should_throw_an_exception_if_two_abbreviated_tasks_match() {
 		// GIVEN a task repository with two tasks
@@ -139,17 +139,17 @@ class ApplicationTest extends PHPUnit_Framework_TestCase {
 			
 		$taskExecutorFactory = new TaskExecutorFactory($taskRepository, $executionStrategyFactory);
 		
-		$pakefile = $this->getMock('pake\core\Pakefile', array('load', 'getPath'), array(''));
-		$pakefile->expects($this->once())
+		$pantrfile = $this->getMock('pantr\core\TaskFile', array('load', 'getPath'), array(''));
+		$pantrfile->expects($this->once())
 			->method('load');
-		$pakefile->expects($this->once())
+		$pantrfile->expects($this->once())
 			->method('getPath')
 			->will($this->returnValue(getcwd()));
-		$pakefileFactory = $this->getMock('pake\core\PakefileFactory');
-		$pakefileFactory->expects($this->once())
-			->method('getPakefile')
-			->will($this->returnValue($pakefile));
+		$pantrfileFactory = $this->getMock('pantr\core\TaskFileFactory');
+		$pantrfileFactory->expects($this->once())
+			->method('getTaskFile')
+			->will($this->returnValue($pantrfile));
 		
-		return new Application($taskRepository, $pakefileFactory, $taskExecutorFactory);
+		return new Application($taskRepository, $pantrfileFactory, $taskExecutorFactory);
 	}
 }

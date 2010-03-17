@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__.'/../bootstrap.php';
 
-use pake\Task;
-use pake\core\TaskRepository;
+use pantr\Task;
+use pantr\core\TaskRepository;
 
 class TaskRepositoryTest extends PHPUnit_Framework_TestCase {
 	/**

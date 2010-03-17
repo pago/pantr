@@ -33,22 +33,22 @@ $cl = new DirectoryClassLoader(__DIR__);
 $cl->registerAutoload();
 
 if(file_exists(__DIR__.'/../lib/pgs')) {
-	// might be a local instance of pake running so include lib directory
+	// might be a local instance of pantr running so include lib directory
 	$cl = new DirectoryClassLoader(__DIR__.'/../lib');
 	$cl->registerAutoload();
 	
 	// load local symfony
 	require_once __DIR__.'/../lib/SymfonyComponents/YAML/sfYaml.php';
-	require_once __DIR__.'/../lib/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+	require_once __DIR__.'/../lib/SymfonyComponents/dependency-injection/lib/sfServiceContainerAutoloader.php';
 }
 
 if(!class_exists('sfYaml')) {
 	require_once __DIR__.'/SymfonyComponents/YAML/sfYaml.php';
 }
 if(!class_exists('sfServiceContainerAutoloader')) {
-	require_once __DIR__.'/SymfonyComponents/DependencyInjection/lib/sfServiceContainerAutoloader.php';
+	require_once __DIR__.'/SymfonyComponents/dependency-injection/lib/sfServiceContainerAutoloader.php';
 }
 
-// and everything else in the path (mostly for pake bundle support)
+// and everything else in the path (mostly for pantr bundle support)
 $cl = new GlobalClassLoader();
 $cl->registerAutoload();

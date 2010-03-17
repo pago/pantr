@@ -1,7 +1,7 @@
 <?php
 
-use pake\Task;
-use pake\core\Status;
+use pantr\Task;
+use pantr\core\Status;
 
 use pgs\cli\RequestContainer;
 

@@ -20,41 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+namespace pantr\core;
 
-use pantr\pantr;
-if(!class_exists('pantr\pantr')) {
-	exit("pantr has not been installed properly!\n");
+use pantr\Task;
+
+class ExecutionStrategy implements \IteratorAggregate {
+	private $repo, $marked=array();
+	private $path;
+	public function __construct(TaskRepository $repo, Task $task) {
+		$this->repo = $repo;
+		$this->path = $this->getDependencyList($task);
+	}
+	
+	public function getIterator() {
+		return new \ArrayIterator($this->path);
+	}
+	
+	private function getDependencyList(Task $task) {
+		if(isset($this->marked[$task->getName()])) {
+			return array();
+		}
+		$this->marked[$task->getName()] = true;
+		$path = array();
+		$deps = $this->asTasks($task->getDependencies());
+		foreach($deps as $dep) {
+			$path = array_merge($path, $this->getDependencyList($dep));
+		}
+		$path[] = $task->getName();
+		return $path;
+	}
+	
+	private function asTasks(array $deps) {
+		$repo = $this->repo;
+		return array_map(function($taskName) use ($repo) {
+			return $repo->getTask($taskName);
+		}, $deps);
+	}
 }
-
-// load dependency injection container
-sfServiceContainerAutoloader::register();
-if(file_exists(__DIR__.'/pantr/core/services.php')) {
-	require_once __DIR__.'/pantr/core/services.php';
-	$sc = new pantrContainer();
-} else {
-	$sc = new sfServiceContainerBuilder();
-	$loader = new sfServiceContainerLoaderFileYaml($sc);
-	$loader->load(__DIR__.'/pantr/core/services.yml');
-}
-// drop script name from args
-$args = $_SERVER['argv'];
-array_shift($args);
-
-// setup pantr
-pantr::setTaskRepository($sc->taskRepository);
-pantr::setApplication($sc->application);
-pantr::setHomePathProvider($sc->homePathProvider);
-
-// load standard tasks
-include_once __DIR__.'/pantr/std_tasks.php';
-
-// include bundles
-$bundleManager = $sc->bundleManager;
-$bundleManager->registerIncludePath();
-$bundleManager->loadBundles();
-pantr::setBundleManager($bundleManager);
-
-// display pantr info and run it
-pantr::writeInfo();
-pantr::run($args);

@@ -1,6 +1,6 @@
 <?php
-use pake\core\TaskRepository;
-use pake\core\Status;
+use pantr\core\TaskRepository;
+use pantr\core\Status;
 
 require_once __DIR__.'/MockTask.php';
 

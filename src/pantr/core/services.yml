@@ -1,0 +1,19 @@
+services:
+  taskRepository:
+    class: pantr\core\TaskRepository
+  taskFileFactory:
+    class: pantr\core\CyclicResolutionTaskFileFactory
+  executionStrategyFactory:
+    class: pantr\core\ExecutionStrategyFactory
+    arguments: [@taskRepository]
+  taskExecutorFactory:
+    class: pantr\core\TaskExecutorFactory
+    arguments: [@taskRepository, @executionStrategyFactory]
+  application:
+    class: pantr\core\Application
+    arguments: [@taskRepository, @taskFileFactory, @taskExecutorFactory]
+  homePathProvider:
+    class: pantr\core\ServerHomePathProvider
+  bundleManager:
+    class: pantr\core\BundleManager
+    arguments: [@homePathProvider]

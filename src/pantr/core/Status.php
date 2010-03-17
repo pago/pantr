@@ -20,41 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+namespace pantr\core;
 
-use pantr\pantr;
-if(!class_exists('pantr\pantr')) {
-	exit("pantr has not been installed properly!\n");
+interface Status {
+	const SUCCESS = 0;
+	const FAILURE = 1;
 }
-
-// load dependency injection container
-sfServiceContainerAutoloader::register();
-if(file_exists(__DIR__.'/pantr/core/services.php')) {
-	require_once __DIR__.'/pantr/core/services.php';
-	$sc = new pantrContainer();
-} else {
-	$sc = new sfServiceContainerBuilder();
-	$loader = new sfServiceContainerLoaderFileYaml($sc);
-	$loader->load(__DIR__.'/pantr/core/services.yml');
-}
-// drop script name from args
-$args = $_SERVER['argv'];
-array_shift($args);
-
-// setup pantr
-pantr::setTaskRepository($sc->taskRepository);
-pantr::setApplication($sc->application);
-pantr::setHomePathProvider($sc->homePathProvider);
-
-// load standard tasks
-include_once __DIR__.'/pantr/std_tasks.php';
-
-// include bundles
-$bundleManager = $sc->bundleManager;
-$bundleManager->registerIncludePath();
-$bundleManager->loadBundles();
-pantr::setBundleManager($bundleManager);
-
-// display pantr info and run it
-pantr::writeInfo();
-pantr::run($args);

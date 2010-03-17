@@ -20,41 +20,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-require_once __DIR__.DIRECTORY_SEPARATOR.'autoload.php';
+namespace pantr\ext;
 
-use pantr\pantr;
-if(!class_exists('pantr\pantr')) {
-	exit("pantr has not been installed properly!\n");
+class LFTP {
+	private $source, $ftppath = '', $user, $pass, $ftpurl, $exclude;
+	private function __construct($server) {
+		$this->ftpurl = $server;
+	}
+	
+	public function loginAs($user, $pass) {
+		$this->user = $user;
+		$this->pass = $pass;
+		return $this;
+	}
+	
+	public function from($source) {
+		$this->source = $source;
+		return $this;
+	}
+	
+	public function exclude($exclude) {
+		$this->exclude = $exclude;
+		return $this;
+	}
+	
+	public function into($ftppath) {
+		$this->ftppath = $ftppath;
+		return $this;
+	}
+	
+	public function upload($ftppath=null) {
+		$ftppath = $ftppath ?: $this->ftppath;
+		if($this->exclude != null) {
+			$x = '-X ' . $this->exclude . ' ';
+		} else {
+			$x = '';
+		}
+		$cmd = 'lftp -c \'open -e "mirror -R ' . $x
+			. $this->source . ' ' . $ftppath
+			. '" -u ' . $this->user.','.$this->pass.' '.$this->ftpurl.'\'';
+		passthru($cmd, $return);
+		if($return > 0) {
+			echo "Upload was not successful.\n";
+		}
+	}
+	
+	public static function forServer($ftpurl) {
+		if(substr($ftpurl, 0, 6) != 'ftp://') {
+			$ftpurl = 'ftp://' . $ftpurl;
+		}
+		return new LFTP($ftpurl);
+	}
 }
-
-// load dependency injection container
-sfServiceContainerAutoloader::register();
-if(file_exists(__DIR__.'/pantr/core/services.php')) {
-	require_once __DIR__.'/pantr/core/services.php';
-	$sc = new pantrContainer();
-} else {
-	$sc = new sfServiceContainerBuilder();
-	$loader = new sfServiceContainerLoaderFileYaml($sc);
-	$loader->load(__DIR__.'/pantr/core/services.yml');
-}
-// drop script name from args
-$args = $_SERVER['argv'];
-array_shift($args);
-
-// setup pantr
-pantr::setTaskRepository($sc->taskRepository);
-pantr::setApplication($sc->application);
-pantr::setHomePathProvider($sc->homePathProvider);
-
-// load standard tasks
-include_once __DIR__.'/pantr/std_tasks.php';
-
-// include bundles
-$bundleManager = $sc->bundleManager;
-$bundleManager->registerIncludePath();
-$bundleManager->loadBundles();
-pantr::setBundleManager($bundleManager);
-
-// display pantr info and run it
-pantr::writeInfo();
-pantr::run($args);

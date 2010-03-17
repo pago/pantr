@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__.'/../src/pake/functions.php';
+require_once __DIR__.'/../src/pantr/functions.php';
 
 class FunctionTest extends PHPUnit_Framework_TestCase {
 	private $file, $prefix;
 	public function setUp() {
-		$this->prefix = __DIR__.'/../src/pake';
+		$this->prefix = __DIR__.'/../src/pantr';
 		$this->file = $this->prefix.'/functions.php';
 	}
 	
@@ -50,6 +50,6 @@ class FunctionTest extends PHPUnit_Framework_TestCase {
 	private function assertPatternMatches($expected, $pattern) {
 		$this->assertEquals(
 			$expected,
-			pake\fileNameTransform($this->file, $pattern));
+			pantr\fileNameTransform($this->file, $pattern));
 	}
 }

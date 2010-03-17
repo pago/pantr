@@ -1,5 +1,5 @@
 <?php
-use pake\Pake;
+use pantr\pantr;
 
 class PropertyTest extends PHPUnit_Framework_TestCase {
 	/**
@@ -12,9 +12,9 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 			'foo' => 'bar',
 			'subarray' => array(
 				'subkey' => array('subsubkey' => 'val')));
-		Pake::property('test', $data);
-		$this->assertEquals('bar', Pake::property('test:foo'));
-		$this->assertEquals('val', Pake::property('test:subarray:subkey:subsubkey'));
+		pantr::property('test', $data);
+		$this->assertEquals('bar', pantr::property('test:foo'));
+		$this->assertEquals('val', pantr::property('test:subarray:subkey:subsubkey'));
 	} // support nested key fetching
 	
 	/**
@@ -23,8 +23,8 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 	 * @test
 	 */
 	public function it_should_store_a_property() {
-		Pake::property('test', $id = uniqid());
-		$this->assertEquals($id, Pake::property('test'));
+		pantr::property('test', $id = uniqid());
+		$this->assertEquals($id, pantr::property('test'));
 	} // store a property
 	
 	/**
@@ -34,7 +34,7 @@ class PropertyTest extends PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function it_should_throw_an_exception_when_colon_is_used_in_property_name() {
-		Pake::property('test:bar', 'foo');
+		pantr::property('test:bar', 'foo');
 	} // throw an exception when colon is used in property name
 	
 }

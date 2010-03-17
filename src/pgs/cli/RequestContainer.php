@@ -1,7 +1,7 @@
 <?php
 namespace pgs\cli;
 
-use pake\Pake;
+use pantr\pantr;
 
 class RequestContainer implements \ArrayAccess {
 	private $request;
@@ -43,14 +43,14 @@ class RequestContainer implements \ArrayAccess {
 	
 	public function printOptions() {
 		if(count($this->descriptionTable) > 0) {
-			Pake::out()->nl()->writeln('Options:', 'BOLD');
+			pantr::out()->nl()->writeln('Options:', 'BOLD');
 			foreach($this->descriptionTable as $long => $desc) {
 				// check if there is a short version
 				if(isset($this->requestAliasTable[$long])) {
 					$short = $this->requestAliasTable[$long];
-					Pake::writeOption($short, $long, $desc);
+					pantr::writeOption($short, $long, $desc);
 				} else {
-					Pake::writeOption($long, $desc);
+					pantr::writeOption($long, $desc);
 				}
 			}
 		}

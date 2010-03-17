@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ -z "$PANTR_HOME" ] ; then
+	PANTR_HOME="@pear_directory@/pantr"
+fi
+ 
+if (test -z "$PHP_COMMAND") ; then
+  # echo "WARNING: PHP_COMMAND environment not set. (Assuming php on PATH)"
+  if [ -e "@php_bin@" ] ; then
+	export PHP_COMMAND="@php_bin@"
+  else
+    export PHP_COMMAND=php
+  fi
+fi
+
+$PHP_COMMAND -d html_errors=off -qC $PANTR_HOME/pantr/cliapp.php "$@"

@@ -4,23 +4,23 @@ require_once dirname(__FILE__).'/../bootstrap.php';
 require_once 'PHPUnit/Extensions/OutputTestCase.php';
 require_once __DIR__.'/../mocks/MockTaskRepository.php';
 
-use pake\Pake;
-use pake\Task;
-use pake\core\TaskExecutor;
-use pake\core\Status;
-use pake\core\TaskRepository;
-use pake\core\ExecutionStrategy;
+use pantr\pantr;
+use pantr\Task;
+use pantr\core\TaskExecutor;
+use pantr\core\Status;
+use pantr\core\TaskRepository;
+use pantr\core\ExecutionStrategy;
 
 use pgs\cli\Request;
 use pgs\cli\RequestContainer;
 
 class TaskExecutorTest extends PHPUnit_Extensions_OutputTestCase {
 	public function setUp() {
-		Pake::out()->disableColorizedOutput(true);
+		pantr::out()->disableColorizedOutput(true);
 	}
 
 	public function tearDown() {
-		Pake::out()->disableColorizedOutput(false);
+		pantr::out()->disableColorizedOutput(false);
 	}
 
 	
@@ -63,7 +63,7 @@ class TaskExecutorTest extends PHPUnit_Extensions_OutputTestCase {
 	private function getTaskExecutor(TaskRepository $taskRepository, Task $task) {
 		$executionStrategy = new ExecutionStrategy($taskRepository, $task);
 		$executionStrategyFactory = $this->getMock(
-			'pake\core\ExecutionStrategyFactory', array('get'),
+			'pantr\core\ExecutionStrategyFactory', array('get'),
 			array($taskRepository));
 		$executionStrategyFactory->expects($this->once())
 			->method('get')
