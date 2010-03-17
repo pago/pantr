@@ -1,4 +1,4 @@
-pantr is a simple php task automation and build tool
+pantr (formerly known as pake) is a simple php task automation and build tool
 ===============================
 
 With pantr you can manage automate tasks (for example the build process and distribution)
@@ -37,6 +37,19 @@ To invoke use the pantr command:
 
 	$ pantr greet
 	Hello my friend!
+	
+Since version 0.8.0 there is also an alternative shorter syntax. It works by using the pantr\file namespace which provides a couple of functions:
+
+	namespace pantr\file;
+	
+	/**
+	 * Says hello to the user
+	 */
+	task('greet', function() {
+		pantr::writeln('Hello my friend!');
+	});
+	
+The pantrfile.php is a great sample of how to use this new API.
 	
 pantr can also handle task dependencies and tasks may have their own parameters and arguments.
 To improve the previous example:
