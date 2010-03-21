@@ -20,39 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pantr\ext;
+namespace Pagosoft\PSpec;
 
-use pantr\pantr;
-use pantr\Task;
+use PHPUnit_Framework_Assert as Assert;
 
-class File extends Task {
-	private $src, $target;
-	
-	public function run($fn) {
-		$src = $this->src;
-		$target = $this->target;
-		parent::run(function() use ($src, $target, $fn) {
-			if(!file_exists($target) || filemtime($target) < filemtime($src)) {
-				$fn($src, $target);
-			}
-		});
-        return $this;
-    }
-
-	public function withContent($fn) {
-		return $this->run(function($src, $target) use ($fn) {
-			$content = file_get_contents($src);
-			$content = $fn($content);
-			file_put_contents($target, $content);
-		});
+class Matcher {
+	private $it;
+	public function __construct($it) {
+		$this->it = $it;
 	}
 	
-	public static function task($name, $file, $spec) {
-		$out = \pantr\fileNameTransform($file, $spec);
-		$task = new File($name, 'create file '.basename($out).' if it does not exist');
-		$task->src = $file;
-		$task->target = $out;
-		pantr::getTaskRepository()->registerTask($task);
-		return $task;
+	public function shouldBe($value) {
+		Assert::assertEquals($this->it, $value);
+	}
+	
+	public function shouldNotBe($value) {
+		Assert::assertNotEquals($this->it, $value);
+	}
+	
+	public function shouldBeTrue() {
+		Assert::assertTrue($this->it);
+	}
+	
+	public function shouldBeFalse() {
+		Assert::assertFalse($this->it);
+	}
+	
+	public function shouldHaveKey($key) {
+		if($this->it instanceof \ArrayAccess) {
+			Assert::assertEquals(isset($this->it[$key]), true, 'key '.$key.' does not exist');
+		} else {
+			Assert::assertArrayHasKey($key, $this->it);
+		}
+	}
+	
+	public function shouldHaveAttribute($key) {
+		Assert::assertClassHasAttribute($key, $this->it);
+	}
+	
+	public function shouldProduce($name, $msg=null) {
+		$fn = $this->it;
+		try {
+			$fn();
+			Assert::fail();
+		} catch(\Exception $e) {
+			if($name) {
+				Assert::assertEquals($name, get_class($e));
+			}
+			if(!is_null($msg)) {
+				Assert::assertEquals($msg, $e->getMessage());
+			}
+		}
 	}
 }

@@ -24,7 +24,7 @@ namespace pantr;
 
 use pgs\cli\RequestContainer;
 
-class Task {
+class Task implements \ArrayAccess {
     // constants to signify the result of an executed task
     const SUCCESS = 0;
     const FAILED = 1;
@@ -126,7 +126,11 @@ class Task {
         $this->usage = $usage;
         return $this;
     }
-
+	
+	/**
+	 * @deprecated The request is passed anyway so no need
+	 * 				to invoke this method - to be removed in 1.0
+	 */
     public function needsRequest() {
         $this->needsRequest = true;
         return $this;
@@ -156,25 +160,25 @@ class Task {
         return $this;
     }
 
-	// for fluent API
-	public function property($name, $value) {
+	// for fluent API and problematic names
+	public function property($name, $value=null) {
 		$this->properties[$name] = $value;
 		return $this;
 	}
 
-	public function __set($name, $value) {
+	public function offsetSet($name, $value) {
 		$this->properties[$name] = $value;
 	}
 	
-	public function __get($name) {
+	public function offsetGet($name) {
 		return $this->properties[$name];
 	}
 	
-	public function __isset($name) {
+	public function offsetExists($name) {
 		return isset($this->properties[$name]);
 	}
 	
-	public function __unset($name) {
+	public function offsetUnset($name) {
 		unset($this->properties[$name]);
 	}
 
@@ -193,8 +197,23 @@ class Task {
 	 *  You can specify more than one function to run before a task.
 	 */
 	public function before($fn) {
+		$this->checkInvokableArgument($fn);
 		$this->before[] = $fn;
 		return $this;
+	}
+	
+	private function checkInvokableArgument($fn) {
+		if(is_null($fn)) {
+			throw new \InvalidArgumentException('The argument must not be null.');
+		}
+		if(!is_callable($fn)) {
+			throw new \InvalidArgumentException('The argument must be callable. Is: '.$fn);
+		}
+		if($fn instanceof Task && count($fn->getDependencies()) > 0) {
+			throw new \InvalidArgumentException(
+				'Supplied task ('.$fn->getName().') has dependencies.'
+				.' This is currently unsupported.');
+		}
 	}
 	
 	/** The supplied function will be invoked after the task was run.
@@ -205,6 +224,7 @@ class Task {
 	 *  or to clean up after it.
 	 */
 	public function after($fn) {
+		$this->checkInvokableArgument($fn);
 		$this->after[] = $fn;
 		return $this;
 	}
@@ -231,29 +251,19 @@ class Task {
     public function __invoke(RequestContainer $args) {
         $fn = $this->run;
         $result = Task::SUCCESS;
-        if(count($this->options) > 0 || $this->expectNumArgs > 0 || $this->needsRequest) {
-            foreach($this->options as $opt) {
-                $opt->registerOn($args);
-            }
-            $args->expectNumArgs($this->expectNumArgs);
-            if($args->isValid()) {
-				$this->args = $args;
-				if($this->runBefore($args)) {
-					$result = $fn($args, $this);
-					$result = $this->runAfter($args, $result);
-				}
-            } else {
-                $this->printHelp();
-            }
-        } else {
+		foreach($this->options as $opt) {
+		    $opt->registerOn($args);
+		}
+		$args->expectNumArgs($this->expectNumArgs);
+		if($args->isValid()) {
+			$this->args = $args;
 			if($this->runBefore($args)) {
-				if(is_null($fn)) {
-					pantr::writeln($this->getName());
-				}
-				$result = $fn($this);
+				$result = $fn($args, $this);
 				$result = $this->runAfter($args, $result);
 			}
-        }
+		} else {
+		    $this->printHelp();
+		}
         return $result ?: Task::SUCCESS;
     }
 }

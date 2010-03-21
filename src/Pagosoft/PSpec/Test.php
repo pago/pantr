@@ -20,39 +20,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pantr\ext;
+namespace Pagosoft\PSpec;
 
-use pantr\pantr;
-use pantr\Task;
-
-class File extends Task {
-	private $src, $target;
+class Test implements \PHPUnit_Framework_Test, \PHPUnit_Framework_SelfDescribing {
+	private $suite, $msg, $fn, $numAssertions;
 	
-	public function run($fn) {
-		$src = $this->src;
-		$target = $this->target;
-		parent::run(function() use ($src, $target, $fn) {
-			if(!file_exists($target) || filemtime($target) < filemtime($src)) {
-				$fn($src, $target);
-			}
-		});
-        return $this;
-    }
-
-	public function withContent($fn) {
-		return $this->run(function($src, $target) use ($fn) {
-			$content = file_get_contents($src);
-			$content = $fn($content);
-			file_put_contents($target, $content);
-		});
+	public function __construct($suite, $msg, $fn) {
+		$this->suite = $suite;
+		$this->msg = 'it '.$msg;
+		$this->fn = $fn;
 	}
 	
-	public static function task($name, $file, $spec) {
-		$out = \pantr\fileNameTransform($file, $spec);
-		$task = new File($name, 'create file '.basename($out).' if it does not exist');
-		$task->src = $file;
-		$task->target = $out;
-		pantr::getTaskRepository()->registerTask($task);
-		return $task;
+	public function toString() {
+		return $this->suite->toString() . ': ' .$this->msg;
+	}
+	
+	public function count() {
+		return 1;
+	}
+	
+	public function run(\PHPUnit_Framework_TestResult $result = NULL) {
+		if(is_null($result)) {
+			$result = $this->createResult();
+		}
+		$result->run($this);
+		return $result;
+	}
+	
+	public function runBare() {
+		$this->numAssertions = 0;
+		$fn = $this->fn;
+		$this->suite->runBeforeEach();
+		$fn($this->suite->getSelfObject());
+		$this->suite->runAfterEach();
+	}
+	
+	protected function createResult() {
+		return new \PHPUnit_Framework_TestResult();
+	}
+
+	public function addToAssertionCount($count) {
+		$this->numAssertions += $count;
+	}
+	
+	public function getNumAssertions() {
+		return $this->numAssertions;
 	}
 }

@@ -15,4 +15,8 @@ $loader = function($dir) {
 spl_autoload_register($loader('src'));
 spl_autoload_register($loader('lib'));
 
-set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__.'/../lib/');
+set_include_path(get_include_path()
+	. PATH_SEPARATOR . __DIR__.'/../lib/');
+
+// use PSpec
+require_once __DIR__.'/../src/Pagosoft/PSpec/vocab.php';

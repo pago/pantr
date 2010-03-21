@@ -45,7 +45,15 @@ task('clean', 'Remove unused files', function() {
 
 // tests
 PHPUnit::task('test:unit', 'Run all tests');
-	
+
+task('test:spec', function() {
+	require_once 'test/bootstrap.php';
+	foreach(pantr::fileset()->name('*Spec.php')->in('test') as $spec) {
+		require_once $spec;
+	}
+	\Pagosoft\PSpec\Spec::run();
+});
+
 // config
 /**
  * Changes the pantr version for the release

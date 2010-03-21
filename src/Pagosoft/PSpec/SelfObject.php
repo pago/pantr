@@ -20,39 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pantr\ext;
+namespace Pagosoft\PSpec;
 
-use pantr\pantr;
-use pantr\Task;
-
-class File extends Task {
-	private $src, $target;
+class SelfObject {
+	private $attributes = array(), $methods = array();
+	private $parent;
 	
-	public function run($fn) {
-		$src = $this->src;
-		$target = $this->target;
-		parent::run(function() use ($src, $target, $fn) {
-			if(!file_exists($target) || filemtime($target) < filemtime($src)) {
-				$fn($src, $target);
-			}
-		});
-        return $this;
-    }
-
-	public function withContent($fn) {
-		return $this->run(function($src, $target) use ($fn) {
-			$content = file_get_contents($src);
-			$content = $fn($content);
-			file_put_contents($target, $content);
-		});
+	public function __construct($parent=null) {
+		$this->parent = $parent;
 	}
 	
-	public static function task($name, $file, $spec) {
-		$out = \pantr\fileNameTransform($file, $spec);
-		$task = new File($name, 'create file '.basename($out).' if it does not exist');
-		$task->src = $file;
-		$task->target = $out;
-		pantr::getTaskRepository()->registerTask($task);
-		return $task;
+	public function addMethod($name, $fn) {
+		$this->methods[$name] = $fn;
+	}
+	
+	public function __set($name, $value) {
+		$this->attributes[$name] = $value;
+	}
+	
+	public function __get($name) {
+		if(!isset($this->attributes[$name]) && !is_null($this->parent)) {
+			return $this->parent->$name;
+		}
+		return $this->attributes[$name];
+	}
+	
+	public function __call($name, $args) {
+		if(!isset($this->methods[$name]) && !is_null($this->parent)) {
+			return call_user_func_array(array($this->parent, $name), $args);
+		}
+		$fn = $this->methods[$name];
+		return call_user_func_array($fn, $args);
+	}
+	
+	public function getParent() {
+		return $this->parent;
 	}
 }

@@ -49,6 +49,9 @@ class PHPUnit {
 	}
 	
 	public static function forTest($name) {
+		if($name instanceof \PHPUnit_Framework_Test) {
+			return self::forAllTests($name);
+		}
 		return self::forAllTests(array($name));
 	}
 	
@@ -124,7 +127,11 @@ class PHPUnit {
 		// Note: This code won't work unless the backup globals option is disabled
 		// see: http://www.phpunit.de/ticket/899
 		$suite->setBackupGlobals(false);
-		$suite->addTestFiles($this->files);
+		if($this->files instanceof \PHPUnit_Framework_Test) {
+			$suite->addTest($this->files);
+		} else {
+			$suite->addTestFiles($this->files);
+		}
 		return $suite;
 	}
 }
@@ -160,9 +167,9 @@ class AssertionTestListener implements \PHPUnit_Framework_TestListener {
 	public function startTest(\PHPUnit_Framework_Test $test) {}
 
 	public function endTest(\PHPUnit_Framework_Test $test, $time) {
-		if ($test instanceof \PHPUnit_Framework_TestCase) {
+//		if ($test instanceof \PHPUnit_Framework_TestCase) {
             $this->numAssertions += $test->getNumAssertions();
-        }
+//        }
 	}
 
 	public function startTestSuite(\PHPUnit_Framework_TestSuite $suite) {}
