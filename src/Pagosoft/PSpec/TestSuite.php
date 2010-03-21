@@ -23,7 +23,7 @@
 namespace Pagosoft\PSpec;
 
 class TestSuite extends \PHPUnit_Framework_TestSuite {
-	private $selfObject, $beforeEach, $afterEach;
+	private $selfObject, $beforeEach, $afterEach, $afterAll;
 	public function __construct($name, $selfObject) {
 		parent::__construct($name);
 		$this->setBackupGlobals(false);
@@ -51,8 +51,19 @@ class TestSuite extends \PHPUnit_Framework_TestSuite {
 		$this->afterEach = $fn;
 	}
 	
+	public function setAfterAll($fn) {
+		$this->afterAll = $fn;
+	}
+	
 	public function getSelfObject() {
 		return $this->selfObject;
+	}
+	
+	protected function tearDown() {
+		if(is_null($this->afterAll)) return;
+		
+		$fn = $this->afterAll;
+		$fn($this->selfObject);
 	}
 	
 	public function runBeforeEach() {

@@ -20,16 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pantr\ext;
+namespace pantr\ext\PEAR;
 
 use pantr\pantr;
 use pantr\ext\Pearfarm\PackageSpec;
-use pantr\ext\PEAR\Repository;
 
-/**
- * @deprecated Use \pantr\ext\PEAR\Sync instead - to be removed in 1.0
- */
-class PEARSync {
+class Sync {
 	private $in;
 	private $channels;
 	private $repo;
@@ -60,7 +56,9 @@ class PEARSync {
 	
 	private $lastChannel;
 	public function fromChannel($channel) {
-		$this->channels[$channel] = array();
+		if(!isset($this->channels[$channel])) {
+			$this->channels[$channel] = array();
+		}
 		$this->lastChannel = $channel;
 		return $this;
 	}
@@ -134,5 +132,6 @@ class PEARSync {
 				if($silent) pantr::endSilent();
 			}
 		}
+		return $this;
 	}
 }

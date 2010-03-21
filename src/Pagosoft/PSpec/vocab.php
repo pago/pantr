@@ -27,6 +27,7 @@ use Pagosoft\PSpec\Spec;
 use Pagosoft\PSpec\Test;
 use Pagosoft\PSpec\TestSuite;
 use Pagosoft\PSpec\Matcher;
+use Pagosoft\PSpec\FileMatcher;
 
 function describe($desc, $fn) {
 	Spec::addSuite($desc, $fn);
@@ -38,6 +39,14 @@ function beforeEach($fn) {
 
 function afterEach($fn) {
 	Spec::getCurrentSuite()->setAfterEach($fn);
+}
+
+function afterAll($fn) {
+	Spec::getCurrentSuite()->setAfterAll($fn);
+}
+
+function skip() {
+	throw new \PHPUnit_Framework_SkippedTestError();
 }
 
 function it($should, $fn) {
@@ -84,6 +93,14 @@ function the($msg, $obj=null) {
 
 function theValueOf($obj) {
 	return new Matcher($obj);
+}
+
+function theFile($file) {
+	return new FileMatcher($file);
+}
+
+function evaluating($fn) {
+	return new Matcher($fn);
 }
 
 function failBecause($msg=null) {

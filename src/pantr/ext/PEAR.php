@@ -24,6 +24,9 @@ namespace pantr\ext;
 
 use pantr\pantr;
 
+/**
+ * You're most likely looking for \pantr\ext\PEAR\Repository
+ */
 class PEAR {
 	private $runner;
 	public function __construct($pearrc='lib/.pearrc') {

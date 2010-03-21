@@ -58,6 +58,14 @@ class Matcher {
 		Assert::assertClassHasAttribute($key, $this->it);
 	}
 	
+	public function shouldContain($value) {
+		Assert::assertContains($value, $this->it);
+	}
+	
+	public function shouldNotContain($value) {
+		Assert::assertThat($this->it, Assert::logicalNot(Assert::contains($value)));
+	}
+	
 	public function shouldProduce($name, $msg=null) {
 		$fn = $this->it;
 		try {
@@ -71,5 +79,14 @@ class Matcher {
 				Assert::assertEquals($msg, $e->getMessage());
 			}
 		}
+	}
+	
+	public function shouldProduceOutput($out) {
+		ob_start();
+		$fn = $this->it;
+		$fn();
+		$x = ob_get_contents();
+		ob_end_clean();
+		Assert::assertEquals($out, $x);
 	}
 }

@@ -22,6 +22,8 @@
  */
 namespace Pagosoft\PSpec\TextUI;
 
+require_once 'PHPUnit/TextUI/TestRunner.php';
+
 class TestRunner extends \PHPUnit_TextUI_TestRunner {
 	/**
 	 * @param  mixed $test

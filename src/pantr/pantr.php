@@ -408,7 +408,7 @@ class pantr {
 	private static $dependencies;
 	public static function dependencies() {
 		if(is_null(self::$dependencies)) {
-			self::$dependencies = new \pantr\ext\PEARSync();
+			self::$dependencies = new \pantr\ext\PEAR\Sync();
 		}
 		return self::$dependencies;
 	}

@@ -43,12 +43,27 @@ task('clean', 'Remove unused files', function() {
 	});
 });
 
-// tests
-PHPUnit::task('test:unit', 'Run all tests');
+/**
+ * Run PHPUnit tests.
+ * @option v:verbose display details
+ */
+task('test:unit', function($req) {
+	require_once 'test/bootstrap.php';
+	$tests = pantr::fileset()->name('*Test.php')->in('test/unit');
+	PHPUnit::forAllTests($tests)->run(isset($req['verbose']));
+});
 
 task('test:spec', function() {
 	require_once 'test/bootstrap.php';
-	foreach(pantr::fileset()->name('*Spec.php')->in('test') as $spec) {
+	foreach(pantr::fileset()->name('*Spec.php')->in('test/spec') as $spec) {
+		require_once $spec;
+	}
+	\Pagosoft\PSpec\Spec::run();
+});
+
+task('test:integration', function() {
+	require_once 'test/bootstrap.php';
+	foreach(pantr::fileset()->name('*Spec.php')->in('test/integration') as $spec) {
 		require_once $spec;
 	}
 	\Pagosoft\PSpec\Spec::run();
