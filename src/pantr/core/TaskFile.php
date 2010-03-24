@@ -28,8 +28,10 @@ class TaskFile {
 		$this->name = $name;
 	}
 	
-	public function load() {
+	public function load(TaskRepository $tasks) {
 		require $this->name;
+		$docParser = new Task\DocParser($tasks);
+		$docParser->parse($this->name);
 	}
 	
 	public function getFullPath() {

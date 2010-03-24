@@ -81,9 +81,7 @@ class Application {
 			if(!is_null($pantrfile)) {
 				// change current dir to pantrfile
 				chdir($pantrfile->getPath());
-				$pantrfile->load();
-				$docParser = new \pantr\core\Task\DocParser($this->tasks);
-				$docParser->parse($pantrfile->getFullPath());
+				$pantrfile->load($this->tasks);
 			} else if($taskName[0] != ':') { // not a global task
 				pantr::writeln('No pantrfile found.', \pantr\pantr::WARNING);
 			}
