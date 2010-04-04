@@ -562,10 +562,14 @@ class FinderResult implements \IteratorAggregate {
 	}
 	
 	public function getIterator() {
-		return new \ArrayIterator($this->find('.'));
+		return new \ArrayIterator($this->files);
 	}
 	
-	public functiong getSourceDirectory() {
+	public function getFilesArray() {
+		return $this->files;
+	}
+	
+	public function getSourceDirectory() {
 		return $this->in;
 	}
 	

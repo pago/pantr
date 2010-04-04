@@ -22,7 +22,7 @@ class DocParser {
 				if($line[0] == '@') {
 					$this->parseAnnotation($task, substr($line, 1));
 				} else {
-					if($task->getDescription() == 'n/a') {
+					if($task->getDescription() == '') {
 						$task->setDescription($line);
 					} else {
 						$task->appendDetails($line);

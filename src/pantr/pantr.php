@@ -141,7 +141,7 @@ class pantr {
 				if(is_callable($fnOrDesc)) {
 					$task->run($fnOrDesc);
 				} else if(is_string($fnOrDesc)) {
-					$task->desc($fnOrDesc);
+					$task->setDescription($fnOrDesc);
 				} else {
 					throw new \InvalidArgumentException('Second parameter must be either string or callable');
 				}
@@ -157,13 +157,17 @@ class pantr {
 			$task = new Task($name);
 			
 			if(is_null($fnOrDesc) && is_null($fn)) {
-				$task->desc('n/a');
-			} else if(is_null($fn) && is_callable($fnOrDesc)) {
+				$task->setDescription('n/a');
+			}
+			
+			if(is_null($fn) && is_callable($fnOrDesc)) {
 				$task->run($fnOrDesc);
 			} else if(is_string($fnOrDesc)) {
-				$task->desc($fnOrDesc);
-			} else {
-				throw new \Exception('Invalid method overload called.');
+				$task->setDescription($fnOrDesc);
+			}
+			
+			if(!is_null($fn) && is_callable($fn)) {
+				$task->run($fn);
 			}
 			
 			self::$taskRepository->registerTask($task);

@@ -14,7 +14,7 @@ describe('Function findCommonPrefix', function() {
 	the(\pantr\findCommonPrefix(array('src/', 'src/cliapp.php')))->shouldBe('src/');
 
 	$dir = realpath(__DIR__.'/../../src/');
-	$files = \pantr\file\fileset('*.php')->in($dir);
+	$files = \pantr\file\fileset('*.php')->in($dir)->getFilesArray();
 	$prefix = \pantr\findCommonPrefix($files);
 	the($prefix)->shouldBe($dir.'/');
 });

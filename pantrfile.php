@@ -97,7 +97,10 @@ task('config:deploy-local',function($req) {
 	}
 });
 
-task('config:sync-pear', 'install/remove channels and packages', function() {
+/**
+ * Install/remove channels and packages
+ */
+task('config:sync-pear', function() {
 	pantr::dependencies()->in('lib')
 		->fromChannel('pear.pagosoft.com')
 			->usePackage('util')

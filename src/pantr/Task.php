@@ -91,7 +91,7 @@ class Task implements \ArrayAccess {
     }
 
     public function desc($desc) {
-        $this->detail = $desc;
+		$this->detail = $desc;
         return $this;
     }
 
