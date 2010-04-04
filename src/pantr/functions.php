@@ -63,6 +63,9 @@ function fileNameTransform($src, $pattern) {
 
 function transformToIterable($finder) {
 	if(is_string($finder)) {
+		if(file_exists($finder)) {
+			return new FinderResult(array($finder), '.');
+		}
 		return Finder::type(Finder::TYPE_ANY)->name($finder)->in('.');
 	} else if($finder instanceof Finder) {
 		return $finder->in('.');

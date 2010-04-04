@@ -120,7 +120,7 @@ task('config:sync-pear', function() {
  * @dependsOn clean
  */
 task('build:init', function() {
-	$lib = finder()
+	$lib = find()
 		// we don't want to distribute vfsStream
 		->prune('vfsStream')->discard('vfsStream')
 		->prune('pear')->discard('pear') // or pear
@@ -137,7 +137,7 @@ task('build:init', function() {
 	// copy source files
 	mkdirs('build/pantr');
 	mirror($lib, 'build/pantr', pantr::SILENT);
-	mirror(finder()->in('src'), 'build/pantr', pantr::SILENT);
+	mirror(find()->in('src'), 'build/pantr', pantr::SILENT);
 	
 	// and executables
 	mkdirs('build/bin');
@@ -193,6 +193,7 @@ task('build:init')->after(task('compile:services'));
  * Updates the version number in the pantr.php file
  * 
  * @hidden
+ * @dependsOn build:init
  */
 task('compile:version', function() {
 	// update version number
@@ -206,7 +207,6 @@ task('compile:version', function() {
 	});
 })->before(task('config:set-version'));
 task('build:init')->after(task('compile:version'));
-
 
 // publish
 /**

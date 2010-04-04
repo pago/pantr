@@ -99,7 +99,7 @@ function loadProperties($name='pantr.yaml', $onlyLocal=false) {
  */
 function silent() {
 	$args = func_get_args();
-	call_user_func_array(array('pantr', 'silent'), $args);
+	call_user_func_array(array('\pantr\pantr', 'silent'), $args);
 }
 
 /**

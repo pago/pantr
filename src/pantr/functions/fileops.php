@@ -24,6 +24,7 @@
  */
 namespace pantr\file;
 
+use pantr\pantr;
 use pantr\Finder;
 
 /** 
@@ -107,7 +108,7 @@ function copy($src, $target, $vars=null) {
 	}
 	
 	// make path from pattern
-	$target = fileNameTransform($src, $target);
+	$target = \pantr\fileNameTransform($src, $target);
 	
 	if(!is_dir(dirname($target))) {
 		mkdirs(dirname($target));
@@ -131,7 +132,7 @@ function move($src, $target) {
  * @param FinderResult|string $arg
  */
 function rm($files, $recursive=null) {
-	$files = \pantr\transformToIterable($files);
+	$files = \pantr\transformToIterable($files)->getFilesArray();
 	$files = array_reverse($files);
 	foreach($files as $target) {
 		if(!file_exists($target)) {
@@ -144,7 +145,7 @@ function rm($files, $recursive=null) {
 			rm(fileset()->in($target));
 
 			// and now all empty directories
-			rm(finder(self::TYPE_DIR)->in($target));
+			rm(finder(Finder::TYPE_DIR)->in($target));
 			pantr::writeAction('rm', $target);
 			\rmdir($target);
 		} else {
