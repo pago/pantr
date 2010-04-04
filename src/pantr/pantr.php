@@ -124,10 +124,51 @@ class pantr {
 	 * This is the main entrance point for pantrfiles.
 	 * <code>pantr::task('foo', 'some description')
 	 * ->run(function() { pantr::writeln('Hello World!'); });
+	 *
+	 * This method is heavily overloaded. You can invoke it in any of the following ways:
+	 * - task(string $name): This will create a new task or return an existing one
+	 * - task(string $name, string $desc): This will create a new task with the specified
+	 * 				name and description or set the description of an existing task
+	 * - task(string $name, callable $fn): Creates a new task or updates the tasks execution code
+	 * - task(string $name, string $desc, callable $fn): Create or redefine an existing task
+	 *
+	 * @return Task A new or existing task with the specified $name.
 	 */
-	public static function task($name, $desc) {
-		$task = new Task($name, $desc);
-		self::$taskRepository->registerTask($task);
+	public static function task($name, $fnOrDesc=null, $fn=null) {
+		if(isset(self::$taskRepository[$name])) {
+			$task = self::$taskRepository[$name];
+			if(!is_null($fnOrDesc)) {
+				if(is_callable($fnOrDesc)) {
+					$task->run($fnOrDesc);
+				} else if(is_string($fnOrDesc)) {
+					$task->desc($fnOrDesc);
+				} else {
+					throw new \InvalidArgumentException('Second parameter must be either string or callable');
+				}
+			}
+			if(!is_null($fn)) {
+				if(is_callable($fn)) {
+					$task->run($fn);
+				} else {
+					throw new \InvalidArgumentException('Third parameter must be callable!');
+				}
+			}
+		} else {
+			$task = new Task($name);
+			
+			if(is_null($fnOrDesc) && is_null($fn)) {
+				$task->desc('n/a');
+			} else if(is_null($fn) && is_callable($fnOrDesc)) {
+				$task->run($fnOrDesc);
+			} else if(is_string($fnOrDesc)) {
+				$task->desc($fnOrDesc);
+			} else {
+				throw new \Exception('Invalid method overload called.');
+			}
+			
+			self::$taskRepository->registerTask($task);
+		}
+		
 		return $task;
 	}
 	
@@ -175,28 +216,28 @@ class pantr {
 	 * @param string $t
 	 * @return Output
 	 */
-	public function write($t, $style = null) {
+	public static function write($t, $style = null) {
 		return self::console()->out()->write($t, $style);
 	}
 
 	/**
 	 * @return Output
 	 */
-	public function writeln($t='', $style = null) {
+	public static function writeln($t='', $style = null) {
 		return self::console()->out()->writeln($t, $style);
 	}
 
 	/**
 	 * @return Output
 	 */
-	public function writeblock($t) {
+	public static function writeblock($t) {
 		return self::console()->out()->writeblock($t);
 	}
 	
 	/**
 	 * @return Output
 	 */
-	public function writeOption($short, $long, $description=null) {
+	public static function writeOption($short, $long, $description=null) {
 		// is there a shorthand?
 		if(is_null($description)) {
 			$description = $long;
@@ -209,7 +250,7 @@ class pantr {
 	/**
 	 * @return Output
 	 */
-	public function writeHelp($name, $usage, $longDesc) {
+	public static function writeHelp($name, $usage, $longDesc) {
 		return self::writeln('NAME', 'BOLD')
 			->indent()
 			->writeln($name)
@@ -316,6 +357,7 @@ class pantr {
 	 * Adds a new method to the pantr class. For example:
 	 * <code>pantr::enhance('hello', function($who) { pantr::writeln('Hello '.$who); });
 	 * pantr::hello('Patrick');</code>
+	 * @deprecated is going to be removed in 1.0
 	 */
 	public static function enhance($name, $fn) {
 		self::$enhancements[$name] = $fn;
@@ -377,9 +419,10 @@ class pantr {
 		self::$properties[$key] = $value;
 	}
 	
-	/** Loads the specified yaml file from PAKE_HOME (if it exists)
-	 *  and a local file (if it exists).
-	 *  This mechanism can be used to build config cascades.
+	/** 
+	 * Loads the specified yaml file from PAKE_HOME (if it exists)
+	 * and a local file (if it exists).
+	 * This mechanism can be used to build config cascades.
 	 *
 	 * If $onlyLocal is true the cascade mechanism is deactivated.
 	 */

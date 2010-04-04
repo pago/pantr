@@ -28,18 +28,18 @@ use pantr\ext\PHPUnit;
 use pantr\ext\Pirum;
 use pantr\ext\Pearfarm\PackageSpec;
 
-pantr::setDefault('build:package');
-pantr::property('pantr.version', '0.8.0');
-pantr::property('pear.channel', 'pear.pagosoft.com');
-pantr::loadProperties();
+setDefault('build:package');
+property('pantr.version', '0.8.0');
+property('pear.channel', 'pear.pagosoft.com');
+loadProperties();
 
 // global namespace
 task('clean', 'Remove unused files', function() {
-	pantr::silent('clean', 'Cleaning up', function() {
+	silent('clean', 'Cleaning up', function() {
 		// get rid of .DS_Store files
-		pantr::rm(pantr::finder()->name('.DS_Store')->in('src'));
-		pantr::rm('build', true);
-		pantr::rm('dist', true);
+		rm(find('.DS_Store')->in('src'));
+		rm('build', true);
+		rm('dist', true);
 	});
 });
 
@@ -49,13 +49,13 @@ task('clean', 'Remove unused files', function() {
  */
 task('test:unit', function($req) {
 	require_once 'test/bootstrap.php';
-	$tests = pantr::fileset()->name('*Test.php')->in('test/unit');
+	$tests = fileset('*Test.php')->in('test/unit');
 	PHPUnit::forAllTests($tests)->run(isset($req['verbose']));
 });
 
 task('test:spec', function() {
 	require_once 'test/bootstrap.php';
-	foreach(pantr::fileset()->name('*Spec.php')->in('test/spec') as $spec) {
+	foreach(fileset('*Spec.php')->in('test/spec') as $spec) {
 		require_once $spec;
 	}
 	\Pagosoft\PSpec\Spec::run();
@@ -63,7 +63,7 @@ task('test:spec', function() {
 
 task('test:integration', function() {
 	require_once 'test/bootstrap.php';
-	foreach(pantr::fileset()->name('*Spec.php')->in('test/integration') as $spec) {
+	foreach(fileset('*Spec.php')->in('test/integration') as $spec) {
 		require_once $spec;
 	}
 	\Pagosoft\PSpec\Spec::run();
@@ -78,8 +78,8 @@ task('test:integration', function() {
  */
 task('config:set-version', function($req) {
 	if(isset($req['version'])) {
-		pantr::property('pantr.version', $req['version']);
-		pantr::writeAction('set-version', $req['version']);
+		property('pantr.version', $req['version']);
+		writeAction('set-version', $req['version']);
 	}
 });
 
@@ -91,9 +91,9 @@ task('config:set-version', function($req) {
  */
 task('config:deploy-local',function($req) {
 	if(isset($req['l'])) {
-		pantr::writeAction('switch', 'to local pear channel');
-		pantr::property('pear.channel', 'pear.localhost');
-		pantr::property('pear.dir', __DIR__.'/../lpear');
+		writeAction('switch', 'to local pear channel');
+		property('pear.channel', 'pear.localhost');
+		property('pear.dir', __DIR__.'/../lpear');
 	}
 });
 
@@ -117,9 +117,9 @@ task('config:sync-pear', 'install/remove channels and packages', function() {
  * @dependsOn clean
  */
 task('build:init', function() {
-	$lib = pantr::finder()
+	$lib = finder()
 		// we don't want to distribute vfsStream
-		->discard('vfsStream')->prune('vfsStream')
+		->prune('vfsStream')->discard('vfsStream')
 		->prune('pear')->discard('pear') // or pear
 		->prune('data')->discard('data')
 		// or the IOC-documentation and tests
@@ -128,17 +128,18 @@ task('build:init', function() {
 		// and no hidden files!
 		->prune('.*')->discard('.*')
 		->not_name('.*')
-		->ignore_version_control();
+		->ignore_version_control()
+		->in('lib');
 
 	// copy source files
-	pantr::mkdirs('build/pantr');
-	pantr::mirror($lib, 'lib', 'build/pantr', pantr::SILENT);
-	pantr::mirror(pantr::finder(), 'src', 'build/pantr', pantr::SILENT);
+	mkdirs('build/pantr');
+	mirror($lib, 'build/pantr', pantr::SILENT);
+	mirror(finder()->in('src'), 'build/pantr', pantr::SILENT);
 	
 	// and executables
-	pantr::mkdirs('build/bin');
-	pantr::copy('bin/pantr', 'build/bin/pantr');
-	pantr::copy('bin/pantr.bat', 'build/bin/pantr.bat');
+	mkdirs('build/bin');
+	copy('bin/pantr', 'build/bin/pantr');
+	copy('bin/pantr.bat', 'build/bin/pantr.bat');
 });
 
 /**
@@ -150,16 +151,16 @@ task('build:init', function() {
 task('build:package', function() {
 	$spec = PackageSpec::in('build')
 		->setName('pantr')
-		->setChannel(pantr::property('pear.channel'))
+		->setChannel(property('pear.channel'))
 		->setSummary('pantr is a simple php build tool.')
 		->setDescription('pantr is a simple php build tool.')
 		->setNotes('n/a')
-		->setVersion(pantr::property('pantr.version'))
+		->setVersion(property('pantr.version'))
 		->setStability('beta')
 		->setLicense(PackageSpec::LICENSE_MIT)
 		->addMaintainer('lead', 'Patrick Gotthardt', 'pago', 'patrick@pagosoft.com')
 		->setDependsOnPHPVersion('5.3.0')
-		->addFiles(pantr::fileset()
+		->addFiles(fileset()
 				->ignore_version_control()
 				->relative()
 				->in('build'))
@@ -181,33 +182,38 @@ File::task('compile:services', 'build/pantr/pantr/core/services.yml', ':dirname/
 		$dumper = new \sfServiceContainerDumperPhp($sc);
 		$code = $dumper->dump(array('class' => 'pantrContainer'));
 		file_put_contents($target, $code);
-	})->isHidden(true);
-pantr::getTask('build:init')->after(pantr::getTask('compile:services'));
+	})->isHidden(true); // should not be displayed
+// this task should be run after build:init
+task('build:init')->after(task('compile:services'));
 
 /**
+ * Updates the version number in the pantr.php file
+ * 
  * @hidden
  */
-task('compile:version', 'Updates the version number in the pantr.php file', function() {
+task('compile:version', function() {
 	// update version number
-	pantr::replace_in('build/pantr/pantr/pantr.php', function($f, $c) {
-		pantr::writeAction('rewrite', $f);
+	replace_in('build/pantr/pantr/pantr.php', function($f, $c) {
+		writeAction('rewrite', $f);
 		return str_replace(
 			"const VERSION='DEV';",
-			"const VERSION='".pantr::property('pantr.version')."';",
+			"const VERSION='".property('pantr.version')."';",
 			$c
 		);
 	});
-})->before(pantr::getTask('config:set-version'));
-pantr::getTask('build:init')->after(pantr::getTask('compile:version'));
+})->before(task('config:set-version'));
+task('build:init')->after(task('compile:version'));
 
 
 // publish
 /**
+ * Publish the pear package on pear channel
+ *
  * @dependsOn build:package
  * @option l deploy to local PEAR server
  * @option version The release version
  */
-task('deploy', 'Publish the pear package on pear channel', function($args) {
-	Pirum::onChannel(pantr::property('pear.dir'))
+task('deploy', function($args) {
+	Pirum::onChannel(property('pear.dir'))
 		->addLatestVersion('dist');
 });

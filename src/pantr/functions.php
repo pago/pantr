@@ -20,19 +20,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace pantr\file;
-
-function task($name, $fnOrDesc, $fn=null) {
-	if(is_null($fn)) {
-		$fn = $fnOrDesc;
-		$desc = 'n/a';
-	} else {
-		$desc = $fnOrDesc;
-	}
-	return \pantr\pantr::task($name, $desc)->run($fn);
-}
-
 namespace pantr;
+
+/*
+ * This file defines functions in the \pantr namespace and includes the files
+ * in the functions directory.
+ */
+
 /**
  * Transforms a file path according to the specified pattern.
  * Example:
@@ -51,12 +45,82 @@ namespace pantr;
  *  <dd>the path to the file</dd>
  * </dl>
  *
+ * If all you want is to change the file extension you may use the shorthand
+ * "*.php" (to change the extension to "php" and keep all other parts)
+ *
  * @param string $src
  * @param string $pattern
  * @return string
  */
 function fileNameTransform($src, $pattern) {
 	$info = pathinfo($src);
+	if(strlen($pattern) > 2 && $pattern[0] == '*' && $pattern[1] == '.') {
+		$pattern = ':dirname/:filename'. substr($pattern, 1);
+	}
 	$searches = array_map(function($p) { return ':'.$p; }, array_keys($info));
 	return str_replace($searches, array_values($info), $pattern);
 }
+
+function transformToIterable($finder) {
+	if(is_string($finder)) {
+		return Finder::type(Finder::TYPE_ANY)->name($finder)->in('.');
+	} else if($finder instanceof Finder) {
+		return $finder->in('.');
+	} else if(is_array($finder)) {
+		return $finder;
+	} else if($finder instanceof \IteratorAggregate) {
+		return $finder;
+	}
+	throw new \InvalidArgumentException('Argument must be one of string, array or finder');
+}
+
+function getSourceDirectory($finder) {
+	if($finder instanceof FinderResult) {
+		return $finder->getSourceDirectory();
+	} else if(is_array($finder)) {
+		return findCommonPrefix($finder);
+	}
+	throw new \InvalidArgumentException('Argument must be either an array or a FinderResult');
+}
+
+function findCommonPrefix($strings) {
+	return array_reduce($strings, function($a, $b) {
+		// first invocation yields $b
+		if($a === null) return $b;
+		
+		// make sure we use the shortest string as the prefix lookup
+		$lenA = strlen($a);
+		$lenB = strlen($b);
+		if($lenA < $lenB) {
+			// switch strings
+			$t = $b;
+			$b = $a;
+			$a = $t;
+			
+			// switch lengths
+			$t = $lenB;
+			$lenB = $lenA;
+			$lenA = $t;
+		}
+
+		/*
+		 * on subsequent calls we want reduce $a so that it is a prefix of $b
+		 * i.e. $a = 'foo/bar/baz', $b = 'foo/bar/boo'
+		 * should yield 'foo/bar/'
+		 * 
+		 * for efficiency reasons this should be implemented without substr...
+		 */
+		for($i = $lenA; $i >= 0; $i--) {
+			if(substr($a, 0, $i) == substr($b, 0, $i)) {
+				return substr($a, 0, $i);
+			}
+		}
+
+		// there is no common prefix => ''
+		return '';
+	}, null);
+}
+
+// Include other functions for pantr\file namespace
+require_once __DIR__.'/functions/utilities.php';
+require_once __DIR__.'/functions/fileops.php';

@@ -60,7 +60,7 @@ describe('Task', function($self) {
 		$self->invoke($task);
 	});
 	
-	it('it should call the action even if it takes no arguments', function($self) {
+	it('should call the action even if it takes no arguments', function($self) {
 		$task = $self->task;
 		$run = false;
 		$task->run(function() use (&$run) {
