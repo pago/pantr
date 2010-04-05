@@ -10,7 +10,7 @@ project can use whatever PHP version it needs.
 Documentation
 -------------
 
-The documentation has moved to the wiki: http://wiki.github.com/pago/pantr/
+The documentation has moved to the [wiki](http://wiki.github.com/pago/pantr/).
 
 License
 -------
