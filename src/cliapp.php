@@ -45,6 +45,7 @@ array_shift($args);
 pantr::setTaskRepository($sc->taskRepository);
 pantr::setApplication($sc->application);
 pantr::setHomePathProvider($sc->homePathProvider);
+pantr::loadProperties(); // load pantr.yml
 
 // load standard tasks
 include_once __DIR__.'/pantr/std_tasks.php';

@@ -23,11 +23,21 @@
 namespace pantr\core;
 
 use pantr\pantr;
+use pantr\ext\PEAR\Repository;
 
 class BundleManager {
 	private $homePathProvider, $bundles = array();
 	public function __construct(HomePathProvider $homePathProvider) {
 		$this->homePathProvider = $homePathProvider;
+	}
+	
+	public function getRepository() {
+		$path = $this->homePathProvider->get();
+		$repo = new Repository($path);
+		if(!$repo->exists()) {
+			$repo->create();
+		}
+		return $repo;
 	}
 	
 	public function registerIncludePath() {

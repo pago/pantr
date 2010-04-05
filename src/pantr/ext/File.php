@@ -25,8 +25,16 @@ namespace pantr\ext;
 use pantr\pantr;
 use pantr\Task;
 
+/**
+ * File Tasks are hidden by default.
+ */
 class File extends Task {
 	private $src, $target;
+	
+	public function __construct($name, $desc='') {
+		parent::__construct($name, $desc);
+		$this->isHidden(true);
+	}
 	
 	public function run($fn) {
 		$src = $this->src;

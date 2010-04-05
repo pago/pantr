@@ -57,7 +57,6 @@ class Repository {
 	
 	public function install() {
 		$args = func_get_args();
-		echo "args:\n"; print_r($args);
 		if(is_array($args[0])) {
 			$options = array_shift($args);
 		} else {

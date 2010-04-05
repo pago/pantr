@@ -25,13 +25,15 @@ namespace pantr\file;
 use pantr\pantr;
 use pantr\ext\File;
 use pantr\ext\PHPUnit;
+use Pagosoft\PSpec\Spec;
 use pantr\ext\Pirum;
 use pantr\ext\Pearfarm\PackageSpec;
 
-setDefault('build:package');
-property('pantr.version', '0.8.0');
+setDefault('build');
+
+$version = `git describe master`;
+property('pantr.version', $version);
 property('pear.channel', 'pear.pagosoft.com');
-loadProperties();
 
 // global namespace
 task('clean', 'Remove unused files', function() {
@@ -43,45 +45,46 @@ task('clean', 'Remove unused files', function() {
 	});
 });
 
+/** @hidden */
+task('test:init', function() {
+	require_once 'test/bootstrap.php';
+});
+
 /**
  * Run PHPUnit tests.
  * @option v:verbose display details
+ * @dependsOn test:init
  */
 task('test:unit', function($req) {
-	require_once 'test/bootstrap.php';
 	$tests = fileset('*Test.php')->in('test/unit');
-	PHPUnit::forAllTests($tests)->run(isset($req['verbose']));
+	return PHPUnit::forAllTests($tests)->run(isset($req['verbose']), 'test:unit');
 });
 
-task('test:spec', function() {
-	require_once 'test/bootstrap.php';
-	foreach(fileset('*Spec.php')->in('test/spec') as $spec) {
-		require_once $spec;
-	}
-	\Pagosoft\PSpec\Spec::run();
+/**
+ * Runs PSpec tests
+ *
+ * @dependsOn test:init
+ */
+task('test:spec', function($req) {
+	$result = Spec::run('test/spec', array(
+		'verbose' => isset($req['verbose']),
+		'taskname' => 'test:spec'
+	));
 });
 
-task('test:integration', function() {
-	require_once 'test/bootstrap.php';
-	foreach(fileset('*Spec.php')->in('test/integration') as $spec) {
-		require_once $spec;
-	}
-	\Pagosoft\PSpec\Spec::run();
+/**
+ * Runs PSpec "integration" tests - might take a while
+ *
+ * @dependsOn test:init
+ */
+task('test:integration', function($req) {
+	return Spec::run('test/integration', array(
+		'verbose' => isset($req['verbose']),
+		'taskname' => 'test:integration'
+	));
 });
 
 // config
-/**
- * Changes the pantr version for the release
- *
- * @needsRequest
- * @hidden
- */
-task('config:set-version', function($req) {
-	if(isset($req['version'])) {
-		property('pantr.version', $req['version']);
-		writeAction('set-version', $req['version']);
-	}
-});
 
 /**
  * Configures pantr to create a local pear package
@@ -174,7 +177,7 @@ task('build:package', function() {
 });
 
 // compilation
-File::task('compile:services', 'build/pantr/pantr/core/services.yml', ':dirname/:filename.php')
+File::task('build:services', 'build/pantr/pantr/core/services.yml', ':dirname/:filename.php')
 	->run(function($src, $target) {
 		// compile dependency injection layer
 		$sc = new \sfServiceContainerBuilder();
@@ -185,9 +188,7 @@ File::task('compile:services', 'build/pantr/pantr/core/services.yml', ':dirname/
 		$dumper = new \sfServiceContainerDumperPhp($sc);
 		$code = $dumper->dump(array('class' => 'pantrContainer'));
 		file_put_contents($target, $code);
-	})->isHidden(true); // should not be displayed
-// this task should be run after build:init
-task('build:init')->after(task('compile:services'));
+	});
 
 /**
  * Updates the version number in the pantr.php file
@@ -195,7 +196,7 @@ task('build:init')->after(task('compile:services'));
  * @hidden
  * @dependsOn build:init
  */
-task('compile:version', function() {
+task('build:version', function() {
 	// update version number
 	replace_in('build/pantr/pantr/pantr.php', function($f, $c) {
 		writeAction('rewrite', $f);
@@ -205,8 +206,14 @@ task('compile:version', function() {
 			$c
 		);
 	});
-})->before(task('config:set-version'));
-task('build:init')->after(task('compile:version'));
+});
+
+/**
+ * Builds the project
+ * 
+ * @dependsOn build:init, build:services, build:version, build:package
+ */
+task('build');
 
 // publish
 /**

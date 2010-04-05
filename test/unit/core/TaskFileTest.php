@@ -1,7 +1,6 @@
 <?php
-require_once 'vfsStream/vfsStream.php';
-
 use pantr\core\TaskFile;
+use pantr\core\TaskRepository;
 
 class TaskFileTest extends PHPUnit_Framework_TestCase {
 	public function setUp() {
@@ -24,7 +23,7 @@ PHP;
 		file_put_contents($file, $content);
 		
 		$pantrfile = new TaskFile($file);
-		$pantrfile->load();
+		$pantrfile->load(new TaskRepository());
 		
 		$this->assertTrue(defined($unique_id));
 	} // it should load the file	

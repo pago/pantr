@@ -20,3 +20,5 @@ set_include_path(get_include_path()
 
 // use PSpec
 require_once __DIR__.'/../src/Pagosoft/PSpec/vocab.php';
+
+require_once __DIR__.'/../lib/vfsStream/vfsStream.php';

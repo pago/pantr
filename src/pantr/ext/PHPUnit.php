@@ -45,6 +45,9 @@ class PHPUnit {
 	}
 	
 	public static function forAllTests($files) {
+		if($files instanceof \pantr\FinderResult) {
+			$files = $files->getFilesArray();
+		}
 		return new PHPUnit($files);
 	}
 	
@@ -65,7 +68,7 @@ class PHPUnit {
 		$this->arguments = array_merge($this->arguments, $data);
 	}
 	
-	public function run($verbose = false) {
+	public function run($verbose = false, $taskName='test:unit') {
 		$suite = $this->getTestSuite();
 		
 		if($verbose) {
@@ -82,10 +85,10 @@ class PHPUnit {
 			
 			
 			if($result->wasSuccessful()) {
-				pantr::writeAction('unit-test', $this->formatTestResult($result, $assertions));
+				pantr::writeAction($taskName, $this->formatTestResult($result, $assertions));
 				return Task::SUCCESS;
 			} else {
-				pantr::writeAction('unit-test',
+				pantr::writeAction($taskName,
 					$this->formatTestResult($result, $assertions),
 					pantr::WARNING
 				);
@@ -94,17 +97,17 @@ class PHPUnit {
 		}
 	}
 	
-	private function formatTestResult(\PHPUnit_Framework_TestResult $result, $assertions) {
+	public static function formatTestResult(\PHPUnit_Framework_TestResult $result, $assertions) {
 		$tests = $result->count();
 		$errors = $result->errorCount();
 		$failures = $result->failureCount();
 		$skipped = $result->skippedCount();
 		$incomplete = $result->notImplementedCount();
 		
-		$msg  = $this->formatResultPart($errors, 'error', 's');
-		$msg .= $this->formatResultPart($failures, 'failure', 's');
-		$msg .= $this->formatResultPart($skipped, 'skipped');
-		$msg .= $this->formatResultPart($incomplete, 'incomplete');
+		$msg  = self::formatResultPart($errors, 'error', 's');
+		$msg .= self::formatResultPart($failures, 'failure', 's');
+		$msg .= self::formatResultPart($skipped, 'skipped');
+		$msg .= self::formatResultPart($incomplete, 'incomplete');
 		
 		return sprintf(
 			'%s (%d %s, %d %s%s)',
@@ -115,7 +118,7 @@ class PHPUnit {
 		);
 	}
 	
-	private function formatResultPart($num, $label, $pluralSuffix='') {
+	private static function formatResultPart($num, $label, $pluralSuffix='') {
 		if(0 < $num) {
 			return ', '.$num.' '.($num != 1 ? $label . $pluralSuffix : $label);
 		}

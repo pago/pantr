@@ -82,6 +82,10 @@ class pantr {
 		return self::$bundleManager->getBundle($name);
 	}
 	
+	public static function getRepository() {
+		return self::$bundleManager->getRepository();
+	}
+	
 	public static function importBundle($name) {
 		$bundle = self::getBundle($name);
 		if(!is_null($bundle)) {

@@ -60,13 +60,18 @@ class TestRunner extends \PHPUnit_TextUI_TestRunner {
 			} else {
 				$this->printer = new ResultPrinter(
 					NULL,
-					$arguments['verbose'],
+					!$arguments['verbose'],
 					$arguments['colors'],
 					$arguments['debug']
 				);
 			}
 		}
+		
+		// supress the version string if we're not verbose
+		if(!$arguments['verbose']) {
+			self::$versionStringPrinted = true;
+		}
 
-		parent::doRun($suite, $arguments);
+		return parent::doRun($suite, $arguments);
 	}
 }

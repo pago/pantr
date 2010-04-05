@@ -23,8 +23,55 @@
 namespace Pagosoft\PSpec\TextUI;
 
 class ResultPrinter extends \PHPUnit_TextUI_ResultPrinter {
-	public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE) {
-		parent::__construct($out, $verbose, $colors, $debug);
+	private $silent;
+	public function __construct($out = NULL, $silent = FALSE, $colors = FALSE, $debug = FALSE) {
+		parent::__construct($out, false, $colors, $debug);
+		$this->silent = $silent;
+	}
+	
+	/**
+     * @param  \PHPUnit_Framework_TestResult $result
+     */
+    public function printResult(\PHPUnit_Framework_TestResult $result) {
+		if(!$this->silent) {
+			$this->printHeader($result->time());
+
+			if ($result->errorCount() > 0) {
+				$this->printErrors($result);
+			}
+
+			if ($result->failureCount() > 0) {
+				if ($result->errorCount() > 0) {
+					print "\n--\n\n";
+				}
+
+				$this->printFailures($result);
+			}
+
+			if ($result->notImplementedCount() > 0) {
+				if ($result->failureCount() > 0) {
+					print "\n--\n\n";
+				}
+
+				$this->printIncompletes($result);
+			}
+
+			if ($result->skippedCount() > 0) {
+				if ($result->notImplementedCount() > 0) {
+					print "\n--\n\n";
+				}
+
+				$this->printSkipped($result);
+			}
+		}
+
+        $this->printFooter($result);
+    }
+	
+	protected function writeProgress($progress) {
+		if(!$this->silent) {
+			parent::writeProgress($progress);
+		}
 	}
 	
 	/**

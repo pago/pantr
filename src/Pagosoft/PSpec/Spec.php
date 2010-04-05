@@ -22,6 +22,9 @@
  */
 namespace Pagosoft\PSpec;
 
+use pantr\pantr;
+use pantr\Task;
+
 class Spec {
 	private static $currentSuites = array();
 	private static $suites = array();
@@ -65,7 +68,35 @@ class Spec {
 		return $suite;
 	}
 	
-	public static function run($arguments=array()) {
-		TextUI\TestRunner::run(self::getTestSuite(), $arguments);
+	public static function run($testsDirectory, $arguments=array()) {
+		if(is_string($testsDirectory)) {
+			$tests = \pantr\file\fileset('*Spec.php')->in($testsDirectory);
+		} else {
+			$tests = $testsDirectory;
+		}
+		foreach($tests as $test) {
+			require_once $test;
+		}
+		$isVerbose = isset($arguments['verbose']) && $arguments['verbose'];
+		$taskName = isset($arguments['taskname']) ? $arguments['taskname'] : null;
+		if(!$isVerbose && !is_null($taskName)) {
+			ob_start();
+		}
+		$result = TextUI\TestRunner::run(self::getTestSuite(), $arguments);
+		if(!$isVerbose && !is_null($taskName)) {
+			$content = ob_get_contents();
+			ob_end_clean();
+			if($result->wasSuccessful()) {
+				pantr::writeAction($taskName, $content);
+			} else {
+				pantr::writeAction($taskName, $content, pantr::WARNING);
+			}
+		}
+		
+		if($result->wasSuccessful()) {
+			return Task::SUCCESS;
+		} else {
+			return Task::FAILED;
+		}
 	}
 }
