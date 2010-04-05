@@ -23,6 +23,9 @@ class PackageSpec extends \Pearfarm_PackageSpec {
 	}
 	
 	public function addFiles($files) {
+		if($files instanceof \pantr\FinderResult) {
+			$files = $files->getFilesArray();
+		}
 		$this->addFilesSimple($files);
 		return $this;
 	}

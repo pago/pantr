@@ -258,7 +258,11 @@ class Task implements \ArrayAccess {
 		if($args->isValid()) {
 			$this->args = $args;
 			if($this->runBefore($args)) {
-				$result = $fn($args, $this);
+				if(is_callable($fn)) {
+					$result = $fn($args, $this);
+				} else {
+					pantr::log()->notice('Invoked task '.$this->name.' is not callable.');
+				}
 				$result = $this->runAfter($args, $result);
 			}
 		} else {

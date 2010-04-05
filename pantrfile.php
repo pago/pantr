@@ -31,7 +31,7 @@ use pantr\ext\Pearfarm\PackageSpec;
 
 setDefault('build');
 
-$version = `git describe master`;
+$version = trim(`git describe`);
 property('pantr.version', $version);
 property('pear.channel', 'pear.pagosoft.com');
 
@@ -84,6 +84,12 @@ task('test:integration', function($req) {
 	));
 });
 
+/**
+ * Test all
+ * @dependsOn test:unit, test:spec
+ */
+task('test');
+
 // config
 
 /**
@@ -103,7 +109,7 @@ task('config:deploy-local',function($req) {
 /**
  * Install/remove channels and packages
  */
-task('config:sync-pear', function() {
+task('deps', function() {
 	pantr::dependencies()->in('lib')
 		->fromChannel('pear.pagosoft.com')
 			->usePackage('util')
@@ -151,7 +157,7 @@ task('build:init', function() {
 /**
  * Creates a PEAR package
  *
- * @dependsOn test:unit, build:init
+ * @dependsOn test, build:init
  * @before config:deploy-local
  */
 task('build:package', function() {
@@ -178,6 +184,7 @@ task('build:package', function() {
 
 // compilation
 File::task('build:services', 'build/pantr/pantr/core/services.yml', ':dirname/:filename.php')
+	->dependsOn('build:init')
 	->run(function($src, $target) {
 		// compile dependency injection layer
 		$sc = new \sfServiceContainerBuilder();

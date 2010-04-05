@@ -17,15 +17,19 @@ $tryLoad = function() {
 $tryLoad();
 if(!class_exists('Pearfarm_PackageSpec')) {
 	// try to install it now
-	$repo = pantr::getRepository();
-	if(!$repo->hasChannel('pearfarm')) {
-		$repo->discoverChannel('pearfarm.pearfarm.org');
-	}
-	$repo->install('pearfarm/pearfarm');
-	
-	$tryLoad();
+	pantr::silent(function() {
+		$repo = pantr::getRepository();
+		if(!$repo->hasChannel('pearfarm')) {
+			$repo->discoverChannel('pearfarm.pearfarm.org');
+		}
+		$repo->install('pearfarm/pearfarm');
+
+		$tryLoad();
+	});
 	
 	if(!class_exists('Pearfarm_PackageSpec')) {
 		throw new \Exception('Pearfarm is not installed!');
+	} else {
+		pantr::writeAction('install', 'Pearfarm');
 	}
 }
