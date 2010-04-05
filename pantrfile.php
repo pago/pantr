@@ -226,7 +226,7 @@ task('build');
 /**
  * Publish the pear package on pear channel
  *
- * @dependsOn build:package
+ * @dependsOn build
  * @option l deploy to local PEAR server
  * @option version The release version
  */
